@@ -1,35 +1,76 @@
 package analizador
 
 import (
+	"Proyecto1/comandos"
+	"bufio"
 	"fmt"
+	"os"
 	"regexp"
+	"strings"
 )
 
-type partition struct {
-	part_status      [1]byte
-	part_type        [1]byte
-	part_fit         [1]byte
-	part_start       int32
-	part_s           int32
-	part_name        [16]byte
-	part_correlative int32
-	part_id          [4]byte
+func Analizar(comandoEntero string) {
+
+	fmt.Println(comandoEntero)
+
+	analComando := regexp.MustCompile("^[A-Za-z]+")
+	comando := analComando.FindAllString(comandoEntero, 1)
+	analBanderas := regexp.MustCompile("(-[A-Za-z]*=([A-Za-z0-9./]*))")
+	banderas := analBanderas.FindAllString(comandoEntero, -1)
+
+	//fmt.Println(comando)
+	//fmt.Println(banderas)
+	ejecutarComando(comando, banderas)
+
 }
 
-type MBR struct {
-	mbr_tamano         int32
-	mbr_fecha_creacion [10]byte
-	mbr_dsk_signature  [1]byte
-	mbr_partitions     [4]partition
+func ejecutarComando(comando []string, banderas []string) {
+
+	switch comando[0] {
+
+	case "execute":
+		//ejecutar execute
+		EjecExecute(banderas)
+		break
+
+	case "mkdisk":
+		comandos.EjecMkdisk(banderas)
+		break
+
+	case "rep":
+		//fmt.Println("si llega")
+		comandos.EjecRepMkdisk()
+		break
+	case "fdisk":
+		comandos.EjecFdisk(banderas)
+		break
+
+	case "exit":
+		fmt.Println("cerrando aplicacion")
+		os.Exit(0)
+
+	}
+
 }
 
-func Analizar(comando string) {
+func EjecExecute(banderas []string) {
+	dupla := strings.Split(banderas[0], "=")
+	if dupla[0] == "-path" {
+		fmt.Println(dupla[1])
+		archivo, err := os.Open(dupla[1])
 
-	fmt.Println(comando)
+		if err != nil {
+			fmt.Println("Error al abrir el archivo: ", err)
+			return
+		}
+		defer archivo.Close()
 
-	analLex := regexp.MustCompile("[A-Za-z]+((\\s)*(-[A-Za-z]*=.*))*")
-	encontrado := analLex.FindAllString(comando, -1)
+		scanner := bufio.NewScanner(archivo)
 
-	fmt.Println(encontrado)
-
+		for scanner.Scan() {
+			linea := scanner.Text()
+			fmt.Println(linea)
+			Analizar(linea)
+		}
+	}
 }
