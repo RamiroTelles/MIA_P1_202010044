@@ -20,7 +20,9 @@ func Analizar(comandoEntero string) {
 
 	//fmt.Println(comando)
 	//fmt.Println(banderas)
-	ejecutarComando(comando, banderas)
+	if comando != nil {
+		ejecutarComando(comando, banderas)
+	}
 
 }
 
@@ -70,6 +72,7 @@ func EjecExecute(banderas []string) {
 		for scanner.Scan() {
 			linea := scanner.Text()
 			fmt.Println(linea)
+
 			Analizar(linea)
 		}
 	}

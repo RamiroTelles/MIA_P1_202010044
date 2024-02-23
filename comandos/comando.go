@@ -67,7 +67,7 @@ func EjecFdisk(banderas []string) {
 	//fmt.Println(name)
 	//fmt.Println(type1)
 
-	archivo, err := os.OpenFile(driveLetter+".dsk", os.O_RDWR, 0777)
+	archivo, err := os.OpenFile("MIA/P1/"+driveLetter+".dsk", os.O_RDWR, 0777)
 	if err != nil {
 		fmt.Println("Error al abrir el disco: ", err)
 		return
@@ -190,9 +190,17 @@ func EjecMkdisk(banderas []string) {
 		}
 	}
 
-	nombreDisco := "A"
+	archivos, err := os.ReadDir("MIA/P1")
+	if err != nil {
+		fmt.Println("Error al leer el directorio: ", err)
+		return
+	}
+	//Declarar las letras del abecedario
+	letras := "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	//Nombre del disco a partir de la cantidad de discos, por ejemplo A=1, B=2, C=3
+	nombreDisco := string(letras[len(archivos)])
 
-	archivo, err := os.Create(nombreDisco + ".dsk")
+	archivo, err := os.Create("MIA/P1/" + nombreDisco + ".dsk")
 
 	if err != nil {
 		fmt.Println("Error al crear el archivo del disco: ", err)
