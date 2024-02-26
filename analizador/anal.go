@@ -50,6 +50,9 @@ func ejecutarComando(comando []string, banderas []string) {
 	case "exit":
 		fmt.Println("cerrando aplicacion")
 		os.Exit(0)
+	case "rmdisk":
+		comandos.EjecRmdisk(banderas)
+		break
 
 	}
 

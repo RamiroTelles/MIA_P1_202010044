@@ -385,6 +385,32 @@ func EjecMkdisk(banderas []string) {
 	fmt.Println("Disco", nombreDisco, "creado con exito")
 }
 
+func EjecRmdisk(banderas []string) {
+	driveletter := ""
+
+	for _, valor := range banderas {
+		dupla := strings.Split(valor, "=")
+
+		if dupla[0] == "-driveletter" {
+
+			driveletter = dupla[1]
+
+		} else {
+			fmt.Println("Parametro invalido")
+		}
+	}
+
+	err := os.Remove("MIA/P1/" + driveletter + ".dsk")
+
+	if err != nil {
+		fmt.Println("Error al crear el archivo: ")
+		fmt.Println(err)
+		return
+	}
+	fmt.Println("Disco eliminado con exito")
+
+}
+
 func EjecRepMBR() {
 	archivo, err := os.Open("A.dsk")
 
