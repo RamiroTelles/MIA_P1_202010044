@@ -41,7 +41,7 @@ func ejecutarComando(comando []string, banderas []string) {
 
 	case "rep":
 		//fmt.Println("si llega")
-		comandos.EjecRepMkdisk()
+		EjecRep(banderas)
 		break
 	case "fdisk":
 		comandos.EjecFdisk(banderas)
@@ -51,6 +51,76 @@ func ejecutarComando(comando []string, banderas []string) {
 		fmt.Println("cerrando aplicacion")
 		os.Exit(0)
 
+	}
+
+}
+
+func EjecRep(banderas []string) {
+
+	name := ""
+	path := ""
+	id := ""
+	//ruta := ""
+
+	for _, valor := range banderas {
+		dupla := strings.Split(valor, "=")
+
+		if dupla[0] == "-name" {
+
+			name = dupla[1]
+
+		} else if dupla[0] == "-path" {
+			path = dupla[1]
+
+		} else if dupla[0] == "-id" {
+			id = dupla[1]
+		} else if dupla[0] == "-ruta" {
+			//ruta = dupla[1]
+		} else {
+			fmt.Println("Parametro invalido")
+		}
+	}
+
+	switch name {
+	case "mbr":
+		//reporte mbr
+		break
+	case "disk":
+		//reporte disk
+		comandos.EjecRepMkdisk(id, path)
+		break
+
+	case "inodo":
+		//reporte inodo
+		break
+	case "journaling":
+		//reporte journaling
+		break
+	case "block":
+		//reporte block
+		break
+	case "bm_inode":
+		//reporte bitmap inodo
+		break
+	case "bm_block":
+		//reporte bitmap block
+		break
+	case "tree":
+		//reporte tree
+		break
+	case "sb":
+		//reporte sb
+		break
+	case "file":
+		//reporte file
+		break
+	case "ls":
+		//reporte ls
+		break
+
+	default:
+		fmt.Println("nombre no valido")
+		return
 	}
 
 }

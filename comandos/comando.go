@@ -31,12 +31,22 @@ type MBR struct {
 	Mbr_partitions     [4]partition
 }
 
+type EBR struct {
+	Part_mount [1]byte
+	Part_fit   [1]byte
+	Part_start int32
+	Part_s     int32
+	Part_next  int32
+	Part_name  [16]byte
+}
+
 func EjecFdisk(banderas []string) {
 	unit := "k"
 	size := -1
 	driveLetter := ""
 	name := ""
 	type1 := "p"
+	fit := "w"
 
 	despTemp := binary.Size(MBR{}) + 1
 
@@ -56,9 +66,36 @@ func EjecFdisk(banderas []string) {
 
 		} else if dupla[0] == "-type" {
 			type1 = dupla[1]
+		} else if dupla[0] == "-fit" {
+			if dupla[1] == "bf" {
+				fit = "b"
+			} else if dupla[1] == "ff" {
+				fit = "f"
+			} else if dupla[1] == "wf" {
+				fit = "w"
+			} else {
+				fmt.Println("Valor fit no valido")
+				return
+			}
 		} else {
 			fmt.Println("Parametro invalido")
 		}
+	}
+
+	if name == "" {
+		fmt.Println("nombre invalido")
+		return
+	}
+
+	if size < 0 {
+		fmt.Println("tamano no valido")
+		return
+	}
+
+	if unit == "k" {
+		size = size * 1024
+	} else if unit == "m" {
+		size = size * 1024 * 1024
 	}
 
 	//fmt.Println(unit)
@@ -82,9 +119,8 @@ func EjecFdisk(banderas []string) {
 		return
 	}
 
-	//fmt.Println(disk)
-
 	numPart := -1
+
 	for i, particion := range disk.Mbr_partitions {
 
 		if particion.Part_s == int32(0) {
@@ -97,59 +133,105 @@ func EjecFdisk(banderas []string) {
 
 	}
 
-	var nuevaPar partition
+	var partExtend partition
+	for _, part := range disk.Mbr_partitions {
+		if part.Part_type == [1]byte{'e'} {
+			if type1 == "e" {
+				fmt.Println("Ya existe una particion extendida")
+				return
+			}
+			partExtend = part
 
-	nuevaPar.Part_status = [1]byte{'1'}
+		}
+	}
 
-	if type1 == "p" || type1 == "e" || type1 == "l" {
+	if type1 == "l" {
+		if partExtend.Part_type != [1]byte{'e'} {
+			fmt.Println("No existe particion extendida")
+			return
+		}
+		var ebr EBR
+		despTemp = int(partExtend.Part_start)
 
-		nuevaPar.Part_type = [1]byte{type1[0]}
+		for {
+
+			archivo.Seek(int64(despTemp), 0)
+			binary.Read(archivo, binary.LittleEndian, &ebr)
+			if ebr.Part_s != 0 {
+				if strings.Contains(string(ebr.Part_name[:]), name) {
+					fmt.Println("Error: El nombre de la particion ya existe")
+					return
+				}
+				despTemp += int(ebr.Part_s) + 1 + binary.Size(EBR{})
+
+			} else {
+				break
+
+			}
+
+		}
+
+		if int32(despTemp)+int32(binary.Size(EBR{}))+int32(size)+1 > partExtend.Part_start+partExtend.Part_s {
+			fmt.Println("Error: No hay espacio para crear la particion")
+			return
+		}
+		//Crear el nuevo EBR
+		var nuevoEBR EBR
+		nuevoEBR.Part_mount = [1]byte{'0'}
+		nuevoEBR.Part_fit = [1]byte{fit[0]}
+		nuevoEBR.Part_start = int32(despTemp) + 1 + int32(binary.Size(EBR{}))
+		nuevoEBR.Part_s = int32(size)
+		nuevoEBR.Part_next = int32(-1)
+
+		copy(nuevoEBR.Part_name[:], name)
+		//Escribir el nuevo EBR
+		archivo.Seek(int64(despTemp), 0)
+		binary.Write(archivo, binary.LittleEndian, &nuevoEBR)
+		archivo.Close()
+		fmt.Println("Particion logica creada con exito")
+		return
+
 	} else {
-		fmt.Println("Tipo de particion no valida")
+		var nuevaPar partition
+
+		nuevaPar.Part_status = [1]byte{'0'}
+
+		if type1 == "p" || type1 == "e" {
+
+			nuevaPar.Part_type = [1]byte{type1[0]}
+		} else {
+			fmt.Println("Tipo de particion no valida")
+		}
+
+		nuevaPar.Part_fit = [1]byte{fit[0]}
+
+		if numPart < 0 {
+			fmt.Println("No hay particiones disponibles")
+			return
+		}
+
+		nuevaPar.Part_start = int32(despTemp)
+
+		nuevaPar.Part_s = int32(size)
+
+		nuevaPar.Part_name = [16]byte{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+		copy(nuevaPar.Part_name[:], name)
+
+		if despTemp+int(nuevaPar.Part_s)+1 > int(disk.Mbr_tamano) {
+			fmt.Println("tamano insuficiente para la particion")
+			return
+		}
+		nuevaPar.Part_correlative = int32(numPart)
+
+		disk.Mbr_partitions[numPart] = nuevaPar
+
+		archivo.Seek(0, 0)
+		binary.Write(archivo, binary.LittleEndian, &disk)
+		archivo.Close()
+
+		fmt.Println("particion creada con exito")
+
 	}
-
-	nuevaPar.Part_fit = [1]byte{'w'}
-
-	if numPart < 0 {
-		fmt.Println("No hay particiones disponibles")
-		return
-	}
-
-	nuevaPar.Part_start = int32(despTemp)
-
-	if unit == "k" {
-		size = size * 1024
-	} else if unit == "m" {
-		size = size * 1024 * 1024
-	}
-
-	if size < 0 {
-		fmt.Println("tamano no valido")
-		return
-	}
-
-	nuevaPar.Part_s = int32(size)
-
-	if name == "" {
-		fmt.Println("nombre invalido")
-		return
-	}
-
-	nuevaPar.Part_name = [16]byte{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
-	copy(nuevaPar.Part_name[:], name)
-
-	if despTemp+int(nuevaPar.Part_s)+1 > int(disk.Mbr_tamano) {
-		fmt.Println("tamano insuficiente para la particion")
-		return
-	}
-
-	disk.Mbr_partitions[numPart] = nuevaPar
-
-	archivo.Seek(0, 0)
-	binary.Write(archivo, binary.LittleEndian, &disk)
-	archivo.Close()
-
-	fmt.Println("particion creada con exito")
 
 }
 
@@ -303,7 +385,7 @@ func EjecMkdisk(banderas []string) {
 	fmt.Println("Disco", nombreDisco, "creado con exito")
 }
 
-func EjecRep() {
+func EjecRepMBR() {
 	archivo, err := os.Open("A.dsk")
 
 	if err != nil {
@@ -333,8 +415,8 @@ func EjecRep() {
 	//fmt.Println("Partition4: ", string(disk.Mbr_partition4.Part_status[:]))
 }
 
-func EjecRepMkdisk() {
-	archivo, err := os.Open("A.dsk")
+func EjecRepMkdisk(id string, path string) {
+	archivo, err := os.Open("MIA/P1/" + string(id[0]) + ".dsk")
 
 	if err != nil {
 		fmt.Println("Error al abrir el disco: ", err)
@@ -360,10 +442,68 @@ func EjecRepMkdisk() {
 		if part.Part_s != 0 {
 			libre -= int(part.Part_s)
 			Dot += "|"
+			if part.Part_type == [1]byte{'e'} {
+				Dot += "{Extendida"
+				libreExtendida := int(part.Part_s)
 
-			Dot += "Primaria"
-			porcentaje := (float64(part.Part_s) * float64(100)) / float64(sizeMBR)
-			Dot += "\\n" + fmt.Sprintf("%.2f", porcentaje) + "%\\n"
+				var ebr EBR
+				desp := int(part.Part_start)
+				archivo.Seek(int64(desp), 0)
+				err := binary.Read(archivo, binary.LittleEndian, &ebr)
+				if err != nil {
+					fmt.Println("Error al leer el EBR: ", err)
+					return
+				}
+
+				if ebr.Part_s != 0 {
+					Dot += "|{EBR"
+
+					Dot += "|Logica"
+					porcentaje := (float64(ebr.Part_s) * float64(100)) / float64(sizeMBR)
+					Dot += "\\n" + fmt.Sprintf("%.2f", porcentaje) + "%\\n"
+					//libre -= int(ebr.Part_s)
+
+					desp += int(ebr.Part_s) + 1 + binary.Size(EBR{})
+					archivo.Seek(int64(desp), 0)
+					binary.Read(archivo, binary.LittleEndian, &ebr)
+					for {
+
+						if ebr.Part_s == 0 {
+							break
+						}
+						Dot += "|EBR"
+						Dot += "|Logica"
+						porcentaje := (float64(ebr.Part_s) * float64(100)) / float64(sizeMBR)
+						Dot += "\\n" + fmt.Sprintf("%.2f", porcentaje) + "%\\n"
+						libre -= int(ebr.Part_s)
+
+						desp += int(ebr.Part_s) + 1 + binary.Size(EBR{})
+						archivo.Seek(int64(desp), 0)
+						binary.Read(archivo, binary.LittleEndian, &ebr)
+
+					}
+					if libreExtendida > 0 {
+						Dot += "|Libre"
+						porcentaje := (float64(libreExtendida) * float64(100)) / float64(sizeMBR)
+						Dot += "\\n" + fmt.Sprintf("%.2f", porcentaje) + "%\\n"
+					}
+					Dot += "}}"
+
+				} else {
+					Dot += "|Libre"
+					porcentaje := (float64(part.Part_s) * float64(100)) / float64(sizeMBR)
+					Dot += "\\n" + fmt.Sprintf("%.2f", porcentaje) + "%\\n"
+					Dot += "}"
+				}
+				//libre -= int(ebr.Part_s)
+
+			} else {
+				Dot += "Primaria"
+				porcentaje := (float64(part.Part_s) * float64(100)) / float64(sizeMBR)
+				Dot += "\\n" + fmt.Sprintf("%.2f", porcentaje) + "%\\n"
+
+			}
+
 		}
 	}
 
