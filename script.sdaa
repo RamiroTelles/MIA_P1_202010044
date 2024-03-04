@@ -1,6 +1,4 @@
 mkdisk -size=5 -unit=m
-fdisk -type=e -driveletter=A -unit=m -name=Particion1 -size=1
-fdisk -driveletter=A -type=p -unit=m -name=Particion2 -size=1
-fdisk -driveletter=A -unit=m -type=p -name=Particion3 -size=1
-fdisk -type=p -driveletter=A -unit=m -size=1 -name=Particion4
-rep -name=disk -id=A044 -path=reporteDisk
+fdisk -type=p -driveletter=A -unit=m -name=Particion1 -size=1
+mount -driveletter=A -name=Particion1
+lmount

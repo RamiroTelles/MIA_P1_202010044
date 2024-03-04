@@ -2,6 +2,7 @@ package main
 
 import (
 	"Proyecto1/analizador"
+	"Proyecto1/comandos"
 	"bufio"
 	"fmt"
 	"os"
@@ -10,9 +11,13 @@ import (
 
 func main() {
 
+	comandos.LeerMounts()
 	for {
 		leerComando()
 	}
+
+	//id := "A" + string(3+48) + "44"
+	//fmt.Println(id)
 
 }
 

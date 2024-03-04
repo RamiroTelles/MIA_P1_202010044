@@ -40,6 +40,56 @@ type EBR struct {
 	Part_name  [16]byte
 }
 
+func LeerMounts() {
+
+	archivos, err := os.ReadDir("MIA/P1")
+	if err != nil {
+		fmt.Println("Error al leer el directorio: ", err)
+		return
+	}
+	//Declarar las letras del abecedario
+	//letras := "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	//Nombre del disco a partir de la cantidad de discos, por ejemplo A=1, B=2, C=3
+	//nombreDisco := string(letras[len(archivos)])
+
+	for _, ruta := range archivos {
+		archivo, err := os.OpenFile("MIA/P1/"+ruta.Name(), os.O_RDWR, 0777)
+		fmt.Println(ruta.Name()[:1])
+		if err != nil {
+			fmt.Println("Error al abrir el disco: ", err)
+			return
+		}
+		defer archivo.Close()
+
+		var disk MBR
+		archivo.Seek(int64(0), 0)
+		err = binary.Read(archivo, binary.LittleEndian, &disk)
+		if err != nil {
+			fmt.Println("Error al leer el MBR del disco: ", err)
+			return
+		}
+		for i, part := range disk.Mbr_partitions {
+			if part.Part_status == [1]byte{'1'} {
+				var newMount Mount
+				newMount.Id = string(part.Part_id[:])
+
+				newMount.LetterValor = ruta.Name()[:1]
+				newMount.Name = string(part.Part_name[:])
+				newMount.partNum = int32(i)
+				newMount.Part_type = part.Part_type
+				newMount.Size = part.Part_s
+				newMount.Start = part.Part_start
+
+				particionesMontadas = append(particionesMontadas, newMount)
+
+			}
+
+		}
+
+	}
+
+}
+
 func EjecFdisk(banderas []string) {
 	unit := "k"
 	size := -1
@@ -47,6 +97,7 @@ func EjecFdisk(banderas []string) {
 	name := ""
 	type1 := "p"
 	fit := "w"
+	//delete := 0
 
 	despTemp := binary.Size(MBR{}) + 1
 
@@ -76,6 +127,12 @@ func EjecFdisk(banderas []string) {
 			} else {
 				fmt.Println("Valor fit no valido")
 				return
+			}
+		} else if dupla[0] == "-delete" {
+			if dupla[1] == "full" {
+				//delete = 1
+			} else {
+				fmt.Println("parametro invalido para delete")
 			}
 		} else {
 			fmt.Println("Parametro invalido")
@@ -221,7 +278,7 @@ func EjecFdisk(banderas []string) {
 			fmt.Println("tamano insuficiente para la particion")
 			return
 		}
-		nuevaPar.Part_correlative = int32(numPart)
+		nuevaPar.Part_correlative = 0
 
 		disk.Mbr_partitions[numPart] = nuevaPar
 
@@ -409,6 +466,171 @@ func EjecRmdisk(banderas []string) {
 	}
 	fmt.Println("Disco eliminado con exito")
 
+}
+
+func EjecMount(banderas []string) {
+
+	driveletter := ""
+	name := ""
+
+	for _, valor := range banderas {
+		dupla := strings.Split(valor, "=")
+
+		if dupla[0] == "-driveletter" {
+
+			driveletter = dupla[1]
+
+		} else if dupla[0] == "-name" {
+			name = dupla[1]
+
+		} else {
+			fmt.Println("Parametro invalido")
+		}
+	}
+
+	archivo, err := os.OpenFile("MIA/P1/"+driveletter+".dsk", os.O_RDWR, 0777)
+	if err != nil {
+		fmt.Println("Error al abrir el disco: ", err)
+		return
+	}
+	defer archivo.Close()
+
+	var disk MBR
+	archivo.Seek(int64(0), 0)
+	err = binary.Read(archivo, binary.LittleEndian, &disk)
+	if err != nil {
+		fmt.Println("Error al leer el MBR del disco: ", err)
+		return
+	}
+	numPart := -1
+	for i, part := range disk.Mbr_partitions {
+
+		if strings.Contains(string(part.Part_name[:]), name) {
+			if string(part.Part_type[:]) == "p" && part.Part_status == [1]byte{'0'} {
+				numPart = i
+				break
+			} else {
+				fmt.Println("Error al montar la particion")
+				return
+			}
+
+		}
+
+	}
+
+	if numPart == -1 {
+		fmt.Println("particion no encontrada")
+		return
+	}
+
+	contador := 1
+	for i := 0; i < len(particionesMontadas); i++ {
+		if particionesMontadas[i].LetterValor == driveletter {
+			contador++
+		}
+	}
+
+	id := driveletter + string(contador+48) + "44"
+
+	for _, mounts := range particionesMontadas {
+		if strings.Contains(id, mounts.Id) {
+			fmt.Println("Particion ya montada")
+		}
+	}
+
+	idB := []byte(id)
+
+	disk.Mbr_partitions[numPart].Part_status = [1]byte{'1'}
+	disk.Mbr_partitions[numPart].Part_id = [4]byte(idB)
+	disk.Mbr_partitions[numPart].Part_correlative = int32(contador)
+	var newMount Mount
+	newMount.LetterValor = driveletter
+	newMount.Id = id
+	newMount.Name = name
+	newMount.Part_type = disk.Mbr_partitions[numPart].Part_type
+	newMount.Start = disk.Mbr_partitions[numPart].Part_start
+	newMount.Size = disk.Mbr_partitions[numPart].Part_s
+	newMount.partNum = int32(numPart)
+
+	particionesMontadas = append(particionesMontadas, newMount)
+
+	archivo.Seek(0, 0)
+	binary.Write(archivo, binary.LittleEndian, &disk)
+	archivo.Close()
+
+	fmt.Println("Particion montada con exito")
+
+}
+
+func EjecUnMount(banderas []string) {
+	id := ""
+
+	for _, valor := range banderas {
+		dupla := strings.Split(valor, "=")
+
+		if dupla[0] == "-id" {
+			id = dupla[1]
+
+		} else {
+			fmt.Println("Parametro invalido")
+		}
+	}
+
+	index := VerificarParticionMontada(id)
+
+	if index == -1 {
+		fmt.Println("Id de la particion no encontrada")
+		return
+	}
+
+	archivo, err := os.OpenFile("MIA/P1/"+particionesMontadas[index].LetterValor+".dsk", os.O_RDWR, 0777)
+	if err != nil {
+		fmt.Println("Error al abrir el disco: ", err)
+		return
+	}
+	defer archivo.Close()
+
+	var disk MBR
+	archivo.Seek(int64(0), 0)
+	err = binary.Read(archivo, binary.LittleEndian, &disk)
+	if err != nil {
+		fmt.Println("Error al leer el MBR del disco: ", err)
+		return
+	}
+
+	disk.Mbr_partitions[particionesMontadas[index].partNum].Part_status = [1]byte{'0'}
+	disk.Mbr_partitions[particionesMontadas[index].partNum].Part_id = [4]byte{0, 0, 0, 0}
+	disk.Mbr_partitions[particionesMontadas[index].partNum].Part_correlative = 0
+
+	particionesMontadas = append(particionesMontadas[:index], particionesMontadas[index+1:]...)
+
+	archivo.Seek(0, 0)
+	binary.Write(archivo, binary.LittleEndian, &disk)
+	archivo.Close()
+
+	fmt.Println("Particion desmontada con exito")
+}
+
+func EjecLMount() {
+
+	if len(particionesMontadas) == 0 {
+		fmt.Println("no hay particiones montadas")
+	}
+
+	for _, mounts := range particionesMontadas {
+		fmt.Print("Id: ")
+		fmt.Println(mounts.Id)
+		fmt.Print("Disco: ")
+		fmt.Println(mounts.LetterValor)
+		fmt.Print("Nombre Particion: ")
+		fmt.Println(mounts.Name)
+		fmt.Print("Tipo: ")
+		fmt.Println(string(mounts.Part_type[:]))
+		fmt.Print("Inicio: ")
+		fmt.Println(mounts.Start)
+		fmt.Print("Tamano: ")
+		fmt.Println(mounts.Size)
+	}
 }
 
 func EjecRepMBR() {

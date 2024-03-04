@@ -39,6 +39,16 @@ func ejecutarComando(comando []string, banderas []string) {
 		comandos.EjecMkdisk(banderas)
 		break
 
+	case "mount":
+		comandos.EjecMount(banderas)
+		break
+	case "unmount":
+		comandos.EjecUnMount(banderas)
+		break
+	case "lmount":
+		comandos.EjecLMount()
+		break
+
 	case "rep":
 		//fmt.Println("si llega")
 		EjecRep(banderas)
