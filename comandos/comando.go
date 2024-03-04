@@ -40,6 +40,55 @@ type EBR struct {
 	Part_name  [16]byte
 }
 
+type superBloque struct {
+	S_filesystem_type   int32
+	S_inodes_count      int32
+	S_blocks_count      int32
+	S_free_blocks_count int32
+	S_free_inodes_count int32
+	S_mtime             [19]byte
+	S_umtime            [19]byte
+	S_mnt_count         int32
+	S_magic             int32
+	S_inode_s           int32
+	S_block_s           int32
+	S_firts_ino         int32
+	S_first_blo         int32
+	S_bm_inode_start    int32
+	S_bm_block_start    int32
+	S_inode_start       int32
+	S_block_start       int32
+}
+
+type inodo struct {
+	I_uid   int32
+	I_gid   int32
+	I_s     int32
+	I_atime [19]byte
+	I_ctime [19]byte
+	I_mtime [19]byte
+	I_block [15]int32
+	I_type  [1]byte
+	I_perm  [3]byte
+}
+
+type b_content struct {
+	B_name  [12]byte
+	B_inodo int32
+}
+
+type bloqueCarpeta struct {
+	b_content [4]b_content
+}
+
+type bloqueArchivos struct {
+	b_content [64]byte
+}
+
+type bloqueApuntadores struct {
+	b_pointers [16]int32
+}
+
 func LeerMounts() {
 
 	archivos, err := os.ReadDir("MIA/P1")
@@ -631,6 +680,61 @@ func EjecLMount() {
 		fmt.Print("Tamano: ")
 		fmt.Println(mounts.Size)
 	}
+}
+
+func EjecMkfs(banderas []string) {
+	id := ""
+	typeVar := "full"
+	fs := "2fs"
+
+	for _, valor := range banderas {
+		dupla := strings.Split(valor, "=")
+
+		if dupla[0] == "-id" {
+			id = dupla[1]
+
+		} else if dupla[0] == "-type" {
+			typeVar = dupla[1]
+
+		} else if dupla[0] == "-fs" {
+			if dupla[1] == "2fs" || dupla[1] == "3fs" {
+				typeVar = dupla[1]
+			} else {
+				fmt.Println("No se acepta el tipo de Fs")
+				return
+			}
+
+		} else {
+			fmt.Println("Parametro invalido")
+		}
+	}
+
+	index := VerificarParticionMontada(id)
+	if index == -1 {
+		fmt.Println("Particion no montada")
+	}
+
+	if typeVar != "full" {
+		fmt.Println("Tipo de formateo invalido")
+		return
+	}
+
+	if fs == "2fs" {
+
+		//crear el ext2
+
+		//crearExt2(id)
+	} else {
+		//formatear primero la particion
+		//crear el ext3
+		fmt.Println("Crear ext3")
+	}
+}
+
+func crearExt2(id string) {
+	//var newSuperBloque superBloque
+	//fmt.Println(newSuperBloque)
+
 }
 
 func EjecRepMBR() {
