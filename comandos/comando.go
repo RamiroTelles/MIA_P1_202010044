@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/binary"
 	"fmt"
+	"math"
 	"math/rand"
 	"os"
 	"os/exec"
@@ -11,6 +12,19 @@ import (
 	"strings"
 	"time"
 )
+
+type Content_J struct {
+	Operation [10]byte
+	Path      [100]byte
+	Content   [100]byte
+	Date      [19]byte
+}
+
+type Journaling struct {
+	Size      int32
+	Ultimo    int32
+	Contenido [50]Content_J
+}
 
 type partition struct {
 	Part_status      [1]byte
@@ -712,6 +726,7 @@ func EjecMkfs(banderas []string) {
 	index := VerificarParticionMontada(id)
 	if index == -1 {
 		fmt.Println("Particion no montada")
+		return
 	}
 
 	if typeVar != "full" {
@@ -719,21 +734,111 @@ func EjecMkfs(banderas []string) {
 		return
 	}
 
+	var n int
 	if fs == "2fs" {
+		n = int(math.Floor(float64(int(particionesMontadas[index].Size)-int(binary.Size(superBloque{}))) / float64(4+int(binary.Size(inodo{}))+3*int(binary.Size(bloqueArchivos{})))))
 
 		//crear el ext2
 
-		//crearExt2(id)
+		crearExt2(index, n, particionesMontadas[index])
 	} else {
 		//formatear primero la particion
 		//crear el ext3
-		fmt.Println("Crear ext3")
+		n = int(math.Floor(float64(int(particionesMontadas[index].Size)-int(binary.Size(superBloque{}))) / float64(4+int(binary.Size(inodo{}))+3*int(binary.Size(bloqueArchivos{}))+binary.Size(Journaling{}))))
+
+		fmt.Println("Crear ext3", n)
 	}
 }
 
-func crearExt2(id string) {
+func crearExt2(index int, n int, mountActual Mount) {
 	//var newSuperBloque superBloque
 	//fmt.Println(newSuperBloque)
+	archivo, err := os.OpenFile("MIA/P1/"+particionesMontadas[index].LetterValor+".dsk", os.O_RDWR, 0777)
+	if err != nil {
+		fmt.Println("Error al abrir el disco: ", err)
+		return
+	}
+	defer archivo.Close()
+	archivo.Seek(int64(mountActual.Size), 0)
+
+	for i := int32(0); i < mountActual.Size; i++ {
+
+		err := binary.Write(archivo, binary.LittleEndian, [1]byte{0})
+		if err != nil {
+			fmt.Println("Error: ", err)
+		}
+	}
+
+	var sbloque superBloque
+
+	sbloque.S_filesystem_type = 2
+	sbloque.S_bm_inode_start = int32(mountActual.Size) + int32(binary.Size(superBloque{}))
+	sbloque.S_bm_block_start = sbloque.S_bm_inode_start + int32(n)
+	sbloque.S_inode_start = sbloque.S_bm_block_start + int32(3*n)
+	sbloque.S_block_start = sbloque.S_inode_start + int32(n*int(binary.Size(inodo{})))
+
+	sbloque.S_inodes_count = int32(n)
+	sbloque.S_blocks_count = int32(3 * n)
+
+	sbloque.S_free_inodes_count = int32(n)
+	sbloque.S_free_blocks_count = int32(3 * n)
+	fechaActual := time.Now()
+	fechaF := fechaActual.Format("2006-01-02 15:04:05")
+	copy(sbloque.S_mtime[:], []byte(fechaF))
+	copy(sbloque.S_umtime[:], []byte(fechaF))
+	sbloque.S_mnt_count = 1
+	sbloque.S_magic = 61267
+	sbloque.S_inode_s = int32(binary.Size(inodo{}))
+	sbloque.S_block_s = int32(binary.Size(bloqueArchivos{}))
+	sbloque.S_firts_ino = 0
+	sbloque.S_first_blo = 0
+
+	var newInodo inodo
+
+	var newblock bloqueCarpeta
+
+	newInodo.I_uid = 1
+	newInodo.I_gid = 1
+	newInodo.I_s = 0
+	copy(newInodo.I_atime[:], []byte(fechaF))
+	copy(newInodo.I_ctime[:], []byte(fechaF))
+	copy(newInodo.I_mtime[:], []byte(fechaF))
+
+	for i := int32(0); i < 15; i++ {
+		newInodo.I_block[i] = -1
+	}
+
+	newInodo.I_block[0] = 0
+	newInodo.I_type = [1]byte{'0'}
+	newInodo.I_perm = [3]byte{'6', '6', '4'}
+
+	copy(newblock.b_content[0].B_name[:], ".")
+	newblock.b_content[0].B_inodo = 0
+	copy(newblock.b_content[1].B_name[:], "..")
+	newblock.b_content[1].B_inodo = 0
+
+	archivo.Seek(int64(sbloque.S_inode_start), 0)
+	binary.Write(archivo, binary.LittleEndian, &newInodo)
+	archivo.Seek(int64(sbloque.S_block_start), 0)
+	binary.Write(archivo, binary.LittleEndian, &newblock)
+
+	sbloque.S_free_blocks_count--
+	sbloque.S_free_inodes_count--
+	sbloque.S_firts_ino++
+	sbloque.S_first_blo++
+
+	archivo.Seek(int64(sbloque.S_bm_block_start), 0)
+	binary.Write(archivo, binary.LittleEndian, [1]byte{1})
+
+	archivo.Seek(int64(sbloque.S_bm_inode_start), 0)
+	binary.Write(archivo, binary.LittleEndian, [1]byte{1})
+
+	archivo.Seek(int64(mountActual.Start), 0)
+	binary.Write(archivo, binary.LittleEndian, &sbloque)
+
+	archivo.Close()
+
+	//crear el archivo usuarios con el mkfile
 
 }
 
