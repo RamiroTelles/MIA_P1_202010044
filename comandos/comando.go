@@ -816,6 +816,8 @@ func crearExt2(index int, n int, mountActual Mount) {
 	newblock.b_content[0].B_inodo = 0
 	copy(newblock.b_content[1].B_name[:], "..")
 	newblock.b_content[1].B_inodo = 0
+	newblock.b_content[2].B_inodo = -1
+	newblock.b_content[3].B_inodo = -1
 
 	archivo.Seek(int64(sbloque.S_inode_start), 0)
 	binary.Write(archivo, binary.LittleEndian, &newInodo)
@@ -839,6 +841,332 @@ func crearExt2(index int, n int, mountActual Mount) {
 	archivo.Close()
 
 	//crear el archivo usuarios con el mkfile
+
+}
+
+func CrearArchivo(ruta string, cont string, r bool, index int) {
+
+	archivo, err := os.OpenFile("MIA/P1/"+particionesMontadas[index].LetterValor+".dsk", os.O_RDWR, 0777)
+	if err != nil {
+		fmt.Println("Error al abrir el disco: ", err)
+		return
+	}
+	defer archivo.Close()
+
+	var sblock superBloque
+
+	archivo.Seek(int64(particionesMontadas[index].Start), 0)
+	binary.Read(archivo, binary.LittleEndian, &sblock)
+	var numInodo int
+	if ruta == "/" {
+		numInodo = 0
+	} else {
+		numInodo = obtenerNumInodo(ruta, archivo, sblock)
+	}
+
+	archivo.Seek(int64(sblock.S_inode_start+int32(numInodo)*int32(binary.Size(inodo{}))), 0)
+	var inodoTemp inodo
+	nombre := strings.Split(ruta[1:], "/")
+	nombre = nombre[len(nombre)-1:]
+	binary.Read(archivo, binary.LittleEndian, &inodoTemp)
+	//var despTemp int
+	//var band bool
+	var punteroTemp int
+	for i, ptr := range inodoTemp.I_block {
+
+		punteroTemp = rellenarBloques(int(ptr), i, nombre[0], &sblock, archivo)
+
+		if punteroTemp != -1 {
+			inodoTemp.I_block[i] = int32(punteroTemp)
+
+			break
+
+		}
+
+		// despTemp = int(sblock.S_block_start) + binary.Size(bloqueCarpeta{})*int(ptr)
+
+		// if despTemp < 0 {
+		// 	//creo nuevo bloque para el archivo
+		// 	if i == 12 {
+		// 		//bloque indirecto
+		// 		punteroTemp = crearBloqueCarpetas(nombre[0], &sblock, archivo)
+		// 		inodoTemp.I_block[i] = int32(crearBloquePtr1(punteroTemp, &sblock, archivo))
+
+		// 	} else if i == 13 {
+		// 		//doble  doble
+		// 		punteroTemp = crearBloqueCarpetas(nombre[0], &sblock, archivo)
+		// 		punteroTemp = crearBloquePtr1(punteroTemp, &sblock, archivo)
+		// 		inodoTemp.I_block[i] = int32(crearBloquePtr1(punteroTemp, &sblock, archivo))
+
+		// 	} else if i == 14 {
+		// 		//triple indirecto triple
+		// 		punteroTemp = crearBloqueCarpetas(nombre[0], &sblock, archivo)
+		// 		punteroTemp = crearBloquePtr1(punteroTemp, &sblock, archivo)
+		// 		punteroTemp = crearBloquePtr1(punteroTemp, &sblock, archivo)
+		// 		inodoTemp.I_block[i] = int32(crearBloquePtr1(punteroTemp, &sblock, archivo))
+		// 	} else {
+		// 		//bloque carpetas
+		// 		inodoTemp.I_block[i] = int32(crearBloqueCarpetas(nombre[0], &sblock, archivo))
+		// 	}
+		// 	break
+		// } else {
+		// 	//rellenar bloque
+		// 	if i == 12 {
+		// 		//bloque indirecto
+		// 		punteroTemp = crearBloqueCarpetas(nombre[0], &sblock, archivo)
+		// 		inodoTemp.I_block[i] = int32(crearBloquePtr1(punteroTemp, &sblock, archivo))
+
+		// 	} else if i == 13 {
+		// 		//doble indirecto doble
+		// 		punteroTemp = crearBloqueCarpetas(nombre[0], &sblock, archivo)
+		// 		punteroTemp = crearBloquePtr1(punteroTemp, &sblock, archivo)
+		// 		inodoTemp.I_block[i] = int32(crearBloquePtr1(punteroTemp, &sblock, archivo))
+
+		// 	} else if i == 14 {
+		// 		//triple indirecto triple
+		// 		punteroTemp = crearBloqueCarpetas(nombre[0], &sblock, archivo)
+		// 		punteroTemp = crearBloquePtr1(punteroTemp, &sblock, archivo)
+		// 		punteroTemp = crearBloquePtr1(punteroTemp, &sblock, archivo)
+		// 		inodoTemp.I_block[i] = int32(crearBloquePtr1(punteroTemp, &sblock, archivo))
+		// 	} else {
+		// 		//bloque carpetas
+		// 		if rellenarBloqueCarpetas(nombre[0], int(ptr), &sblock, archivo) {
+		// 			break
+
+		// 		}
+
+		// 	}
+
+		// }
+
+	}
+
+	//escribir el inodo
+	//crear el nuevo inodo para el archivo
+	//crear los bloques correspondientes para el archivo
+	//escribir ese inodo y esos bloques
+	//cerrar archivo
+
+}
+
+func rellenarBloques(ptr int, tipo int, name string, sblock *superBloque, archivo *os.File) int {
+	var punteroTemp int
+	var bloquePtr bloqueApuntadores
+	if tipo == 14 {
+		// trile indirecto
+
+		if ptr == -1 {
+			//crear bloque doble indirecto
+			punteroTemp = crearBloqueCarpetas(name, sblock, archivo)
+			punteroTemp = crearBloquePtr1(punteroTemp, sblock, archivo)
+			punteroTemp = crearBloquePtr1(punteroTemp, sblock, archivo)
+			return crearBloquePtr1(punteroTemp, sblock, archivo)
+
+		} else {
+			//Leer el bloque de punteros
+			archivo.Seek(int64(sblock.S_block_start+int32(binary.Size(bloqueApuntadores{})*ptr)), 0)
+			binary.Read(archivo, binary.LittleEndian, &bloquePtr)
+			for i, punteroBlock := range bloquePtr.b_pointers {
+				punteroTemp = rellenarBloques(int(punteroBlock), tipo-1, name, sblock, archivo)
+				if punteroTemp != -1 {
+					bloquePtr.b_pointers[i] = int32(punteroTemp)
+					archivo.Seek(int64(sblock.S_block_start+int32(binary.Size(bloqueApuntadores{})*ptr)), 0)
+					binary.Write(archivo, binary.LittleEndian, &bloquePtr)
+					return ptr
+				}
+			}
+		}
+
+	} else if tipo == 13 {
+		//doble indirecto
+		if ptr == -1 {
+			//crear bloque doble indirecto
+			punteroTemp = crearBloqueCarpetas(name, sblock, archivo)
+			punteroTemp = crearBloquePtr1(punteroTemp, sblock, archivo)
+			return crearBloquePtr1(punteroTemp, sblock, archivo)
+
+		} else {
+			//Leer el bloque de punteros
+			archivo.Seek(int64(sblock.S_block_start+int32(binary.Size(bloqueApuntadores{})*ptr)), 0)
+			binary.Read(archivo, binary.LittleEndian, &bloquePtr)
+			for i, punteroBlock := range bloquePtr.b_pointers {
+				punteroTemp = rellenarBloques(int(punteroBlock), tipo-1, name, sblock, archivo)
+				if punteroTemp != -1 {
+					bloquePtr.b_pointers[i] = int32(punteroTemp)
+					archivo.Seek(int64(sblock.S_block_start+int32(binary.Size(bloqueApuntadores{})*ptr)), 0)
+					binary.Write(archivo, binary.LittleEndian, &bloquePtr)
+					return ptr
+				}
+			}
+		}
+
+	} else if tipo == 12 {
+		//simple indirecto
+		if ptr == -1 {
+			//crear bloque simple indirecto
+			punteroTemp = crearBloqueCarpetas(name, sblock, archivo)
+			return crearBloquePtr1(punteroTemp, sblock, archivo)
+		} else {
+			//Leer el bloque de punteros
+			archivo.Seek(int64(sblock.S_block_start+int32(binary.Size(bloqueApuntadores{})*ptr)), 0)
+			binary.Read(archivo, binary.LittleEndian, &bloquePtr)
+			for i, punteroBlock := range bloquePtr.b_pointers {
+				punteroTemp = rellenarBloques(int(punteroBlock), tipo-1, name, sblock, archivo)
+				if punteroTemp != -1 {
+					bloquePtr.b_pointers[i] = int32(punteroTemp)
+					archivo.Seek(int64(sblock.S_block_start+int32(binary.Size(bloqueApuntadores{})*ptr)), 0)
+					binary.Write(archivo, binary.LittleEndian, &bloquePtr)
+					return ptr
+				}
+			}
+		}
+
+	} else {
+		//directo
+		if ptr == -1 {
+			//crear bloque Carpetas
+			return crearBloqueCarpetas(name, sblock, archivo)
+		} else {
+			if rellenarBloqueCarpetas(name, ptr, sblock, archivo) {
+				return ptr
+			}
+		}
+	}
+
+	return -1
+
+}
+
+func rellenarBloqueCarpetas(name string, ptr int, sblock *superBloque, archivo *os.File) bool {
+
+	var blockTemp bloqueCarpeta
+
+	archivo.Seek(int64(sblock.S_block_start+int32(binary.Size(bloqueCarpeta{}))*int32(ptr)), 0)
+
+	binary.Read(archivo, binary.LittleEndian, &blockTemp)
+
+	for i, cont := range blockTemp.b_content {
+		if cont.B_inodo == -1 {
+			copy(blockTemp.b_content[i].B_name[:], name)
+			blockTemp.b_content[i].B_inodo = sblock.S_firts_ino
+
+			archivo.Seek(int64(sblock.S_block_start+int32(binary.Size(bloqueCarpeta{}))*int32(ptr)), 0)
+			binary.Write(archivo, binary.LittleEndian, &blockTemp)
+			return true
+		}
+	}
+
+	return false
+}
+
+func rellenarBloquePtr(ptrBloqueEscribir int, ptrBloqueLeer int, sblock *superBloque, archivo *os.File) bool {
+
+	var blockTemp bloqueApuntadores
+
+	archivo.Seek(int64(sblock.S_block_start+int32(binary.Size(bloqueCarpeta{}))*int32(ptrBloqueLeer)), 0)
+
+	binary.Read(archivo, binary.LittleEndian, &blockTemp)
+
+	for i, cont := range blockTemp.b_pointers {
+		if cont == -1 {
+			blockTemp.b_pointers[i] = int32(ptrBloqueEscribir)
+
+			archivo.Seek(int64(sblock.S_block_start+int32(binary.Size(bloqueCarpeta{}))*int32(ptrBloqueLeer)), 0)
+			binary.Write(archivo, binary.LittleEndian, &blockTemp)
+			return true
+		}
+	}
+
+	return false
+}
+
+func crearBloqueCarpetas(name string, sblock *superBloque, archivo *os.File) int {
+	//ptrblock := sblock.S_first_blo
+
+	var newblock bloqueCarpeta
+
+	copy(newblock.b_content[0].B_name[:], []byte(name))
+	newblock.b_content[0].B_inodo = sblock.S_firts_ino
+	newblock.b_content[1].B_inodo = -1
+	newblock.b_content[2].B_inodo = -1
+	newblock.b_content[3].B_inodo = -1
+
+	archivo.Seek(int64(sblock.S_inode_start+int32(binary.Size(bloqueArchivos{}))*sblock.S_first_blo), 0)
+	binary.Write(archivo, binary.LittleEndian, &newblock)
+
+	archivo.Seek(int64(sblock.S_bm_block_start+sblock.S_first_blo), 0)
+	binary.Write(archivo, binary.LittleEndian, [1]byte{1})
+
+	sblock.S_first_blo++
+	sblock.S_free_blocks_count--
+
+	return int(sblock.S_first_blo - 1)
+}
+
+func crearBloquePtr1(ptr int, sblock *superBloque, archivo *os.File) int {
+	//ptrblock := sblock.S_first_blo
+
+	var newblock bloqueApuntadores
+
+	newblock.b_pointers[0] = int32(ptr)
+
+	for i := 1; i < len(newblock.b_pointers); i++ {
+		newblock.b_pointers[i] = -1
+
+	}
+
+	archivo.Seek(int64(sblock.S_inode_start+int32(binary.Size(bloqueArchivos{}))*sblock.S_first_blo), 0)
+	binary.Write(archivo, binary.LittleEndian, &newblock)
+
+	archivo.Seek(int64(sblock.S_bm_block_start+sblock.S_first_blo), 0)
+	binary.Write(archivo, binary.LittleEndian, [1]byte{1})
+
+	sblock.S_first_blo++
+	sblock.S_free_blocks_count--
+
+	return int(sblock.S_first_blo - 1)
+}
+
+func obtenerNumInodo(ruta string, archivo *os.File, sblock superBloque) int {
+	numInodo := 0
+	lRuta := strings.Split(ruta[1:], "/")
+	lRuta = lRuta[:len(lRuta)-1]
+
+	for _, nombreCarpeta := range lRuta {
+		numInodo = buscarInodo(nombreCarpeta, numInodo, int(sblock.S_inode_start), archivo, int(sblock.S_block_start))
+		if numInodo == -1 {
+			//no lo encontro, verificar el R para crear la nueva carpeta e numInodo= ptr nueva carpeta
+			return numInodo
+		}
+	}
+
+	return numInodo
+}
+
+func buscarInodo(ruta string, numInodo int, inicioBytesInodos int, archivo *os.File, inicioBytesBlock int) int {
+
+	despTemp := inicioBytesInodos + numInodo*(binary.Size(inodo{}))
+
+	var inodoTemp inodo
+	var bloqueCarpetaTemp bloqueCarpeta
+	archivo.Seek(int64(despTemp), 0)
+	binary.Read(archivo, binary.LittleEndian, &inodoTemp)
+
+	for _, ptr := range inodoTemp.I_block {
+
+		if ptr != -1 {
+			despTemp = inicioBytesBlock + int(ptr*int32(binary.Size(bloqueCarpeta{})))
+			archivo.Seek(int64(despTemp), 0)
+			binary.Read(archivo, binary.LittleEndian, &bloqueCarpetaTemp)
+			for _, cont := range bloqueCarpetaTemp.b_content {
+				if strings.Contains(string(cont.B_name[:]), ruta) {
+					return int(cont.B_inodo)
+				}
+			}
+
+		}
+	}
+	return -1
 
 }
 
