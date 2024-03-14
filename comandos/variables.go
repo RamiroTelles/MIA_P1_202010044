@@ -11,6 +11,9 @@ type Mount struct {
 }
 
 var particionesMontadas []Mount
+var uId int
+var gId int
+var actualIdMount string
 
 func VerificarParticionMontada(id string) int {
 	for i := 0; i < len(particionesMontadas); i++ {

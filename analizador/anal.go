@@ -15,7 +15,7 @@ func Analizar(comandoEntero string) {
 
 	analComando := regexp.MustCompile("^[A-Za-z]+")
 	comando := analComando.FindAllString(comandoEntero, 1)
-	analBanderas := regexp.MustCompile("(-[A-Za-z]*=([A-Za-z0-9./]*))")
+	analBanderas := regexp.MustCompile("(-[A-Za-z]*=([A-Za-z0-9./_]*))")
 	banderas := analBanderas.FindAllString(comandoEntero, -1)
 
 	//fmt.Println(comando)
@@ -56,13 +56,16 @@ func ejecutarComando(comando []string, banderas []string) {
 	case "fdisk":
 		comandos.EjecFdisk(banderas)
 		break
+	case "rmdisk":
+		comandos.EjecRmdisk(banderas)
+		break
+	case "mkfs":
+		comandos.EjecMkfs(banderas)
+		break
 
 	case "exit":
 		fmt.Println("cerrando aplicacion")
 		os.Exit(0)
-	case "rmdisk":
-		comandos.EjecRmdisk(banderas)
-		break
 
 	}
 
@@ -93,6 +96,8 @@ func EjecRep(banderas []string) {
 			fmt.Println("Parametro invalido")
 		}
 	}
+	fmt.Println(name)
+	fmt.Println(id)
 
 	switch name {
 	case "mbr":
@@ -114,15 +119,33 @@ func EjecRep(banderas []string) {
 		break
 	case "bm_inode":
 		//reporte bitmap inodo
+		index := comandos.VerificarParticionMontada(id)
+		if index == -1 {
+			fmt.Println("Id no encontrada")
+			return
+		}
+		comandos.EjecRepBmInodes(index)
 		break
 	case "bm_block":
 		//reporte bitmap block
+		index := comandos.VerificarParticionMontada(id)
+		if index == -1 {
+			fmt.Println("Id no encontrada")
+			return
+		}
+		comandos.EjecRepBmBloques(index)
 		break
 	case "tree":
 		//reporte tree
 		break
 	case "sb":
 		//reporte sb
+		index := comandos.VerificarParticionMontada(id)
+		if index == -1 {
+			fmt.Println("Id no encontrada")
+			return
+		}
+		comandos.EjecRepSB(index)
 		break
 	case "file":
 		//reporte file

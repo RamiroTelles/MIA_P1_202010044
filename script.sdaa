@@ -2,3 +2,4 @@ mkdisk -size=5 -unit=m
 fdisk -type=p -driveletter=A -unit=m -name=Particion1 -size=1
 mount -driveletter=A -name=Particion1
 lmount
+mkfs -type=full -id=A144

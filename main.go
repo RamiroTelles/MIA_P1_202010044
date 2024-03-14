@@ -2,6 +2,7 @@ package main
 
 import (
 	"Proyecto1/analizador"
+	"Proyecto1/comandos"
 	"bufio"
 	"fmt"
 	"os"
@@ -10,21 +11,10 @@ import (
 
 func main() {
 
-	//comandos.LeerMounts()
-	//for {
-	//	leerComando()
-	//}
-
-	//id := "A" + string(3+48) + "44"
-	//fmt.Println(id)
-
-	ruta := "/home/home2/home3/archivo.txt"
-
-	lRuta := strings.Split(ruta[1:], "/")
-	lRuta = lRuta[:len(lRuta)-1]
-	fmt.Println(ruta[1:])
-	fmt.Println(lRuta)
-	fmt.Println(len(lRuta))
+	comandos.LeerMounts()
+	for {
+		leerComando()
+	}
 
 }
 
