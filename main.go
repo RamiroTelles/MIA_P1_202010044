@@ -12,6 +12,7 @@ import (
 func main() {
 
 	comandos.LeerMounts()
+
 	for {
 		leerComando()
 	}

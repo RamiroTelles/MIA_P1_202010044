@@ -1,6 +1,7 @@
 package comandos
 
 import (
+	"bufio"
 	"bytes"
 	"encoding/binary"
 	"fmt"
@@ -86,6 +87,18 @@ type inodo struct {
 	I_perm  [3]byte
 }
 
+type Inodo struct {
+	I_uid   int32
+	I_gid   int32
+	I_s     int32
+	I_atime [19]byte
+	I_ctime [19]byte
+	I_mtime [19]byte
+	I_block [15]int32
+	I_type  [1]byte
+	I_perm  [3]byte
+}
+
 type b_content struct {
 	B_name  [12]byte
 	B_inodo int32
@@ -104,6 +117,8 @@ type bloqueApuntadores struct {
 }
 
 func LeerMounts() {
+	uId = -1
+	gId = -1
 
 	archivos, err := os.ReadDir("MIA/P1")
 	if err != nil {
@@ -485,7 +500,7 @@ func EjecMkdisk(banderas []string) {
 	}
 
 	var totalBytes int = 0
-	fmt.Println(mbrDisk.Mbr_tamano)
+	//fmt.Println(mbrDisk.Mbr_tamano)
 	for totalBytes < int(mbrDisk.Mbr_tamano) {
 		c, err := archivo.Write(bufer.Bytes())
 		if err != nil {
@@ -863,51 +878,13 @@ func crearExt2(index int, n int, mountActual Mount) {
 
 	archivo.Close()
 
-	//crear el archivo usuarios con el mkfile
+	uId = 1
+	gId = 1
+
 	CrearArchivo("/users.txt", "1,G,root\n1,U,root,root,123\n", false, index)
 
-	archivo1, err := os.OpenFile("MIA/P1/"+particionesMontadas[index].LetterValor+".dsk", os.O_RDWR, 0777)
-	if err != nil {
-		fmt.Println("Error al abrir el disco: ", err)
-		return
-	}
-	defer archivo.Close()
-
-	var inodoTemp1 inodo
-	var blockTemp bloqueCarpeta
-	var blockArc bloqueArchivos
-
-	archivo1.Seek(int64(sbloque.S_inode_start), 0)
-	binary.Read(archivo1, binary.LittleEndian, inodoTemp1)
-
-	fmt.Println(inodoTemp1.I_uid)
-	fmt.Println(inodoTemp1.I_gid)
-	fmt.Println(inodoTemp1.I_block[0])
-	fmt.Println(inodoTemp1.I_perm)
-	fmt.Println(inodoTemp1.I_type)
-
-	archivo1.Seek(int64(sbloque.S_block_start), 0)
-	binary.Read(archivo1, binary.LittleEndian, &blockTemp)
-
-	fmt.Println(blockTemp.B_content[0].B_name)
-	fmt.Println(blockTemp.B_content[1].B_name)
-	fmt.Println(blockTemp.B_content[2].B_name)
-	fmt.Println(blockTemp.B_content[2].B_inodo)
-
-	archivo1.Seek(int64(sbloque.S_inode_start+int32(binary.Size(inodo{}))), 0)
-	binary.Read(archivo1, binary.LittleEndian, inodoTemp1)
-
-	fmt.Println(inodoTemp1.I_uid)
-	fmt.Println(inodoTemp1.I_gid)
-	fmt.Println(inodoTemp1.I_block[0])
-	fmt.Println(string(inodoTemp1.I_perm[:]))
-	fmt.Println(inodoTemp1.I_type)
-	fmt.Println(int(inodoTemp1.I_s))
-
-	archivo1.Seek(int64(sbloque.S_block_start+int32(binary.Size(bloqueCarpeta{}))), 0)
-	binary.Read(archivo1, binary.LittleEndian, &blockArc)
-
-	fmt.Println(string(blockArc.B_content[:]))
+	uId = -1
+	gId = -1
 
 	fmt.Println("EXT2 creado con exito")
 
@@ -1041,8 +1018,13 @@ func crearExt3(index int, n int, mountActual Mount) {
 
 	archivo.Close()
 
+	uId = 1
+	gId = 1
 	//crear el archivo usuarios con el mkfile
 	CrearArchivo("/users.txt", "1,G,root\n1,U,root,root,123\n", false, index)
+
+	uId = -1
+	gId = -1
 
 	fmt.Println("EXT3 creado con exito")
 
@@ -1063,7 +1045,8 @@ func leerArchivo(inodoTemp inodo, archivo *os.File, sblock superBloque) string {
 				fmt.Println("Error al leer el bloque archivos: ", err)
 				return ""
 			}
-			result += string(bArchivo.B_content[:])
+			result += strings.TrimRight(string(bArchivo.B_content[:]), string(rune(0)))
+
 		}
 	}
 	return result
@@ -1091,7 +1074,9 @@ func CrearArchivo(ruta string, cont string, r bool, index int) {
 	if ruta == "/" {
 		numInodo = 0
 	} else {
-		numInodo = obtenerNumInodo(ruta, archivo, sblock)
+		lRuta := strings.Split(ruta[1:], "/")
+		lRuta = lRuta[:len(lRuta)-1]
+		numInodo = obtenerNumInodo(lRuta, archivo, sblock)
 	}
 
 	archivo.Seek(int64(sblock.S_inode_start+int32(numInodo)*int32(binary.Size(inodo{}))), 0)
@@ -1118,7 +1103,7 @@ func CrearArchivo(ruta string, cont string, r bool, index int) {
 		}
 
 	}
-
+	//fmt.Println(punteroTemp)
 	//escribir el inodo
 
 	//crear el nuevo inodo para el archivo
@@ -1144,6 +1129,7 @@ func CrearArchivo(ruta string, cont string, r bool, index int) {
 
 	//crear los bloques correspondientes para el archivo
 	if escribirBloquesArchivo(&newInodo, cont, &sblock, archivo) {
+		fmt.Println("Error al escribir el archivo")
 		return
 	}
 
@@ -1194,6 +1180,213 @@ func CrearArchivo(ruta string, cont string, r bool, index int) {
 
 	//cerrar archivo
 	archivo.Close()
+}
+
+func EjecCat(banderas []string) {
+
+	var paths []string
+
+	for _, valor := range banderas {
+		dupla := strings.Split(valor, "=")
+
+		if strings.Contains(dupla[0], "-file") {
+			paths = append(paths, dupla[1])
+
+		} else {
+			fmt.Println("Parametro invalido")
+		}
+	}
+	//id
+	//actualIdMount = "A144"
+	if actualIdMount == "" {
+		fmt.Println("No hay una sesion iniciada")
+		return
+	}
+
+	index := VerificarParticionMontada(actualIdMount)
+
+	archivo, err := os.OpenFile("MIA/P1/"+particionesMontadas[index].LetterValor+".dsk", os.O_RDWR, 0777)
+	if err != nil {
+		fmt.Println("Error al abrir el disco: ", err)
+		return
+	}
+	defer archivo.Close()
+
+	var sblock superBloque
+
+	archivo.Seek(int64(particionesMontadas[index].Start), 0)
+	err = binary.Read(archivo, binary.LittleEndian, &sblock)
+	if err != nil {
+		fmt.Println("Error al leer el superbloque: ", err)
+		return
+	}
+
+	var numInodo int
+	var inodoTemp inodo
+	for i, ruta := range paths {
+
+		if ruta == "/" {
+			numInodo = 0
+		} else {
+			lRuta := strings.Split(ruta[1:], "/")
+
+			numInodo = obtenerNumInodo(lRuta, archivo, sblock)
+		}
+		//fmt.Println(numInodo)
+		archivo.Seek(int64(sblock.S_inode_start+int32(binary.Size(inodo{}))*int32(numInodo)), 0)
+		err = binary.Read(archivo, binary.LittleEndian, &inodoTemp)
+		if err != nil {
+			fmt.Println("Error al leer el inodo: ", err)
+			return
+		}
+		if numInodo != -1 {
+			fmt.Println(leerArchivo(inodoTemp, archivo, sblock))
+		} else {
+			fmt.Println("No se encontro la ruta del archivo: " + strconv.Itoa(i+1))
+		}
+
+	}
+
+}
+
+func EjecLogin(banderas []string) {
+
+	user := ""
+	pass := ""
+	id := ""
+
+	for _, valor := range banderas {
+		dupla := strings.Split(valor, "=")
+
+		if dupla[0] == "-user" {
+			user = dupla[1]
+
+		} else if dupla[0] == "-pass" {
+			pass = dupla[1]
+
+		} else if dupla[0] == "-id" {
+			id = dupla[1]
+
+		} else {
+			fmt.Println("Parametro invalido")
+		}
+	}
+
+	if user == "" {
+		fmt.Println("Ingrese el campo -user")
+		return
+	}
+
+	if pass == "" {
+		fmt.Println("Ingrese el campo -pass")
+		return
+	}
+
+	if id == "" {
+		fmt.Println("Ingrese el campo -id")
+		return
+	}
+
+	if uId != -1 {
+		fmt.Println("Ya hay una sesion iniciada")
+		return
+
+	}
+
+	index := VerificarParticionMontada(id)
+
+	archivo, err := os.OpenFile("MIA/P1/"+particionesMontadas[index].LetterValor+".dsk", os.O_RDWR, 0777)
+	if err != nil {
+		fmt.Println("Error al abrir el disco: ", err)
+		return
+	}
+	defer archivo.Close()
+
+	var inodoTemp inodo
+	var sblock superBloque
+
+	archivo.Seek(int64(particionesMontadas[index].Start), 0)
+	err = binary.Read(archivo, binary.LittleEndian, &sblock)
+	if err != nil {
+		fmt.Println("Error al leer el superbloque: ", err)
+		return
+	}
+
+	if !(sblock.S_filesystem_type == 2 || sblock.S_filesystem_type == 3) {
+		println("El sistema de archivos no es 2fs ni 3fs o no está formateado")
+		return
+	}
+
+	archivo.Seek(int64(sblock.S_inode_start+int32(binary.Size(inodo{}))*1), 0)
+	err = binary.Read(archivo, binary.LittleEndian, &inodoTemp)
+	if err != nil {
+		fmt.Println("Error al leer el superbloque: ", err)
+		return
+	}
+
+	usersTxt := leerArchivo(inodoTemp, archivo, sblock)
+
+	lineas := strings.Split(usersTxt, "\n")
+	lineas = lineas[:len(lineas)-1]
+	nombreGrupo := ""
+	for _, linea := range lineas {
+
+		if linea[2] == 'U' {
+			campos := strings.Split(linea, ",")
+			if campos[3] == user && campos[4] == pass {
+				uId, _ = strconv.Atoi(campos[0])
+				nombreGrupo = campos[2]
+				break
+
+			}
+		}
+
+	}
+	if nombreGrupo == "" {
+		fmt.Println("Usuario no encontrado")
+		return
+	}
+
+	for _, linea := range lineas {
+
+		if linea[2] == 'G' {
+			campos := strings.Split(linea, ",")
+			if campos[2] == nombreGrupo {
+				gId, _ = strconv.Atoi(campos[0])
+
+				break
+
+			}
+		}
+
+	}
+
+	fmt.Println("Usuario Logueado con exito")
+	fmt.Println("Usuario: " + strconv.Itoa(uId))
+	fmt.Println("Grupo: " + strconv.Itoa(gId))
+	actualIdMount = id
+}
+
+func EjecLogout() {
+	if uId == -1 {
+		fmt.Println("Aun no hay sesion iniciada")
+		return
+	}
+	uId = -1
+	gId = -1
+	actualIdMount = ""
+	fmt.Println("Sesion cerrada con Exito")
+}
+
+func EjecPause() {
+	fmt.Println("Presiona Enter para continuar...")
+	esperarEnter()
+	//fmt.Println("Continuando...")
+}
+
+func esperarEnter() {
+	reader := bufio.NewReader(os.Stdin)
+	_, _ = reader.ReadString('\n')
 }
 
 func encontrarBloqueLibre(sblock *superBloque, archivo *os.File) int32 {
@@ -1327,13 +1520,14 @@ func encontrarInodoLibre(sblock *superBloque, archivo *os.File) int32 {
 func escribirBloquesArchivo(newInodo *inodo, cont string, sblock *superBloque, archivo *os.File) bool {
 
 	cantBloques := len(cont) / 64
-
+	fmt.Println(cantBloques)
+	fmt.Println("Pasa por aqui")
 	if cantBloques > 15 {
 		fmt.Println("no se pudo escribir el archivo,archivo muy grande")
 		return true
 	} else {
 
-		for i := 0; i < cantBloques; i++ {
+		for i := 0; i <= cantBloques; i++ {
 
 			if len(cont) > 64 {
 				var newblock bloqueArchivos
@@ -1512,12 +1706,10 @@ func crearBloquePtr1(ptr int, sblock *superBloque, archivo *os.File) int {
 	return int(sblock.S_first_blo - 1)
 }
 
-func obtenerNumInodo(ruta string, archivo *os.File, sblock superBloque) int {
+func obtenerNumInodo(ruta []string, archivo *os.File, sblock superBloque) int {
 	numInodo := 0
-	lRuta := strings.Split(ruta[1:], "/")
-	lRuta = lRuta[:len(lRuta)-1]
 
-	for _, nombreCarpeta := range lRuta {
+	for _, nombreCarpeta := range ruta {
 		numInodo = buscarInodo(nombreCarpeta, numInodo, int(sblock.S_inode_start), archivo, int(sblock.S_block_start))
 		if numInodo == -1 {
 			//no lo encontro, verificar el R para crear la nueva carpeta e numInodo= ptr nueva carpeta
@@ -1744,7 +1936,7 @@ func EjecRepBmInodes(index int) {
 	size := int(sblock.S_bm_block_start - sblock.S_bm_inode_start)
 	var temp [1]byte
 	archivo.Seek(int64(sblock.S_bm_inode_start), 0)
-	fmt.Println(size)
+	//fmt.Println(size)
 	for i := 0; i < size; i++ {
 		err = binary.Read(archivo, binary.LittleEndian, &temp)
 		if err != nil {
@@ -2028,7 +2220,7 @@ func EjecRepBloques(index int) {
 	Dot += "[shape=none, color=lightgrey, label=<\n<TABLE cellspacing=\"3\" cellpadding=\"2\" style=\"rounded\" >\n"
 	Dot += "<TR><TD bgcolor=\"lightgrey\" colspan=\"2\">bloque " + strconv.Itoa(0) + "</TD></TR>\n"
 
-	Dot += "<TR><TD bgcolor=\"lightgrey\">b_name</TD><TD>b_inodo</TD><TD></TD></TR>\n"
+	Dot += "<TR><TD bgcolor=\"lightgrey\">b_name</TD><TD>b_inodo</TD></TR>\n"
 	for _, cont := range bCarpeta.B_content {
 		nam := strings.TrimRight(string(cont.B_name[:]), string(rune(0)))
 		Dot += "<TR><TD bgcolor=\"lightgrey\">" + nam + "</TD><TD>" + strconv.Itoa(int(cont.B_inodo)) + "</TD></TR>\n"
@@ -2090,4 +2282,169 @@ func EjecRepBloques(index int) {
 	}
 
 	fmt.Println("Reporte generado con exito")
+}
+
+func EjecRepTree(id string) {
+
+	index := VerificarParticionMontada(id)
+	if index == -1 {
+		fmt.Println("Id no encontrada")
+		return
+	}
+
+	//Abrir el disco
+	archivo, err := os.OpenFile("MIA/P1/"+particionesMontadas[index].LetterValor+".dsk", os.O_RDWR, 0664)
+	if err != nil {
+		fmt.Println("Error al abrir el disco: ", err)
+		return
+	}
+	defer archivo.Close()
+
+	archivo.Seek(int64(particionesMontadas[index].Start), 0)
+	//Leer el superbloque
+	var sb superBloque
+	err = binary.Read(archivo, binary.LittleEndian, &sb)
+	if err != nil {
+		fmt.Println("Error al leer el superbloque: ", err)
+		return
+	}
+
+	//Buscar el inodo raiz
+	var raiz inodo
+	archivo.Seek(int64(sb.S_inode_start), 0)
+	binary.Read(archivo, binary.LittleEndian, &raiz)
+	Dot := "digraph H {\n"
+	Dot += "node [pad=\"0.5\", nodesep=\"0.5\", ranksep=\"1\"];\n"
+	Dot += "node [shape=plaintext];\n"
+	Dot += "graph [bb=\"0,0,352,154\"];\n"
+	Dot += "rankdir=LR;\n"
+	Dot += crearDotNodoTree(0, archivo, sb)
+	Dot += "}"
+
+	archivoDot, err := os.Create("reporteTree.dot")
+	if err != nil {
+		fmt.Println("Error al crear el archivo .dot: ", err)
+		return
+	}
+	defer archivoDot.Close()
+
+	_, err = archivoDot.WriteString(Dot)
+	if err != nil {
+		fmt.Println("Error al escribir el archivo .dot: ", err)
+		return
+	}
+
+	cmd := exec.Command("dot", "-T", "png", "reporteTree.dot", "-o", "reporteTree.png")
+
+	err = cmd.Run()
+	if err != nil {
+		fmt.Println("Error al generar la imagen: ", err)
+		return
+	}
+
+	fmt.Println("Reporte generado con exito")
+
+}
+
+func crearDotNodoTree(numInodo int, archivo *os.File, sblock superBloque) string {
+	var inodoTemp inodo
+	archivo.Seek(int64(sblock.S_inode_start+int32(binary.Size(inodo{}))*int32(numInodo)), 0)
+
+	err := binary.Read(archivo, binary.LittleEndian, &inodoTemp)
+	if err != nil {
+		fmt.Println("Error al leer el inodo")
+		return ""
+	}
+
+	Dot := "inodo" + strconv.Itoa(numInodo) + "[label = <\n"
+	Dot += "<TABLE border=\"0\" cellborder=\"1\" cellspacing=\"0\">\n"
+	Dot += "<tr><td bgcolor=\"lightgrey\" colspan=\"2\">Inodo" + strconv.Itoa(numInodo) + "</td></tr>\n"
+	Dot += "<tr><td>i_uid</td><td>" + strconv.Itoa(int(inodoTemp.I_uid)) + "</td></tr>\n"
+	Dot += "<tr><td>i_gid</td><td>" + strconv.Itoa(int(inodoTemp.I_gid)) + "</td></tr>\n"
+	Dot += "<tr><td>i_size</td><td>" + strconv.Itoa(int(inodoTemp.I_s)) + "</td></tr>\n"
+	Dot += "<tr><td>i_atime</td><td>" + string(inodoTemp.I_atime[:]) + "</td></tr>\n"
+	Dot += "<tr><td>i_ctime</td><td>" + string(inodoTemp.I_ctime[:]) + "</td></tr>\n"
+	Dot += "<tr><td>i_mtime</td><td>" + string(inodoTemp.I_mtime[:]) + "</td></tr>\n"
+	Dot += "<tr><td>i_type</td><td>" + string(inodoTemp.I_type[:]) + "</td></tr>\n"
+	Dot += "<tr><td>i_perm</td><td>" + string(inodoTemp.I_perm[:]) + "</td></tr>\n"
+	nodosDot := ""
+	enlacesDot := ""
+	for i, ptr := range inodoTemp.I_block {
+		Dot += "<TR><TD bgcolor=\"lightgrey\">I_block[" + strconv.Itoa(i) + "]</TD><TD port='" + strconv.Itoa(i) + "'>" + strconv.Itoa(int(ptr)) + "</TD></TR>\n"
+		if ptr != -1 {
+
+			enlacesDot += "inodo" + strconv.Itoa(numInodo) + ":" + strconv.Itoa(i) + " -> bloque" + strconv.Itoa(int(ptr)) + ";\n"
+
+			nodosDot += crearDotBloqueTree(int(ptr), string(inodoTemp.I_type[:]), archivo, sblock)
+		}
+
+	}
+	Dot += "</TABLE>>];\n"
+	Dot += nodosDot
+	Dot += enlacesDot
+
+	return Dot
+
+}
+
+func crearDotBloqueTree(ptr int, tipo string, archivo *os.File, sblock superBloque) string {
+	Dot := ""
+	if strings.Contains(tipo, "1") {
+		var bloqueT bloqueArchivos
+		archivo.Seek(int64(sblock.S_block_start+int32(binary.Size(bloqueArchivos{}))*int32(ptr)), 0)
+
+		err := binary.Read(archivo, binary.LittleEndian, &bloqueT)
+
+		if err != nil {
+			fmt.Println("Error al leer el inodo")
+			return ""
+		}
+
+		Dot += "bloque"
+		Dot += strconv.Itoa(ptr)
+		Dot += "[shape=none, color=lightgrey, label=<\n<TABLE cellspacing=\"3\" cellpadding=\"2\" style=\"rounded\" >\n"
+		Dot += "<TR><TD bgcolor=\"lightgrey\" colspan=\"2\">bloque " + strconv.Itoa(ptr) + "</TD></TR>\n"
+		cont := strings.TrimRight(string(bloqueT.B_content[:]), string(rune(0)))
+		Dot += "<TR><TD bgcolor=\"lightgrey\" colspan=\"2\">" + cont + "</TD></TR>\n"
+
+		Dot += "</TABLE>>];\n"
+
+	} else {
+		var bloqueT bloqueCarpeta
+		archivo.Seek(int64(sblock.S_block_start+int32(binary.Size(bloqueArchivos{}))*int32(ptr)), 0)
+
+		err := binary.Read(archivo, binary.LittleEndian, &bloqueT)
+
+		if err != nil {
+			fmt.Println("Error al leer el inodo")
+			return ""
+		}
+
+		Dot += "bloque"
+		Dot += strconv.Itoa(ptr)
+		Dot += "[shape=none, color=lightgrey, label=<\n<TABLE cellspacing=\"3\" cellpadding=\"2\" style=\"rounded\" >\n"
+		Dot += "<TR><TD bgcolor=\"lightgrey\" colspan=\"2\">bloque " + strconv.Itoa(ptr) + "</TD></TR>\n"
+
+		Dot += "<TR><TD bgcolor=\"lightgrey\">b_name</TD><TD>b_inodo</TD></TR>\n"
+		enlacesDot := ""
+		nodosDot := ""
+		for i, cont := range bloqueT.B_content {
+
+			nam := strings.TrimRight(string(cont.B_name[:]), string(rune(0)))
+			Dot += "<TR><TD bgcolor=\"lightgrey\">" + nam + "</TD><TD port= '" + strconv.Itoa(i) + "'>" + strconv.Itoa(int(cont.B_inodo)) + "</TD></TR>\n"
+
+			if cont.B_inodo != -1 {
+				if nam != "." && nam != ".." {
+					nodosDot += crearDotNodoTree(int(cont.B_inodo), archivo, sblock)
+					enlacesDot += "bloque" + strconv.Itoa(ptr) + ":" + strconv.Itoa(i) + " -> inodo" + strconv.Itoa(1) + ";\n"
+				}
+			}
+
+		}
+		Dot += "</TABLE>>];\n"
+		Dot += nodosDot
+		Dot += enlacesDot
+	}
+
+	return Dot
 }

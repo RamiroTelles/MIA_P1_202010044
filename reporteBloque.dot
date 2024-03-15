@@ -13,4 +13,12 @@ bloque0[shape=none, color=lightgrey, label=<
 <TR><TD bgcolor="lightgrey">users.txt</TD><TD>1</TD></TR>
 <TR><TD bgcolor="lightgrey"></TD><TD>-1</TD></TR>
 </TABLE>>];
+bloque1[shape=none, color=lightgrey, label=<
+<TABLE cellspacing="3" cellpadding="2" style="rounded" >
+<TR><TD bgcolor="lightgrey" colspan="2">bloque 1</TD></TR>
+<TR><TD bgcolor="lightgrey" colspan="2">1,G,root
+1,U,root,root,123
+</TD></TR>
+</TABLE>>];
+bloque0 -> bloque1;
 }

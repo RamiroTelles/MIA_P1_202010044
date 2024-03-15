@@ -2,21 +2,21 @@ digraph grid {bgcolor="slategrey" label=" Reporte SuperBlock "layout=dot labello
 <TABLE cellspacing="3" cellpadding="2" style="rounded" >
 <TR><TD bgcolor="lightgrey">SuperBlock</TD><TD></TD></TR>
 <TR><TD bgcolor="lightgrey">s_filesystem_type</TD><TD>2</TD></TR>
-<TR><TD bgcolor="lightgrey">s_inodes_count</TD><TD>3186</TD></TR>
-<TR><TD bgcolor="lightgrey">s_blocks_count</TD><TD>9558</TD></TR>
-<TR><TD bgcolor="lightgrey">s_free_blocks_count</TD><TD>9557</TD></TR>
-<TR><TD bgcolor="lightgrey">s_free_inodes_count</TD><TD>3184</TD></TR>
-<TR><TD bgcolor="lightgrey">s_mtime</TD><TD>2024-03-13 17:23:33</TD></TR>
-<TR><TD bgcolor="lightgrey">s_umtime</TD><TD>2024-03-13 17:23:33</TD></TR>
+<TR><TD bgcolor="lightgrey">s_inodes_count</TD><TD>15</TD></TR>
+<TR><TD bgcolor="lightgrey">s_blocks_count</TD><TD>45</TD></TR>
+<TR><TD bgcolor="lightgrey">s_free_blocks_count</TD><TD>43</TD></TR>
+<TR><TD bgcolor="lightgrey">s_free_inodes_count</TD><TD>13</TD></TR>
+<TR><TD bgcolor="lightgrey">s_mtime</TD><TD>2024-03-15 03:02:24</TD></TR>
+<TR><TD bgcolor="lightgrey">s_umtime</TD><TD>2024-03-15 03:02:24</TD></TR>
 <TR><TD bgcolor="lightgrey">s_mnt_count</TD><TD>1</TD></TR>
 <TR><TD bgcolor="lightgrey">s_magic</TD><TD>61267</TD></TR>
 <TR><TD bgcolor="lightgrey">s_inode_size</TD><TD>133</TD></TR>
 <TR><TD bgcolor="lightgrey">s_block_size</TD><TD>64</TD></TR>
 <TR><TD bgcolor="lightgrey">s_first_ino</TD><TD>2</TD></TR>
-<TR><TD bgcolor="lightgrey">s_first_blo</TD><TD>1</TD></TR>
-<TR><TD bgcolor="lightgrey">s_bm_inode_start</TD><TD>1048674</TD></TR>
-<TR><TD bgcolor="lightgrey">s_bm_block_start</TD><TD>1051860</TD></TR>
-<TR><TD bgcolor="lightgrey">s_inode_start</TD><TD>1061418</TD></TR>
-<TR><TD bgcolor="lightgrey">s_block_start</TD><TD>1485156</TD></TR>
+<TR><TD bgcolor="lightgrey">s_first_blo</TD><TD>2</TD></TR>
+<TR><TD bgcolor="lightgrey">s_bm_inode_start</TD><TD>5218</TD></TR>
+<TR><TD bgcolor="lightgrey">s_bm_block_start</TD><TD>5233</TD></TR>
+<TR><TD bgcolor="lightgrey">s_inode_start</TD><TD>5278</TD></TR>
+<TR><TD bgcolor="lightgrey">s_block_start</TD><TD>7273</TD></TR>
 </TABLE>>];
 }

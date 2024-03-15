@@ -11,11 +11,11 @@ import (
 
 func Analizar(comandoEntero string) {
 
-	fmt.Println(comandoEntero)
+	//fmt.Println(comandoEntero)
 
 	analComando := regexp.MustCompile("^[A-Za-z]+")
 	comando := analComando.FindAllString(comandoEntero, 1)
-	analBanderas := regexp.MustCompile("(-[A-Za-z]*=([A-Za-z0-9./_]*))")
+	analBanderas := regexp.MustCompile("(-[A-Za-z0-9]*=([A-Za-z0-9./_]*))")
 	banderas := analBanderas.FindAllString(comandoEntero, -1)
 
 	//fmt.Println(comando)
@@ -62,7 +62,17 @@ func ejecutarComando(comando []string, banderas []string) {
 	case "mkfs":
 		comandos.EjecMkfs(banderas)
 		break
-
+	case "cat":
+		comandos.EjecCat(banderas)
+		break
+	case "logout":
+		comandos.EjecLogout()
+		break
+	case "login":
+		comandos.EjecLogin(banderas)
+		break
+	case "pause":
+		comandos.EjecPause()
 	case "exit":
 		fmt.Println("cerrando aplicacion")
 		os.Exit(0)
@@ -149,6 +159,8 @@ func EjecRep(banderas []string) {
 		break
 	case "tree":
 		//reporte tree
+
+		comandos.EjecRepTree(id)
 		break
 	case "sb":
 		//reporte sb
@@ -176,7 +188,7 @@ func EjecRep(banderas []string) {
 func EjecExecute(banderas []string) {
 	dupla := strings.Split(banderas[0], "=")
 	if dupla[0] == "-path" {
-		fmt.Println(dupla[1])
+		//fmt.Println(dupla[1])
 		archivo, err := os.Open(dupla[1])
 
 		if err != nil {
