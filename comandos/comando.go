@@ -823,9 +823,17 @@ func crearExt2(index int, n int, mountActual Mount) {
 	newblock.B_content[3].B_inodo = -1
 
 	archivo.Seek(int64(sbloque.S_inode_start), 0)
-	binary.Write(archivo, binary.LittleEndian, &newInodo)
+	err = binary.Write(archivo, binary.LittleEndian, &newInodo)
+	if err != nil {
+		fmt.Println("Error al escribir el inodo 0: ", err)
+		return
+	}
 	archivo.Seek(int64(sbloque.S_block_start), 0)
-	binary.Write(archivo, binary.LittleEndian, &newblock)
+	err = binary.Write(archivo, binary.LittleEndian, &newblock)
+	if err != nil {
+		fmt.Println("Error al escribir el bloque 0: ", err)
+		return
+	}
 
 	sbloque.S_free_blocks_count--
 	sbloque.S_free_inodes_count--
@@ -833,13 +841,25 @@ func crearExt2(index int, n int, mountActual Mount) {
 	sbloque.S_first_blo++
 
 	archivo.Seek(int64(sbloque.S_bm_block_start), 0)
-	binary.Write(archivo, binary.LittleEndian, [1]byte{1})
+	err = binary.Write(archivo, binary.LittleEndian, [1]byte{1})
+	if err != nil {
+		fmt.Println("Error al escribir el bitmap inodo 0: ", err)
+		return
+	}
 
 	archivo.Seek(int64(sbloque.S_bm_inode_start), 0)
-	binary.Write(archivo, binary.LittleEndian, [1]byte{1})
+	err = binary.Write(archivo, binary.LittleEndian, [1]byte{1})
+	if err != nil {
+		fmt.Println("Error al escribir el bitmap bloque 0: ", err)
+		return
+	}
 
 	archivo.Seek(int64(mountActual.Start), 0)
-	binary.Write(archivo, binary.LittleEndian, &sbloque)
+	err = binary.Write(archivo, binary.LittleEndian, &sbloque)
+	if err != nil {
+		fmt.Println("Error al escribir el superbloque: ", err)
+		return
+	}
 
 	archivo.Close()
 
@@ -976,9 +996,17 @@ func crearExt3(index int, n int, mountActual Mount) {
 	journal.Ultimo = 0
 
 	archivo.Seek(int64(sbloque.S_inode_start), 0)
-	binary.Write(archivo, binary.LittleEndian, &newInodo)
+	err = binary.Write(archivo, binary.LittleEndian, &newInodo)
+	if err != nil {
+		fmt.Println("Error al escribir el inodo 0: ", err)
+		return
+	}
 	archivo.Seek(int64(sbloque.S_block_start), 0)
-	binary.Write(archivo, binary.LittleEndian, &newblock)
+	err = binary.Write(archivo, binary.LittleEndian, &newblock)
+	if err != nil {
+		fmt.Println("Error al escribir el bloque 0: ", err)
+		return
+	}
 
 	sbloque.S_free_blocks_count--
 	sbloque.S_free_inodes_count--
@@ -986,14 +1014,30 @@ func crearExt3(index int, n int, mountActual Mount) {
 	sbloque.S_first_blo++
 
 	archivo.Seek(int64(sbloque.S_bm_block_start), 0)
-	binary.Write(archivo, binary.LittleEndian, [1]byte{1})
+	err = binary.Write(archivo, binary.LittleEndian, [1]byte{1})
+	if err != nil {
+		fmt.Println("Error al escribir el bitmap Inodo 0: ", err)
+		return
+	}
 
 	archivo.Seek(int64(sbloque.S_bm_inode_start), 0)
-	binary.Write(archivo, binary.LittleEndian, [1]byte{1})
+	err = binary.Write(archivo, binary.LittleEndian, [1]byte{1})
+	if err != nil {
+		fmt.Println("Error al escribir el bitmap Bloque 0: ", err)
+		return
+	}
 
 	archivo.Seek(int64(mountActual.Start), 0)
-	binary.Write(archivo, binary.LittleEndian, &sbloque)
-	binary.Write(archivo, binary.LittleEndian, &journal)
+	err = binary.Write(archivo, binary.LittleEndian, &sbloque)
+	if err != nil {
+		fmt.Println("Error al escribir el superbloque: ", err)
+		return
+	}
+	err = binary.Write(archivo, binary.LittleEndian, &journal)
+	if err != nil {
+		fmt.Println("Error al escribir el journaling: ", err)
+		return
+	}
 
 	archivo.Close()
 
@@ -1004,8 +1048,25 @@ func crearExt3(index int, n int, mountActual Mount) {
 
 }
 
-func leerArchivo(ruta string, index int) {
+func leerArchivo(inodoTemp inodo, archivo *os.File, sblock superBloque) string {
 
+	result := ""
+	var bArchivo bloqueArchivos
+
+	for _, ptr := range inodoTemp.I_block {
+
+		if ptr != -1 {
+			archivo.Seek(int64(sblock.S_block_start+int32(binary.Size(bloqueArchivos{}))*ptr), 0)
+
+			err := binary.Read(archivo, binary.LittleEndian, &bArchivo)
+			if err != nil {
+				fmt.Println("Error al leer el bloque archivos: ", err)
+				return ""
+			}
+			result += string(bArchivo.B_content[:])
+		}
+	}
+	return result
 }
 
 func CrearArchivo(ruta string, cont string, r bool, index int) {
@@ -1020,7 +1081,11 @@ func CrearArchivo(ruta string, cont string, r bool, index int) {
 	var sblock superBloque
 
 	archivo.Seek(int64(particionesMontadas[index].Start), 0)
-	binary.Read(archivo, binary.LittleEndian, &sblock)
+	err = binary.Read(archivo, binary.LittleEndian, &sblock)
+	if err != nil {
+		fmt.Println("Error al leer el superbloque: ", err)
+		return
+	}
 
 	var numInodo int
 	if ruta == "/" {
@@ -1033,7 +1098,11 @@ func CrearArchivo(ruta string, cont string, r bool, index int) {
 	var inodoTemp inodo
 	nombre := strings.Split(ruta[1:], "/")
 	nombre = nombre[len(nombre)-1:]
-	binary.Read(archivo, binary.LittleEndian, &inodoTemp)
+	err = binary.Read(archivo, binary.LittleEndian, &inodoTemp)
+	if err != nil {
+		fmt.Println("Error al leer el inodo: ", err)
+		return
+	}
 	//var despTemp int
 	//var band bool
 	var punteroTemp int
@@ -1080,19 +1149,35 @@ func CrearArchivo(ruta string, cont string, r bool, index int) {
 
 	//escribir ese inodo y esos bloques
 	archivo.Seek(int64(sblock.S_inode_start+int32(numInodo)*int32(binary.Size(inodo{}))), 0)
-	binary.Write(archivo, binary.LittleEndian, &inodoTemp)
+	err = binary.Write(archivo, binary.LittleEndian, &inodoTemp)
+	if err != nil {
+		fmt.Println("Error al escribir el inodo : ", err)
+		return
+	}
 
 	archivo.Seek(int64(sblock.S_inode_start+sblock.S_firts_ino*int32(binary.Size(inodo{}))), 0)
-	binary.Write(archivo, binary.LittleEndian, &newInodo)
+	err = binary.Write(archivo, binary.LittleEndian, &newInodo)
+	if err != nil {
+		fmt.Println("Error al escribir el inodo archivos: ", err)
+		return
+	}
 
 	archivo.Seek(int64(sblock.S_bm_inode_start+sblock.S_firts_ino), 0)
-	binary.Write(archivo, binary.LittleEndian, [1]byte{1})
+	err = binary.Write(archivo, binary.LittleEndian, [1]byte{1})
+	if err != nil {
+		fmt.Println("Error al escribir el bitmap Inodos: ", err)
+		return
+	}
 
 	sblock.S_firts_ino = encontrarInodoLibre(&sblock, archivo)
 	sblock.S_free_inodes_count--
 
 	archivo.Seek(int64(particionesMontadas[index].Start), 0)
-	binary.Write(archivo, binary.LittleEndian, &sblock)
+	err = binary.Write(archivo, binary.LittleEndian, &sblock)
+	if err != nil {
+		fmt.Println("Error al escribir el superbloque: ", err)
+		return
+	}
 	if sblock.S_filesystem_type == 3 {
 		var journal Journaling
 		binary.Read(archivo, binary.LittleEndian, &journal)
@@ -1100,7 +1185,11 @@ func CrearArchivo(ruta string, cont string, r bool, index int) {
 		copy(journal.Contenido[journal.Size].Path[:], ruta)
 		copy(journal.Contenido[journal.Size].Content[:], cont)
 		copy(journal.Contenido[journal.Size].Date[:], []byte(fechaF))
-		binary.Write(archivo, binary.LittleEndian, &journal)
+		err = binary.Write(archivo, binary.LittleEndian, &journal)
+		if err != nil {
+			fmt.Println("Error al escribir el journaling: ", err)
+			return
+		}
 	}
 
 	//cerrar archivo
@@ -1114,7 +1203,11 @@ func encontrarBloqueLibre(sblock *superBloque, archivo *os.File) int32 {
 	archivo.Seek(int64(sblock.S_bm_block_start), 0)
 	for i := 0; i < sizeBitmap; i++ {
 
-		binary.Read(archivo, binary.LittleEndian, &tempByte)
+		err := binary.Read(archivo, binary.LittleEndian, &tempByte)
+		if err != nil {
+			fmt.Println("Error al leer el bitmap Bloques: ", err)
+			return -1
+		}
 		if tempByte == [1]byte{0} {
 			return int32(i)
 		}
@@ -1129,7 +1222,11 @@ func encontrarInodoLibre(sblock *superBloque, archivo *os.File) int32 {
 	archivo.Seek(int64(sblock.S_bm_inode_start), 0)
 	for i := 0; i < sizeBitmap; i++ {
 
-		binary.Read(archivo, binary.LittleEndian, &tempByte)
+		err := binary.Read(archivo, binary.LittleEndian, &tempByte)
+		if err != nil {
+			fmt.Println("Error al leer el bitmap Inodos: ", err)
+			return -1
+		}
 		if tempByte == [1]byte{0} {
 			return int32(i)
 		}
@@ -1246,10 +1343,18 @@ func escribirBloquesArchivo(newInodo *inodo, cont string, sblock *superBloque, a
 				newInodo.I_block[i] = sblock.S_first_blo
 
 				archivo.Seek(int64(sblock.S_block_start+sblock.S_first_blo*int32(binary.Size(bloqueArchivos{}))), 0)
-				binary.Write(archivo, binary.LittleEndian, &newblock)
+				err := binary.Write(archivo, binary.LittleEndian, &newblock)
+				if err != nil {
+					fmt.Println("Error al escribir el bloque archivos: ", err)
+					return true
+				}
 
 				archivo.Seek(int64(sblock.S_bm_block_start+sblock.S_first_blo), 0)
-				binary.Write(archivo, binary.LittleEndian, [1]byte{1})
+				err = binary.Write(archivo, binary.LittleEndian, [1]byte{1})
+				if err != nil {
+					fmt.Println("Error al escribir el bitmap bloques: ", err)
+					return true
+				}
 
 				sblock.S_first_blo = encontrarBloqueLibre(sblock, archivo)
 				sblock.S_free_blocks_count--
@@ -1261,10 +1366,18 @@ func escribirBloquesArchivo(newInodo *inodo, cont string, sblock *superBloque, a
 				newInodo.I_block[i] = sblock.S_first_blo
 
 				archivo.Seek(int64(sblock.S_block_start+sblock.S_first_blo*int32(binary.Size(bloqueArchivos{}))), 0)
-				binary.Write(archivo, binary.LittleEndian, &newblock)
+				err := binary.Write(archivo, binary.LittleEndian, &newblock)
+				if err != nil {
+					fmt.Println("Error al escribir el bloque archivos: ", err)
+					return true
+				}
 
 				archivo.Seek(int64(sblock.S_bm_block_start+sblock.S_first_blo), 0)
-				binary.Write(archivo, binary.LittleEndian, [1]byte{1})
+				err = binary.Write(archivo, binary.LittleEndian, [1]byte{1})
+				if err != nil {
+					fmt.Println("Error al escribir el bitmap bloques: ", err)
+					return true
+				}
 
 				sblock.S_first_blo = encontrarBloqueLibre(sblock, archivo)
 				sblock.S_free_blocks_count--
@@ -1299,7 +1412,11 @@ func rellenarBloqueCarpetas(name string, ptr int, sblock *superBloque, archivo *
 
 	archivo.Seek(int64(sblock.S_block_start+int32(binary.Size(bloqueCarpeta{}))*int32(ptr)), 0)
 
-	binary.Read(archivo, binary.LittleEndian, &blockTemp)
+	err := binary.Read(archivo, binary.LittleEndian, &blockTemp)
+	if err != nil {
+		fmt.Println("Error al leer el bloque: ", err)
+		return false
+	}
 
 	for i, cont := range blockTemp.B_content {
 		if cont.B_inodo == -1 {
@@ -1307,7 +1424,11 @@ func rellenarBloqueCarpetas(name string, ptr int, sblock *superBloque, archivo *
 			blockTemp.B_content[i].B_inodo = sblock.S_firts_ino
 
 			archivo.Seek(int64(sblock.S_block_start+int32(binary.Size(bloqueCarpeta{}))*int32(ptr)), 0)
-			binary.Write(archivo, binary.LittleEndian, &blockTemp)
+			err = binary.Write(archivo, binary.LittleEndian, &blockTemp)
+			if err != nil {
+				fmt.Println("Error al escribir el bloque carpetas: ", err)
+				return false
+			}
 			return true
 		}
 	}
@@ -1348,10 +1469,18 @@ func crearBloqueCarpetas(name string, sblock *superBloque, archivo *os.File) int
 	newblock.B_content[3].B_inodo = -1
 
 	archivo.Seek(int64(sblock.S_block_start+int32(binary.Size(bloqueArchivos{}))*sblock.S_first_blo), 0)
-	binary.Write(archivo, binary.LittleEndian, &newblock)
+	err := binary.Write(archivo, binary.LittleEndian, &newblock)
+	if err != nil {
+		fmt.Println("Error al escribir el bloque de carpetas: ", err)
+		return -1
+	}
 
 	archivo.Seek(int64(sblock.S_bm_block_start+sblock.S_first_blo), 0)
-	binary.Write(archivo, binary.LittleEndian, &[1]byte{1})
+	err = binary.Write(archivo, binary.LittleEndian, &[1]byte{1})
+	if err != nil {
+		fmt.Println("Error al escribir bitmap Bloques: ", err)
+		return -1
+	}
 	result := sblock.S_first_blo
 	sblock.S_first_blo = encontrarBloqueLibre(sblock, archivo)
 	sblock.S_free_blocks_count--
@@ -1406,14 +1535,22 @@ func buscarInodo(ruta string, numInodo int, inicioBytesInodos int, archivo *os.F
 	var inodoTemp inodo
 	var bloqueCarpetaTemp bloqueCarpeta
 	archivo.Seek(int64(despTemp), 0)
-	binary.Read(archivo, binary.LittleEndian, &inodoTemp)
+	err := binary.Read(archivo, binary.LittleEndian, &inodoTemp)
+	if err != nil {
+		fmt.Println("Error al leer el inodo: ", err)
+		return -1
+	}
 
 	for _, ptr := range inodoTemp.I_block {
 
 		if ptr != -1 {
 			despTemp = inicioBytesBlock + int(ptr*int32(binary.Size(bloqueCarpeta{})))
 			archivo.Seek(int64(despTemp), 0)
-			binary.Read(archivo, binary.LittleEndian, &bloqueCarpetaTemp)
+			err = binary.Read(archivo, binary.LittleEndian, &bloqueCarpetaTemp)
+			if err != nil {
+				fmt.Println("Error al leer el bloqueCarpeta: ", err)
+				return -1
+			}
 			for _, cont := range bloqueCarpetaTemp.B_content {
 				if strings.Contains(string(cont.B_name[:]), ruta) {
 					return int(cont.B_inodo)
@@ -1506,7 +1643,11 @@ func EjecRepMkdisk(id string, path string) {
 
 					desp += int(ebr.Part_s) + 1 + binary.Size(EBR{})
 					archivo.Seek(int64(desp), 0)
-					binary.Read(archivo, binary.LittleEndian, &ebr)
+					err = binary.Read(archivo, binary.LittleEndian, &ebr)
+					if err != nil {
+						fmt.Println("Error al leer el ebr: ", err)
+						return
+					}
 					for {
 
 						if ebr.Part_s == 0 {
@@ -1520,7 +1661,11 @@ func EjecRepMkdisk(id string, path string) {
 
 						desp += int(ebr.Part_s) + 1 + binary.Size(EBR{})
 						archivo.Seek(int64(desp), 0)
-						binary.Read(archivo, binary.LittleEndian, &ebr)
+						err = binary.Read(archivo, binary.LittleEndian, &ebr)
+						if err != nil {
+							fmt.Println("Error al leer el ebr: ", err)
+							return
+						}
 
 					}
 					if libreExtendida > 0 {
@@ -1591,13 +1736,21 @@ func EjecRepBmInodes(index int) {
 	var sblock superBloque
 
 	archivo.Seek(int64(particionesMontadas[index].Start), 0)
-	binary.Read(archivo, binary.LittleEndian, &sblock)
+	err = binary.Read(archivo, binary.LittleEndian, &sblock)
+	if err != nil {
+		fmt.Println("Error al leer el superbloque: ", err)
+		return
+	}
 	size := int(sblock.S_bm_block_start - sblock.S_bm_inode_start)
 	var temp [1]byte
 	archivo.Seek(int64(sblock.S_bm_inode_start), 0)
 	fmt.Println(size)
 	for i := 0; i < size; i++ {
-		binary.Read(archivo, binary.LittleEndian, &temp)
+		err = binary.Read(archivo, binary.LittleEndian, &temp)
+		if err != nil {
+			fmt.Println("Error al leer el bitmap inodos: ", err)
+			return
+		}
 		if temp == [1]byte{1} {
 			bitmap += "1 "
 		} else {
@@ -1634,13 +1787,21 @@ func EjecRepBmBloques(index int) {
 	var sblock superBloque
 
 	archivo.Seek(int64(particionesMontadas[index].Start), 0)
-	binary.Read(archivo, binary.LittleEndian, &sblock)
+	err = binary.Read(archivo, binary.LittleEndian, &sblock)
+	if err != nil {
+		fmt.Println("Error al leer el superbloque: ", err)
+		return
+	}
 	size := int(sblock.S_bm_block_start-sblock.S_bm_inode_start) * 3
 
 	var temp [1]byte
 	archivo.Seek(int64(sblock.S_bm_block_start), 0)
 	for i := 0; i < size; i++ {
-		binary.Read(archivo, binary.LittleEndian, &temp)
+		err = binary.Read(archivo, binary.LittleEndian, &temp)
+		if err != nil {
+			fmt.Println("Error al leer el bitmap bloques: ", err)
+			return
+		}
 		if temp == [1]byte{1} {
 			bitmap += "1 "
 		} else {
@@ -1745,35 +1906,74 @@ func EjecRepInodes(index int) {
 		fmt.Println("Error al leer el superbloque: ", err)
 		return
 	}
-
-	for i := 0; i < int(sblock.S_inodes_count); i++ {
-
+	Dot := "digraph grid {\nbgcolor=\"slategrey\";\n label=\" Reporte Inodos \";\n layout=dot;\n "
+	Dot += "labelloc = \"t\"; \n edge [weight=1000 style=dashed color=red4 dir = \"both\" arrowtail=open arrowhead=open];\n"
+	var inodoTemp inodo
+	archivo.Seek(int64(sblock.S_inode_start), 0)
+	err = binary.Read(archivo, binary.LittleEndian, &inodoTemp)
+	if err != nil {
+		fmt.Println("Error al leer el inodo: ", err)
+		return
 	}
 
-	Dot := "digraph grid {bgcolor=\"slategrey\" label=\" Reporte SuperBlock \"layout=dot "
-	Dot += "labelloc = \"t\"edge [weigth=1000 style=dashed color=red4 dir = \"both\" arrowtail=\"open\" arrowhead=\"open\"]"
-	Dot += "a0[shape=none, color=lightgrey, label=<\n<TABLE cellspacing=\"3\" cellpadding=\"2\" style=\"rounded\" >\n"
-	Dot += "<TR><TD bgcolor=\"lightgrey\">SuperBlock</TD><TD></TD></TR>\n"
-	Dot += "<TR><TD bgcolor=\"lightgrey\">s_filesystem_type</TD><TD>" + strconv.Itoa(int(sblock.S_filesystem_type)) + "</TD></TR>\n"
-	Dot += "<TR><TD bgcolor=\"lightgrey\">s_inodes_count</TD><TD>" + strconv.Itoa(int(sblock.S_inodes_count)) + "</TD></TR>\n"
-	Dot += "<TR><TD bgcolor=\"lightgrey\">s_blocks_count</TD><TD>" + strconv.Itoa(int(sblock.S_blocks_count)) + "</TD></TR>\n"
-	Dot += "<TR><TD bgcolor=\"lightgrey\">s_free_blocks_count</TD><TD>" + strconv.Itoa(int(sblock.S_free_blocks_count)) + "</TD></TR>\n"
-	Dot += "<TR><TD bgcolor=\"lightgrey\">s_free_inodes_count</TD><TD>" + strconv.Itoa(int(sblock.S_free_inodes_count)) + "</TD></TR>\n"
-	Dot += "<TR><TD bgcolor=\"lightgrey\">s_mtime</TD><TD>" + string(sblock.S_mtime[:]) + "</TD></TR>\n"
-	Dot += "<TR><TD bgcolor=\"lightgrey\">s_umtime</TD><TD>" + string(sblock.S_umtime[:]) + "</TD></TR>\n"
-	Dot += "<TR><TD bgcolor=\"lightgrey\">s_mnt_count</TD><TD>" + strconv.Itoa(int(sblock.S_mnt_count)) + "</TD></TR>\n"
-	Dot += "<TR><TD bgcolor=\"lightgrey\">s_magic</TD><TD>" + strconv.Itoa(int(sblock.S_magic)) + "</TD></TR>\n"
-	Dot += "<TR><TD bgcolor=\"lightgrey\">s_inode_size</TD><TD>" + strconv.Itoa(int(sblock.S_inode_s)) + "</TD></TR>\n"
-	Dot += "<TR><TD bgcolor=\"lightgrey\">s_block_size</TD><TD>" + strconv.Itoa(int(sblock.S_block_s)) + "</TD></TR>\n"
-	Dot += "<TR><TD bgcolor=\"lightgrey\">s_first_ino</TD><TD>" + strconv.Itoa(int(sblock.S_firts_ino)) + "</TD></TR>\n"
-	Dot += "<TR><TD bgcolor=\"lightgrey\">s_first_blo</TD><TD>" + strconv.Itoa(int(sblock.S_first_blo)) + "</TD></TR>\n"
-	Dot += "<TR><TD bgcolor=\"lightgrey\">s_bm_inode_start</TD><TD>" + strconv.Itoa(int(sblock.S_bm_inode_start)) + "</TD></TR>\n"
-	Dot += "<TR><TD bgcolor=\"lightgrey\">s_bm_block_start</TD><TD>" + strconv.Itoa(int(sblock.S_bm_block_start)) + "</TD></TR>\n"
-	Dot += "<TR><TD bgcolor=\"lightgrey\">s_inode_start</TD><TD>" + strconv.Itoa(int(sblock.S_inode_start)) + "</TD></TR>\n"
-	Dot += "<TR><TD bgcolor=\"lightgrey\">s_block_start</TD><TD>" + strconv.Itoa(int(sblock.S_block_start)) + "</TD></TR>\n"
-	Dot += "</TABLE>>];\n}"
+	Dot += "inodo"
+	Dot += strconv.Itoa(0)
+	Dot += "[shape=none, color=lightgrey, label=<\n<TABLE cellspacing=\"3\" cellpadding=\"2\" style=\"rounded\" >\n"
+	Dot += "<TR><TD bgcolor=\"lightgrey\" colspan=\"2\">Inodo " + strconv.Itoa(0) + "</TD></TR>\n"
+	Dot += "<TR><TD bgcolor=\"lightgrey\">I_uid</TD><TD>" + strconv.Itoa(int(inodoTemp.I_uid)) + "</TD></TR>\n"
+	Dot += "<TR><TD bgcolor=\"lightgrey\">I_gid</TD><TD>" + strconv.Itoa(int(inodoTemp.I_uid)) + "</TD></TR>\n"
+	Dot += "<TR><TD bgcolor=\"lightgrey\">I_s</TD><TD>" + strconv.Itoa(int(inodoTemp.I_s)) + "</TD></TR>\n"
+	Dot += "<TR><TD bgcolor=\"lightgrey\">I_atime</TD><TD>" + string(inodoTemp.I_atime[:]) + "</TD></TR>\n"
+	Dot += "<TR><TD bgcolor=\"lightgrey\">I_ctime</TD><TD>" + string(inodoTemp.I_ctime[:]) + "</TD></TR>\n"
+	Dot += "<TR><TD bgcolor=\"lightgrey\">I_mtime</TD><TD>" + string(inodoTemp.I_mtime[:]) + "</TD></TR>\n"
+	for i, ptr := range inodoTemp.I_block {
+		Dot += "<TR><TD bgcolor=\"lightgrey\">I_block[" + strconv.Itoa(i) + "]</TD><TD>" + strconv.Itoa(int(ptr)) + "</TD></TR>\n"
+	}
 
-	archivoDot, err := os.Create("reporteSB.dot")
+	Dot += "<TR><TD bgcolor=\"lightgrey\">I_type</TD><TD>" + string(inodoTemp.I_type[:]) + "</TD></TR>\n"
+	Dot += "<TR><TD bgcolor=\"lightgrey\">I_perm</TD><TD>" + string(inodoTemp.I_type[:]) + "</TD></TR>\n"
+
+	Dot += "</TABLE>>];\n"
+	var byteTemp [1]byte
+	for i := 1; i < int(sblock.S_inodes_count); i++ {
+		archivo.Seek(int64(sblock.S_bm_inode_start+int32(i)), 0)
+		err = binary.Read(archivo, binary.LittleEndian, &byteTemp)
+		if err != nil {
+			fmt.Println("Error al leer el bitmap inodos: ", err)
+			return
+		}
+		if byteTemp == [1]byte{1} {
+			archivo.Seek(int64(sblock.S_inode_start+int32(binary.Size(inodo{}))*int32(i)), 0)
+			err = binary.Read(archivo, binary.LittleEndian, &inodoTemp)
+
+			if err != nil {
+				fmt.Println("Error al leer el inodo: ", err)
+				return
+			}
+			Dot += "inodo"
+			Dot += strconv.Itoa(i)
+			Dot += "[shape=none, color=lightgrey, label=<\n<TABLE cellspacing=\"3\" cellpadding=\"2\" style=\"rounded\" >\n"
+			Dot += "<TR><TD bgcolor=\"lightgrey\" colspan=\"2\">Inodo " + strconv.Itoa(i) + "</TD></TR>\n"
+			Dot += "<TR><TD bgcolor=\"lightgrey\">I_uid</TD><TD>" + strconv.Itoa(int(inodoTemp.I_uid)) + "</TD></TR>\n"
+			Dot += "<TR><TD bgcolor=\"lightgrey\">I_gid</TD><TD>" + strconv.Itoa(int(inodoTemp.I_uid)) + "</TD></TR>\n"
+			Dot += "<TR><TD bgcolor=\"lightgrey\">I_s</TD><TD>" + strconv.Itoa(int(inodoTemp.I_s)) + "</TD></TR>\n"
+			Dot += "<TR><TD bgcolor=\"lightgrey\">I_atime</TD><TD>" + string(inodoTemp.I_atime[:]) + "</TD></TR>\n"
+			Dot += "<TR><TD bgcolor=\"lightgrey\">I_ctime</TD><TD>" + string(inodoTemp.I_ctime[:]) + "</TD></TR>\n"
+			Dot += "<TR><TD bgcolor=\"lightgrey\">I_mtime</TD><TD>" + string(inodoTemp.I_mtime[:]) + "</TD></TR>\n"
+			for i, ptr := range inodoTemp.I_block {
+				Dot += "<TR><TD bgcolor=\"lightgrey\">I_block[" + strconv.Itoa(i) + "]</TD><TD>" + strconv.Itoa(int(ptr)) + "</TD></TR>\n"
+			}
+
+			Dot += "<TR><TD bgcolor=\"lightgrey\">I_type</TD><TD>" + string(inodoTemp.I_type[:]) + "</TD></TR>\n"
+			Dot += "<TR><TD bgcolor=\"lightgrey\">I_perm</TD><TD>" + string(inodoTemp.I_type[:]) + "</TD></TR>\n"
+
+			Dot += "</TABLE>>];\n"
+			Dot += "inodo" + strconv.Itoa(i-1) + " -> inodo" + strconv.Itoa(i) + ";\n"
+		}
+
+	}
+	Dot += "}"
+	archivoDot, err := os.Create("reporteInode.dot")
 	if err != nil {
 		fmt.Println("Error al crear el archivo .dot: ", err)
 		return
@@ -1786,7 +1986,102 @@ func EjecRepInodes(index int) {
 		return
 	}
 
-	cmd := exec.Command("dot", "-T", "png", "reporteSB.dot", "-o", "reporteSB.png")
+	cmd := exec.Command("dot", "-T", "png", "reporteInode.dot", "-o", "reporteInode.png")
+
+	err = cmd.Run()
+	if err != nil {
+		fmt.Println("Error al generar la imagen: ", err)
+		return
+	}
+
+	fmt.Println("Reporte generado con exito")
+}
+
+func EjecRepBloques(index int) {
+
+	archivo, err := os.OpenFile("MIA/P1/"+particionesMontadas[index].LetterValor+".dsk", os.O_RDWR, 0664)
+	if err != nil {
+		fmt.Println("Error al abrir el disco: ", err)
+		return
+	}
+	defer archivo.Close()
+
+	var sblock superBloque
+	archivo.Seek(int64(particionesMontadas[index].Start), 0)
+	err = binary.Read(archivo, binary.LittleEndian, &sblock)
+	if err != nil {
+		fmt.Println("Error al leer el superbloque: ", err)
+		return
+	}
+	Dot := "digraph grid {\n bgcolor=\"slategrey\";\n label=\" Reporte Bloques \";\n layout=dot;\n "
+	Dot += "labelloc = \"t\";\n edge [weight=1000 style=dashed color=red4 dir = \"both\" arrowtail=open arrowhead=open];\n"
+	var bCarpeta bloqueCarpeta
+	archivo.Seek(int64(sblock.S_block_start), 0)
+	err = binary.Read(archivo, binary.LittleEndian, &bCarpeta)
+	if err != nil {
+		fmt.Println("Error al leer el bloque carpetas: ", err)
+		return
+	}
+
+	Dot += "bloque"
+	Dot += strconv.Itoa(0)
+	Dot += "[shape=none, color=lightgrey, label=<\n<TABLE cellspacing=\"3\" cellpadding=\"2\" style=\"rounded\" >\n"
+	Dot += "<TR><TD bgcolor=\"lightgrey\" colspan=\"2\">bloque " + strconv.Itoa(0) + "</TD></TR>\n"
+
+	Dot += "<TR><TD bgcolor=\"lightgrey\">b_name</TD><TD>b_inodo</TD><TD></TD></TR>\n"
+	for _, cont := range bCarpeta.B_content {
+		nam := strings.TrimRight(string(cont.B_name[:]), string(rune(0)))
+		Dot += "<TR><TD bgcolor=\"lightgrey\">" + nam + "</TD><TD>" + strconv.Itoa(int(cont.B_inodo)) + "</TD></TR>\n"
+
+	}
+
+	Dot += "</TABLE>>];\n"
+	var byteTemp [1]byte
+	var bArchivo bloqueArchivos
+	for i := 1; i < int(sblock.S_inodes_count); i++ {
+		archivo.Seek(int64(sblock.S_bm_block_start+int32(i)), 0)
+		err = binary.Read(archivo, binary.LittleEndian, &byteTemp)
+		if err != nil {
+			fmt.Println("Error al leer el bitmap bloques: ", err)
+			return
+		}
+		if byteTemp == [1]byte{1} {
+			archivo.Seek(int64(sblock.S_block_start+int32(binary.Size(bloqueArchivos{}))*int32(i)), 0)
+			err = binary.Read(archivo, binary.LittleEndian, &bArchivo)
+
+			if err != nil {
+				fmt.Println("Error al leer el bloque archivos: ", err)
+				return
+			}
+			Dot += "bloque"
+			Dot += strconv.Itoa(i)
+			Dot += "[shape=none, color=lightgrey, label=<\n<TABLE cellspacing=\"3\" cellpadding=\"2\" style=\"rounded\" >\n"
+			Dot += "<TR><TD bgcolor=\"lightgrey\" colspan=\"2\">bloque " + strconv.Itoa(i) + "</TD></TR>\n"
+			cont := strings.TrimRight(string(bArchivo.B_content[:]), string(rune(0)))
+			Dot += "<TR><TD bgcolor=\"lightgrey\" colspan=\"2\">" + cont + "</TD></TR>\n"
+
+			Dot += "</TABLE>>];\n"
+			Dot += "bloque" + strconv.Itoa(i-1) + " -> bloque" + strconv.Itoa(i) + ";\n"
+		}
+
+	}
+
+	Dot += "}"
+
+	archivoDot, err := os.Create("reporteBloque.dot")
+	if err != nil {
+		fmt.Println("Error al crear el archivo .dot: ", err)
+		return
+	}
+	defer archivoDot.Close()
+
+	_, err = archivoDot.WriteString(Dot)
+	if err != nil {
+		fmt.Println("Error al escribir el archivo .dot: ", err)
+		return
+	}
+
+	cmd := exec.Command("dot", "-T", "png", "reporteBloque.dot", "-o", "reporteBloque.png")
 
 	err = cmd.Run()
 	if err != nil {

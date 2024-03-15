@@ -110,12 +110,24 @@ func EjecRep(banderas []string) {
 
 	case "inodo":
 		//reporte inodo
+		index := comandos.VerificarParticionMontada(id)
+		if index == -1 {
+			fmt.Println("Id no encontrada")
+			return
+		}
+		comandos.EjecRepInodes(index)
 		break
 	case "journaling":
 		//reporte journaling
 		break
 	case "block":
 		//reporte block
+		index := comandos.VerificarParticionMontada(id)
+		if index == -1 {
+			fmt.Println("Id no encontrada")
+			return
+		}
+		comandos.EjecRepBloques(index)
 		break
 	case "bm_inode":
 		//reporte bitmap inodo

@@ -1,0 +1,16 @@
+digraph grid {
+ bgcolor="slategrey";
+ label=" Reporte Bloques ";
+ layout=dot;
+ labelloc = "t";
+ edge [weight=1000 style=dashed color=red4 dir = "both" arrowtail=open arrowhead=open];
+bloque0[shape=none, color=lightgrey, label=<
+<TABLE cellspacing="3" cellpadding="2" style="rounded" >
+<TR><TD bgcolor="lightgrey" colspan="2">bloque 0</TD></TR>
+<TR><TD bgcolor="lightgrey">b_name</TD><TD>b_inodo</TD><TD></TD></TR>
+<TR><TD bgcolor="lightgrey">.</TD><TD>0</TD></TR>
+<TR><TD bgcolor="lightgrey">..</TD><TD>0</TD></TR>
+<TR><TD bgcolor="lightgrey">users.txt</TD><TD>1</TD></TR>
+<TR><TD bgcolor="lightgrey"></TD><TD>-1</TD></TR>
+</TABLE>>];
+}
