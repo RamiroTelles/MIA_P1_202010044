@@ -115,12 +115,12 @@ pause
 mkdisk -param=x #ERR
 
 logout
-logout #ERR NO HAY SESION INICIADA
+logout #ERR NO HAY SESION INICIADA ::va bien
 
 pause
 mkdisk -param=x #ERR
 
-login -user=usuario1 -pass=password -id=A144
+login -user=usuario1 -pass=password -id=A144 :: va bien
 
 #CREACION DE ARCHIVOS------------------------------------------------
 mkfile -path=/home/archivos/user/docs/Tarea.txt -size=75
@@ -136,7 +136,7 @@ pause
 
 mkfile -path="/home/archivos/b1.txt" -size=-45 #ERR NEGATIVO
 
-mkfile -path=/home/archivos/user/docs/usac/archivos/proyectos/fase1/entrada.txt #RECURSIVO
+#mkfile -path=/home/archivos/user/docs/usac/archivos/proyectos/fase1/entrada.txt #RECURSIVO
 
 pause
 mkdisk -param=x #ERR

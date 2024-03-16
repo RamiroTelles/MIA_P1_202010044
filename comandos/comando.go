@@ -1094,10 +1094,15 @@ func EjecMkfile(banderas []string) {
 		}
 	}
 	//fmt.Println(r)
-	fmt.Println(size)
+	//fmt.Println(size)
 
 	if cont != "" {
 		cont = obtenerArchivo(cont)
+	}
+	if cont == "" && size > 0 {
+		for i := 0; i < size; i++ {
+			cont += "0"
+		}
 	}
 
 	if ruta == "" {
@@ -1143,7 +1148,10 @@ func EjecMkdir(banderas []string) {
 			fmt.Println("Parametro invalido")
 		}
 	}
-	fmt.Println(r)
+	if r {
+		fmt.Println(r)
+	}
+
 	index := VerificarParticionMontada(actualIdMount)
 	archivo, err := os.OpenFile("MIA/P1/"+particionesMontadas[index].LetterValor+".dsk", os.O_RDWR, 0777)
 	if err != nil {
@@ -1288,6 +1296,8 @@ func EjecMkdir(banderas []string) {
 
 	//cerrar archivo
 	archivo.Close()
+
+	fmt.Println("Carpeta creada con exito")
 
 }
 
