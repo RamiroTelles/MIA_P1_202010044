@@ -15,7 +15,7 @@ func Analizar(comandoEntero string) {
 
 	analComando := regexp.MustCompile("^[A-Za-z]+")
 	comando := analComando.FindAllString(comandoEntero, 1)
-	analBanderas := regexp.MustCompile("(-[A-Za-z0-9]*(=([A-Za-z0-9./_\-]*))?)")
+	analBanderas := regexp.MustCompile("(-[A-Za-z0-9]*(=([A-Za-z0-9./_\\-]*))?)")
 	banderas := analBanderas.FindAllString(comandoEntero, -1)
 
 	if comando != nil {
