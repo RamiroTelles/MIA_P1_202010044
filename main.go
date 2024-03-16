@@ -30,6 +30,11 @@ func leerComando() {
 	}
 
 	comando = strings.TrimSpace(comando)
+	if len(comando) == 0 {
+		return
+	}
+	if comando[0] != '#' {
+		analizador.Analizar(comando)
+	}
 
-	analizador.Analizar(comando)
 }

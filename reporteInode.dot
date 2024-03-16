@@ -10,9 +10,9 @@ inodo0[shape=none, color=lightgrey, label=<
 <TR><TD bgcolor="lightgrey">I_uid</TD><TD>1</TD></TR>
 <TR><TD bgcolor="lightgrey">I_gid</TD><TD>1</TD></TR>
 <TR><TD bgcolor="lightgrey">I_s</TD><TD>27</TD></TR>
-<TR><TD bgcolor="lightgrey">I_atime</TD><TD>2024-03-14 21:21:31</TD></TR>
-<TR><TD bgcolor="lightgrey">I_ctime</TD><TD>2024-03-14 21:21:31</TD></TR>
-<TR><TD bgcolor="lightgrey">I_mtime</TD><TD>2024-03-14 21:21:31</TD></TR>
+<TR><TD bgcolor="lightgrey">I_atime</TD><TD>2024-03-15 15:17:04</TD></TR>
+<TR><TD bgcolor="lightgrey">I_ctime</TD><TD>2024-03-15 15:17:04</TD></TR>
+<TR><TD bgcolor="lightgrey">I_mtime</TD><TD>2024-03-15 15:17:04</TD></TR>
 <TR><TD bgcolor="lightgrey">I_block[0]</TD><TD>0</TD></TR>
 <TR><TD bgcolor="lightgrey">I_block[1]</TD><TD>-1</TD></TR>
 <TR><TD bgcolor="lightgrey">I_block[2]</TD><TD>-1</TD></TR>
@@ -29,19 +29,19 @@ inodo0[shape=none, color=lightgrey, label=<
 <TR><TD bgcolor="lightgrey">I_block[13]</TD><TD>-1</TD></TR>
 <TR><TD bgcolor="lightgrey">I_block[14]</TD><TD>-1</TD></TR>
 <TR><TD bgcolor="lightgrey">I_type</TD><TD>0</TD></TR>
-<TR><TD bgcolor="lightgrey">I_perm</TD><TD>0</TD></TR>
+<TR><TD bgcolor="lightgrey">I_perm</TD><TD>664</TD></TR>
 </TABLE>>];
 inodo1[shape=none, color=lightgrey, label=<
 <TABLE cellspacing="3" cellpadding="2" style="rounded" >
 <TR><TD bgcolor="lightgrey" colspan="2">Inodo 1</TD></TR>
-<TR><TD bgcolor="lightgrey">I_uid</TD><TD>0</TD></TR>
-<TR><TD bgcolor="lightgrey">I_gid</TD><TD>0</TD></TR>
-<TR><TD bgcolor="lightgrey">I_s</TD><TD>27</TD></TR>
-<TR><TD bgcolor="lightgrey">I_atime</TD><TD>2024-03-14 21:21:31</TD></TR>
-<TR><TD bgcolor="lightgrey">I_ctime</TD><TD>2024-03-14 21:21:31</TD></TR>
-<TR><TD bgcolor="lightgrey">I_mtime</TD><TD>2024-03-14 21:21:31</TD></TR>
+<TR><TD bgcolor="lightgrey">I_uid</TD><TD>1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_gid</TD><TD>1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_s</TD><TD>104</TD></TR>
+<TR><TD bgcolor="lightgrey">I_atime</TD><TD>2024-03-15 15:17:04</TD></TR>
+<TR><TD bgcolor="lightgrey">I_ctime</TD><TD>2024-03-15 15:17:04</TD></TR>
+<TR><TD bgcolor="lightgrey">I_mtime</TD><TD>2024-03-15 15:17:04</TD></TR>
 <TR><TD bgcolor="lightgrey">I_block[0]</TD><TD>1</TD></TR>
-<TR><TD bgcolor="lightgrey">I_block[1]</TD><TD>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[1]</TD><TD>2</TD></TR>
 <TR><TD bgcolor="lightgrey">I_block[2]</TD><TD>-1</TD></TR>
 <TR><TD bgcolor="lightgrey">I_block[3]</TD><TD>-1</TD></TR>
 <TR><TD bgcolor="lightgrey">I_block[4]</TD><TD>-1</TD></TR>
@@ -56,7 +56,7 @@ inodo1[shape=none, color=lightgrey, label=<
 <TR><TD bgcolor="lightgrey">I_block[13]</TD><TD>-1</TD></TR>
 <TR><TD bgcolor="lightgrey">I_block[14]</TD><TD>-1</TD></TR>
 <TR><TD bgcolor="lightgrey">I_type</TD><TD>1</TD></TR>
-<TR><TD bgcolor="lightgrey">I_perm</TD><TD>1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_perm</TD><TD>664</TD></TR>
 </TABLE>>];
 inodo0 -> inodo1;
 }

@@ -1,7 +1,15 @@
 mkdisk -size=1 -unit=m
 fdisk -type=p -driveletter=A -unit=k -name=Particion1 -size=5
 mount -driveletter=A -name=Particion1
-lmount
 mkfs -type=full -id=A144
+login -user=root -pass=123 -id=A144
+mkdir 
+
+
 rep -id=A144 -path=s -name=tree
 rep -id=A144 -path=s -name=sb
+rep -id=A144 -path=s -name=bm_block
+rep -id=A144 -path=s -name=bm_inode
+rep -id=A144 -path=s -name=inodo
+rep -id=A144 -path=s -name=block
+rep -id=A144 -path=s -name=disk

@@ -7,7 +7,7 @@ digraph grid {
 bloque0[shape=none, color=lightgrey, label=<
 <TABLE cellspacing="3" cellpadding="2" style="rounded" >
 <TR><TD bgcolor="lightgrey" colspan="2">bloque 0</TD></TR>
-<TR><TD bgcolor="lightgrey">b_name</TD><TD>b_inodo</TD><TD></TD></TR>
+<TR><TD bgcolor="lightgrey">b_name</TD><TD>b_inodo</TD></TR>
 <TR><TD bgcolor="lightgrey">.</TD><TD>0</TD></TR>
 <TR><TD bgcolor="lightgrey">..</TD><TD>0</TD></TR>
 <TR><TD bgcolor="lightgrey">users.txt</TD><TD>1</TD></TR>
@@ -18,7 +18,18 @@ bloque1[shape=none, color=lightgrey, label=<
 <TR><TD bgcolor="lightgrey" colspan="2">bloque 1</TD></TR>
 <TR><TD bgcolor="lightgrey" colspan="2">1,G,root
 1,U,root,root,123
-</TD></TR>
+2,G,salsa
+0,G,salsa1
+3,G,salsa3
+0,U,s</TD></TR>
 </TABLE>>];
 bloque0 -> bloque1;
+bloque2[shape=none, color=lightgrey, label=<
+<TABLE cellspacing="3" cellpadding="2" style="rounded" >
+<TR><TD bgcolor="lightgrey" colspan="2">bloque 2</TD></TR>
+<TR><TD bgcolor="lightgrey" colspan="2">alsa,rami,1234
+2,U,salsa3,elRami,contra
+</TD></TR>
+</TABLE>>];
+bloque1 -> bloque2;
 }

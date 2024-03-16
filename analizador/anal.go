@@ -15,11 +15,9 @@ func Analizar(comandoEntero string) {
 
 	analComando := regexp.MustCompile("^[A-Za-z]+")
 	comando := analComando.FindAllString(comandoEntero, 1)
-	analBanderas := regexp.MustCompile("(-[A-Za-z0-9]*=([A-Za-z0-9./_]*))")
+	analBanderas := regexp.MustCompile("(-[A-Za-z0-9]*(=([A-Za-z0-9./_\-]*))?)")
 	banderas := analBanderas.FindAllString(comandoEntero, -1)
 
-	//fmt.Println(comando)
-	//fmt.Println(banderas)
 	if comando != nil {
 		ejecutarComando(comando, banderas)
 	}
@@ -73,6 +71,29 @@ func ejecutarComando(comando []string, banderas []string) {
 		break
 	case "pause":
 		comandos.EjecPause()
+		break
+	case "mkgrp":
+		comandos.EjecMkGrp(banderas)
+		break
+	case "rmgrp":
+		comandos.EjecRmGrp(banderas)
+		break
+	case "mkusr":
+		comandos.EjecMkUsr(banderas)
+		break
+	case "rmusr":
+		comandos.EjecRmUsr(banderas)
+		break
+	case "mkfile":
+		comandos.EjecMkfile(banderas)
+		break
+	case "mkdir":
+		comandos.EjecMkdir(banderas)
+		break
+	case "edit":
+		comandos.EjecEdit(banderas)
+		break
+
 	case "exit":
 		fmt.Println("cerrando aplicacion")
 		os.Exit(0)
@@ -112,6 +133,7 @@ func EjecRep(banderas []string) {
 	switch name {
 	case "mbr":
 		//reporte mbr
+		comandos.EjecRepMBR(id)
 		break
 	case "disk":
 		//reporte disk
@@ -129,6 +151,7 @@ func EjecRep(banderas []string) {
 		break
 	case "journaling":
 		//reporte journaling
+		comandos.EjecRepJournaling(id)
 		break
 	case "block":
 		//reporte block
@@ -173,6 +196,7 @@ func EjecRep(banderas []string) {
 		break
 	case "file":
 		//reporte file
+		comandos.EjecRepFile(id, path)
 		break
 	case "ls":
 		//reporte ls
@@ -201,8 +225,13 @@ func EjecExecute(banderas []string) {
 
 		for scanner.Scan() {
 			linea := scanner.Text()
-			fmt.Println(linea)
-
+			//fmt.Println(linea)
+			if len(linea) == 0 {
+				continue
+			}
+			if linea[0] == '#' {
+				continue
+			}
 			Analizar(linea)
 		}
 	}

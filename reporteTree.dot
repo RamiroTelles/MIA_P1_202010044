@@ -9,9 +9,9 @@ inodo0[label = <
 <tr><td>i_uid</td><td>1</td></tr>
 <tr><td>i_gid</td><td>1</td></tr>
 <tr><td>i_size</td><td>27</td></tr>
-<tr><td>i_atime</td><td>2024-03-15 03:02:24</td></tr>
-<tr><td>i_ctime</td><td>2024-03-15 03:02:24</td></tr>
-<tr><td>i_mtime</td><td>2024-03-15 03:02:24</td></tr>
+<tr><td>i_atime</td><td>2024-03-15 15:17:04</td></tr>
+<tr><td>i_ctime</td><td>2024-03-15 15:17:04</td></tr>
+<tr><td>i_mtime</td><td>2024-03-15 15:17:04</td></tr>
 <tr><td>i_type</td><td>0</td></tr>
 <tr><td>i_perm</td><td>664</td></tr>
 <TR><TD bgcolor="lightgrey">I_block[0]</TD><TD port='0'>0</TD></TR>
@@ -44,14 +44,14 @@ inodo1[label = <
 <tr><td bgcolor="lightgrey" colspan="2">Inodo1</td></tr>
 <tr><td>i_uid</td><td>1</td></tr>
 <tr><td>i_gid</td><td>1</td></tr>
-<tr><td>i_size</td><td>27</td></tr>
-<tr><td>i_atime</td><td>2024-03-15 03:02:24</td></tr>
-<tr><td>i_ctime</td><td>2024-03-15 03:02:24</td></tr>
-<tr><td>i_mtime</td><td>2024-03-15 03:02:24</td></tr>
+<tr><td>i_size</td><td>104</td></tr>
+<tr><td>i_atime</td><td>2024-03-15 15:17:04</td></tr>
+<tr><td>i_ctime</td><td>2024-03-15 15:17:04</td></tr>
+<tr><td>i_mtime</td><td>2024-03-15 15:17:04</td></tr>
 <tr><td>i_type</td><td>1</td></tr>
 <tr><td>i_perm</td><td>664</td></tr>
 <TR><TD bgcolor="lightgrey">I_block[0]</TD><TD port='0'>1</TD></TR>
-<TR><TD bgcolor="lightgrey">I_block[1]</TD><TD port='1'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[1]</TD><TD port='1'>2</TD></TR>
 <TR><TD bgcolor="lightgrey">I_block[2]</TD><TD port='2'>-1</TD></TR>
 <TR><TD bgcolor="lightgrey">I_block[3]</TD><TD port='3'>-1</TD></TR>
 <TR><TD bgcolor="lightgrey">I_block[4]</TD><TD port='4'>-1</TD></TR>
@@ -71,9 +71,20 @@ bloque1[shape=none, color=lightgrey, label=<
 <TR><TD bgcolor="lightgrey" colspan="2">bloque 1</TD></TR>
 <TR><TD bgcolor="lightgrey" colspan="2">1,G,root
 1,U,root,root,123
+2,G,salsa
+0,G,salsa1
+3,G,salsa3
+0,U,s</TD></TR>
+</TABLE>>];
+bloque2[shape=none, color=lightgrey, label=<
+<TABLE cellspacing="3" cellpadding="2" style="rounded" >
+<TR><TD bgcolor="lightgrey" colspan="2">bloque 2</TD></TR>
+<TR><TD bgcolor="lightgrey" colspan="2">alsa,rami,1234
+2,U,salsa3,elRami,contra
 </TD></TR>
 </TABLE>>];
 inodo1:0 -> bloque1;
+inodo1:1 -> bloque2;
 bloque0:2 -> inodo1;
 inodo0:0 -> bloque0;
 }
