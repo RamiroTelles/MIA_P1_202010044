@@ -730,7 +730,7 @@ func EjecMkfs(banderas []string) {
 
 		} else if dupla[0] == "-fs" {
 			if dupla[1] == "2fs" || dupla[1] == "3fs" {
-				typeVar = dupla[1]
+				fs = dupla[1]
 			} else {
 				fmt.Println("No se acepta el tipo de Fs")
 				return
@@ -746,7 +746,7 @@ func EjecMkfs(banderas []string) {
 		fmt.Println("Particion no montada")
 		return
 	}
-
+	fmt.Println(typeVar)
 	if typeVar != "full" {
 		fmt.Println("Tipo de formateo invalido")
 		return

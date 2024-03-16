@@ -1,148 +1,325 @@
-#ENTRADA PRIMER PARTE MIA
+#ENTRADA SEGUNDA PARTE MIA
 #Seccion A - Sergie Arizandieta
 #1S 2024
 #CAMBIAR /home/serchiboi -> POR SU USUARIO EJ ->  /home/SU_USER 
 #CAMBIAR LOS IDS
 
-#DISCO X
-mkdisk -param=x -size=30 -path=/home/serchiboi/archivos/Disco.dsk # ERR PARAMETROS
+#CREACION DE DISCOS------------------------------------------------
+Mkdisk -size=20 -unit=m
+Mkdisk -size=20 -unit=m
+#pause
 
+#CREACION DE PARTICION------------------------------------------------
+fdisk -type=p -unit=k -name=Part1 -size=7680 -driveletter=A -fit=bf
+fdisk -type=p -unit=k -name=Part1 -size=7680 -driveletter=B -fit=bf
+#pause
 
-#CREACION DE DISCOS---------------------------------------------------
-mkdisk -size=50 -unit=m -fit=ff                   # 50M A
-mkdisk -unit=k -size=51200 -fit=bf                # 50M B
-mkdisk -size=14                                   # 13M C
-mkdisk -size=51200 -unit=k                        # 50M D
-mkdisk -size=20 -unit=m -fit=wf                   # 20M E
-mkdisk -size=50 -unit=m -fit=ff                   # 50M F X
-mkdisk -size=50 -unit=m -fit=ff                   # 50M G X
-mkdisk -size=51200 -unit=k                        # 50M H X
-mkdisk -size=51200 -unit=k                        # 50M I X
+#MOUNT------------------------------------------------
+mount -driveletter=A -name=Part1 #191a cambiar el 191a por el ID que a ustedes les genera A144
+mount -driveletter=B -name=Part1 #192a  cambiar el 192a por el ID que a ustedes les genera B144
+#pause
 
-
-#ELIMINACION DE DISCOS---------------------------------------------------
-rmdisk -driveletter=Z #ERR RUTA NO ENCONTRADA
-
-rmdisk -driveletter=F
-rmdisk -driveletter=G
-rmdisk -driveletter=H
-rmdisk -driveletter=I
-
-
-#CREACION DE PARTICIONES---------------------------------------------------
-#DISCO 1
-fdisk -type=p -unit=b -name=Part0 -size=10485760 -driveletter=Z -fit=bf # ERR RUTA NO ENCONTRADA
-
-fdisk -type=p -unit=b -name=Part1 -size=10485760 -driveletter=A -fit=bf # 10M
-fdisk -type=p -unit=k -name=Part2 -size=10240 -driveletter=A -fit=bf    # 10M
-fdisk -type=p -unit=m -name=Part3 -size=10 -driveletter=A -fit=bf       # 10M 
-fdisk -type=p -unit=b -name=Part4 -size=10485760 -driveletter=A -fit=bf # 10M 
-fdisk -type=p -unit=b -name=Part5 -size=10485760 -driveletter=A -fit=bf #ERR PARTICION 5 
-
-# LIBRE DISCO 1: 50-4*10 = 10 -> 20%
-
-#DISCO 2
-fdisk -type=l -unit=k -name=Part6 -size=10240 -driveletter=B -fit=bf #ERRROR no hay una extendida
-fdisk -type=l -unit=k -name=Part7 -size=10240 -driveletter=B -fit=bf #ERRROR no hay una extendida
-
-fDisk -type=p -unit=k -name=Part8 -size=10240 -driveletter=B -fit=bf    # 10M
-fDisk -type=p -unit=m -name=Part9 -size=10 -driveletter=B -fit=ff       # 10M
-fDisk -type=p -unit=k -name=Part10 -size=5120 -driveletter=B -fit=wf    # 5M
-fdisk -type=e -unit=m -name=Part11 -size=20 -driveletter=B            # 20M
-fdisk -type=l -unit=k -name=Part12 -size=1536 -driveletter=B          # 1.5M
-fdisk -type=l -unit=k -name=Part13 -size=1536 -driveletter=B -fit=bf
-fdisk -type=l -unit=k -name=Part14 -size=1536 -driveletter=B -fit=ff
-fdisk -type=l -unit=k -name=Part15 -size=1536 -driveletter=B -fit=bf
-fdisk -type=l -unit=k -name=Part16 -size=1536 -driveletter=B -fit=wf
-fdisk -type=l -unit=k -name=Part17 -size=1536 -driveletter=B -fit=bf
-fdisk -type=l -unit=k -name=Part18 -size=1536 -driveletter=B -fit=ff
-fdisk -type=l -unit=k -name=Part19 -size=1536 -driveletter=B -fit=bf
-fdisk -type=l -unit=k -name=Part20 -size=1536 -driveletter=B -fit=ff
-fdisk -type=l -unit=k -name=Part21 -size=1536 -driveletter=B -fit=bf
-fdisk -type=l -unit=k -name=Part22 -size=1536 -driveletter=B -fit=wf
-fdisk -type=l -unit=k -name=Part23 -size=1536 -driveletter=B -fit=bf
-fdisk -type=l -unit=k -name=Part24 -size=1536 -driveletter=B -fit=ff
-# LIBRE DISCO 2: 50-45 = 5 -> 10%
-# LIBRE EXTENDIDA 2: 20-13*1.5 = 0.5 -> 2.5% (por los EBR deberia ser menos)
-
-#DISCO 3
-fdisk -type=p -unit=m -name=Part25 -size=20 -driveletter=C    # 20M #ERR FALTA ESPACIO 
-fdisk -type=p -unit=m -name=Part26 -size=4 -driveletter=C     #4M
-fdisk -type=p -unit=m -name=Part27 -size=4 -driveletter=C     #4M
-fdisk -type=p -unit=m -name=Part28 -size=1 -driveletter=C     #1M ;;;bien
-
-#LIBRE DISCO 3: 14-9= 5 -> 35.71%
-
-#ELIMINAR Y AGREGAR ESPACIO DISCO 3
-#fdisk -add=-1000 -unit=m -driveletter=C -name=Part26 # ERR SIZE NEGATIVO
-#fdisk -add=1000 -unit=m -driveletter=C -name=Part26 # ERR PARTICION NO TIENE ESPACIO
-#fdisk -add=-2 -unit=m -driveletter=C -name=Part26 # 4-2= 2M
-#fdisk -delete=full -name=Part27 -driveletter=C # 0
-#fdisk -add=4 -unit=m -driveletter=C -name=Part28 # 4+1= 5M
-#LIBRE DISCO 3: 14-7 = 3 -> 50%
-
-#DISCO 5
-fdisk -type=e -unit=k -name=Part29 -size=5120 -driveletter=E -fit=bf # 5MB ::: ba bien
-fdisk -type=l -unit=k -name=Part30 -size=1024 -driveletter=E -fit=bf # 1MB ::: ahora la crea 
-fdisk -type=p -unit=k -name=Part31 -size=5120 -driveletter=E -fit=bf # 5MB
-fdisk -type=l -unit=k -name=Part32 -size=1024 -driveletter=E -fit=bf # 1MB 
-fdisk -type=l -unit=k -name=Part33 -size=1024 -driveletter=E -fit=bf # 1MB  
-fdisk -type=l -unit=k -name=Part34 -size=1024 -driveletter=E -fit=bf # 1MB  
-
-# LIBRE DISCO 5: 20-10 = 5 -> 50%
-# LIBRE EXTENDIDA 2: 5-4 = 1 -> 20% (por los EBR deberia ser menos)
-
-#MONTAR PARTICIONES---------------------------------------------------
-#DISCO X
-mount -driveletter=A -name=Part5 #ERR PARTICION NO EXISTE  ::::bien
-#DISCO 1
-
-mount -driveletter=A -name=Part1 #191a  cambiar el 191a por el ID que a ustedes les genera A144
-mount -driveletter=A -name=Part2 #191b  cambiar el 191b por el ID que a ustedes les genera A244
-mount -driveletter=A -name=Part1 #ERR PARTICION YA MONTADA
-#DISCO 2
-mount -driveletter=B -name=Part11 #ERR MONTAR EXTENDIDA
-mount -driveletter=B -name=Part8 #192a  cambiar el 192a por el ID que a ustedes les genera B144
-mount -driveletter=B -name=Part9 #192b  cambiar el 192b por el ID que a ustedes les genera B244
-#DISCO 3
-mount -driveletter=C -name=Part26 #193a cambiar el 193a por el ID que a ustedes les genera C144
-#DISCO 5
-mount -driveletter=E -name=Part31 #194a cambiar el 194a por el ID que a ustedes les genera E144
-lmount ::: ahora va bien
-
-
-#DESMONTAR PARTICIONES---------------------------------------------------
-unmount -id=IDx #ERR NO EXISTE ID
-#DISCO 1
-unmount -id=A144 # ::: parametro invalido
-unmount -id=A144 #ERR PARTICION YA DESMONTADA 
-#DISCO 2
-unmount -id=B244 #id4 ::::ba bien
+#CREACION DE SISTEMA DE ARCHIVOS------------------------------------------------
+mkfs -type=full -id=A144 -fs=2fs :::tipo formateo invalido
+mkfs -type=full -id=B144 -fs=3fs
 pause
 
+#EXT2------------------------------------------------
+#------------------------REPORTES 1----------------
+rep -id=A144 -path=/home/serchiboi/archivos/reportes/reporte1_sb.jpg -name=sb
+rep -id=A144 -path=/home/serchiboi/archivos/reportes/reporte1_tree.jpg -name=tree
 
-#REPORTES---------------------------------------------------
-#DISCO 1
-rep -id=A144 -path=/home/serchiboi/archivos/reports/reporte1.jpg -name=mbr #no encuentra ID
-rep -id=A244 -path=/home/serchiboi/archivos/reports/reporte2.jpg -name=disk 
-rep -id=A244 -path=/home/serchiboi/archivos/reports/reporte3.jpg -name=mbr 
+
 pause
-#DISCO 2
-rep -id=B244 -path=/home/serchiboi/archivos/reports/reporte4.jpg -name=mbr  #no id
-rep -id=B144 -path=/home/serchiboi/archivos/reports/reporte5.jpg -name=disk 
-rep -id=B144 -path=/home/serchiboi/archivos/reports/reporte6.jpg -name=mbr 
+mkdisk -param=x #ERR
+
+#LOGIN------------------------------------------------
+login -user=root -pass=123 -id=A144
+
+login -user=root -pass=123 -id=A144 #ERR SESION INICIADA
+
+
+pause
+mkdisk -param=x #ERR
+
+#CREACION DE GRUPOS
+mkgrp -name=usuarios
+mkgrp -name=adm
+mkgrp -name=mail
+mkgrp -name=news
+mkgrp -name=sys
+mkgrp -name=sys #ERR YA EXISTE EL GRUPO
+cat -file=/user.txt
+
+pause
+mkdisk -param=x #ERR
+
+#ELIMINANDO GRUPOS------------------------------------------------
+rmgrp -name=mail
+cat -file=/user.txt
+
+pause
+mkdisk -param=x #ERR
+
+#CREACION DE USUARIOS------------------------------------------------
+mkusr -user=usuario1 -pass=password -grp=root
+mkusr -user=user1 -pass=abc -grp=usuarios
+mkusr -user=user2 -pass=abc -grp=usuarios
+mkusr -user=user2 -pass=abc -grp=usuarios #ERR EL USUARIO YA EXISTE
+mkusr -user=user3 -pass=abc -grp=system #ERR GRUPO NO EXISTE
+cat -file=/user.txt
+
+pause
+mkdisk -param=x #ERR
+
+#ELIMINANDO USUARIOS------------------------------------------------
+rmusr -user=user2
+cat -file=/user.txt
+
+pause
+mkdisk -param=x #ERR
+
+#CREACION DE CARPETAS------------------------------------------------
+mkdir -path=/bin
+mkdir -path=/boot
+mkdir -path=/cdrom
+mkdir -path=/dev
+pause
+mkdir -path=/etc
+mkdir -path=/home
+mkdir -path=/lib
+mkdir -path=/lib64
+pause
+mkdir -path=/media
+mkdir -path=/mnt
+mkdir -path=/opt
+mkdir -path=/proc
+pause
+mkdir -path=/run
+mkdir -path=/sbin
+mkdir -path=/snap
+mkdir -path=/srv
+pause
+mkdir -path=/sys
+mkdir -path=/tmp
+mkdir -path=/var
+pause
+#mkdir -r -path=/home/archivos/archivos19
+#mkdir -r -path=/home/archivos/user/docs/usac 
+#mkdir -r -path=/home/archivos/carpeta1/carpeta2/carpeta3/carpeta4/carpeta5 
+
+#------------------------REPORTE 2----------------
+rep -id=A144 -path=/home/serchiboi/archivos/reportes/reporte2_tree.jpg -name=tree
+
+pause
+mkdisk -param=x #ERR
+
+logout
+logout #ERR NO HAY SESION INICIADA
+
+pause
+mkdisk -param=x #ERR
+
+login -user=usuario1 -pass=password -id=A144
+
+#CREACION DE ARCHIVOS------------------------------------------------
+mkfile -path=/home/archivos/user/docs/Tarea.txt -size=75
+mkfile -path=/home/archivos/user/docs/Tarea2.txt -size=768
+pause
+#Para este comando hay que crear un archivo en la computadora y en cont poner la ruta de ese archivo
+#Crear un archivo txt en su escritorio llamado IA
+
+mkfile -path=/home/archivos/user/docs/Tarea3.txt -size=10 #-cont=/home/archivos/user/Desktop/IA.txt
+
+mkfile -path="/home/archivos/noexiste/b1.txt" #ERRNO EXISTE RUTA
 pause
 
-#DISCO 3
-rep -id=IDx -path=/home/serchiboi/archivos/reports/reporte7.jpg -name=mbr  #no id
-rep -id=C144 -path=/home/serchiboi/archivos/reports/reporte8.jpg -name=disk 
-rep -id=C144 -path=/home/serchiboi/archivos/reports/reporte9.jpg -name=mbr 
-pause
+mkfile -path="/home/archivos/b1.txt" -size=-45 #ERR NEGATIVO
 
-#DISCO 5
-rep -id=IDx -path=/home/serchiboi/archivos/reports/reporte10.jpg -name=mbr  #no id
-rep -id=E144 -path=/home/serchiboi/archivos/reports/reporte11.jpg -name=disk 
-rep -id=E144 -path=/home/serchiboi/archivos/reports/reporte12.jpg -name=mbr 
-pause
+mkfile -path=/home/archivos/user/docs/usac/archivos/proyectos/fase1/entrada.txt #RECURSIVO
 
-#exec -path=../basico.mia
+pause
+mkdisk -param=x #ERR
+
+cat -file1=/home/archivos/user/docs/Tarea2.txt
+cat -file1=/home/archivos/user/docs/Tarea3.txt
+
+
+pause
+mkdisk -param=x #ERR
+
+
+#------------------------REPORTE 3----------------
+rep -id=A144 -path=/home/serchiboi/archivos/reportes/reporte3_tree.jpg -name=tree
+
+pause
+mkdisk -param=x #ERR
+
+#REMOVER------------------------------------------------
+#remove -path=/home/archivos/user/docs/usac #Carpeta
+#remove -path=/home/archivos/user/docs/Tarea.txt #Archivo
+
+#------------------------REPORTE 4----------------
+rep -id=A144 -path=/home/serchiboi/archivos/reportes/reporte4_tree.jpg -name=tree
+
+pause
+mkdisk -param=x #ERR
+
+#MOVER------------------------------------------------
+#move -path=/home/archivos/user/docs/Tarea3.txt -dest=/home #archivo
+
+#------------------------REPORTES 5----------------
+rep -id=A144 -path=/home/serchiboi/archivos/reportes/reporte5_inode.jpg -name=inode
+rep -id=A144 -path=/home/serchiboi/archivos/reportes/reporte5_block.pdf -name=block
+rep -id=A144 -path=/home/serchiboi/archivos/reportes/reporte5_bm_inode.txt -name=bm_inode
+rep -id=A144 -path=/home/serchiboi/archivos/reportes/reporte5_bm_block.txt -name=bm_block
+rep -id=A144 -path=/home/serchiboi/archivos/reportes/reporte5_tree.jpg -name=tree
+rep -id=A144 -path=/home/serchiboi/archivos/reportes/reporte5_sb.jpg -name=sb
+rep -id=A144 -path=/home/serchiboi/archivos/reportes/reporte5_journaling.jpg -name=journaling #ERR EXT2 NO TIENE JOURNAL
+rep -id=A144 -path=/home/serchiboi/archivos/reportes/reporte5_file.jpg -ruta=/home/archivos/user/docs/Tarea2.txt  -name=file
+#rep -id=A144 -path=/home/serchiboi/archivos/reportes/reporte5_ls.jpg -ruta=/home/archivos/user/docs -name=ls
+
+pause
+mkdisk -param=x #ERR
+
+logout
+
+login -user=root -pass=123 -id=A144
+
+#CHMOD cambio de permisos------------------------------------------------
+#chmod -r -path="/home/archivos/archivos 19" -ugo=001
+#chmod -path="/home/archivos/user/docs/Tarea2.txt" -ugo=001
+
+logout
+
+LOGIN -user=usuario1 -pass=password -id=A144
+
+mkdir -r -path=/home/archivos/archivos 19/no/tiene/que/hacerla/por/permisos #ERR NO TIENE PERMISOS DE ESCRITURA
+cat -file=/home/archivos/user/docs/Tarea2.txt #ERR NO TIENE PERMISOS DE LECTURA
+
+#------------------------REPORTES 6----------------
+rep -id=A144 -path=/home/serchiboi/archivos/reportes/reporte6_inode.jpg -name=inode
+rep -id=A144 -path=/home/serchiboi/archivos/reportes/reporte6_block.pdf -name=block
+rep -id=A144 -path=/home/serchiboi/archivos/reportes/reporte6_tree.jpg -name=tree
+rep -id=A144 -path=/home/serchiboi/archivos/reportes/reporte6_bm_block.txt -name=bm_block
+rep -id=A144 -path=/home/serchiboi/archivos/reportes/reporte6_bm_inode.txt -name=bm_inode
+rep -id=A144 -path=/home/serchiboi/archivos/reportes/reporte6_sb.jpg -name=sb
+rep -id=A144 -path=/home/serchiboi/archivos/reportes/reporte6_journaling.jpg -name=journaling #ERR EXT2 NO TIENE JOURNAL
+
+pause
+mkdisk -param=x #ERR
+
+logout
+login -user=root -pass=123 -id=B144
+
+pause
+mkdisk -param=x #ERR
+
+#EXT3------------------------------------------------
+#CREACION DE CARPETAS------------------------------------------------
+mkdir -path=/1-2
+
+mkdir -path=/2-1
+mkdir -path=/2-2
+
+mkdir -path=/3-1
+mkdir -path=/3-2
+
+mkdir -path=/4-1
+mkdir -path=/4-2
+
+mkdir -path=/5-1
+mkdir -path=/5-2
+
+mkdir -path=/6-1
+mkdir -path=/6-2
+
+mkdir -path=/7-1
+mkdir -path=/7-2
+
+mkdir -path=/8-1
+mkdir -path=/8-2
+
+mkdir -path=/9-1
+mkdir -path=/9-2
+
+mkdir -path=/10-1
+mkdir -path=/10-2
+
+mkdir -path=/11-1
+mkdir -path=/11-2
+
+mkdir -path=/12-1
+mkdir -path=/12-2
+
+
+#------------------------REPORTES 7----------------
+rep -id=192a -path=/home/serchiboi/archivos/reportes/reporte7_tree.jpg -name=tree
+rep -id=192a -path=/home/serchiboi/archivos/reportes/reporte7_journaling.jpg -name=journaling
+
+pause
+mkdisk -param=x #ERR
+
+#loss -id=192a
+#------------------------REPORTES 8----------------
+rep -id=192a -path=/home/serchiboi/archivos/reportes/reporte8_tree.jpg -name=tree
+rep -id=192a -path=/home/serchiboi/archivos/reportes/reporte8_journaling.jpg -name=journaling
+
+
+pause
+mkdisk -param=x #ERR
+
+
+#recovery -id=192a
+#------------------------REPORTES 9----------------
+rep -id=B144 -path="/home/serchiboi/archivos/reportes/reporte9_tree.jpg" -name=tree
+rep -id=B144 -path="/home/serchiboi/archivos/reportes/reporte9_journaling.jpg" -name=journaling
+
+
+pause
+mkdisk -param=x #ERR
+
+
+#CREAR GRUPO------------------------------------------------
+mkgrp -name=usuarios
+
+#CREAR USUARIO------------------------------------------------
+mkusr -user=user1 -pass=abc -grp=usuarios
+
+#CAMBIAR PROPIETARIO------------------------------------------------
+#chown -path=/1-2 -user=user1
+
+#------------------------REPORTES 10----------------
+rep -id=B144 -path=/home/serchiboi/archivos/reportes/reporte10_tree.jpg -name=tree
+
+
+pause
+mkdisk -param=x #ERR
+
+
+#CREAR ARCHIVO------------------------------------------------
+mkfile -path=/1-2/F.txt -size=768
+mkfile -path=/1-2/FF.txt -size=1792 # INDIRECTO SIMPLE
+mkfile -path=/2-1/FFF.txt -size=18176 # INDIRECTO DOBLE
+mkfile -path=/2-1/FFFF.txt -size=280320 # INDIRECTO TRIPLE
+mkfile -path=/3-1/F.txt -size=768
+
+#CREAR CARPETA INDIRECTOS------------------------------------------------
+mkdir -path=/Findirecto
+mkdir -path=/Findirecto2
+
+#RENOMBRAR------------------------------------------------
+#rename -path=/1-2/F.txt -name=Gucci.txt
+
+#------------------------REPORTES 11 ---------------
+rep -id=B144 -path=/home/serchiboi/archivos/reportes/reporte11_tree.jpg -name=tree
+
+#FIND------------------------------------------------
+#find -path="/" -name=*
+#find -path="/" -name="?.*"
+
+pause
+mkdisk -param=x #ERR
+
+
+#exec -path=../avanzado.mia
