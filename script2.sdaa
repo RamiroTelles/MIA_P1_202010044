@@ -20,9 +20,9 @@ mount -driveletter=B -name=Part1 #192a  cambiar el 192a por el ID que a ustedes 
 #pause
 
 #CREACION DE SISTEMA DE ARCHIVOS------------------------------------------------
-mkfs -type=full -id=A144 -fs=2fs :::tipo formateo invalido
+mkfs -type=full -id=A144 -fs=2fs 
 mkfs -type=full -id=B144 -fs=3fs
-pause
+#pause
 
 #EXT2------------------------------------------------
 #------------------------REPORTES 1----------------
@@ -30,16 +30,16 @@ rep -id=A144 -path=/home/serchiboi/archivos/reportes/reporte1_sb.jpg -name=sb
 rep -id=A144 -path=/home/serchiboi/archivos/reportes/reporte1_tree.jpg -name=tree
 
 
-pause
+#pause
 mkdisk -param=x #ERR
 
 #LOGIN------------------------------------------------
 login -user=root -pass=123 -id=A144
 
-login -user=root -pass=123 -id=A144 #ERR SESION INICIADA
+login -user=root -pass=123 -id=A144 #ERR SESION INICIADA ::va bien
 
 
-pause
+#pause
 mkdisk -param=x #ERR
 
 #CREACION DE GRUPOS
@@ -48,33 +48,33 @@ mkgrp -name=adm
 mkgrp -name=mail
 mkgrp -name=news
 mkgrp -name=sys
-mkgrp -name=sys #ERR YA EXISTE EL GRUPO
-cat -file=/user.txt
+mkgrp -name=sys #ERR YA EXISTE EL GRUPO ::comprobar que grupo ya Eexiste
+cat -file=/users.txt
 
-pause
+#pause
 mkdisk -param=x #ERR
 
 #ELIMINANDO GRUPOS------------------------------------------------
 rmgrp -name=mail
-cat -file=/user.txt
+cat -file=/users.txt #::: va bien
 
-pause
+#pause
 mkdisk -param=x #ERR
 
 #CREACION DE USUARIOS------------------------------------------------
 mkusr -user=usuario1 -pass=password -grp=root
 mkusr -user=user1 -pass=abc -grp=usuarios
 mkusr -user=user2 -pass=abc -grp=usuarios
-mkusr -user=user2 -pass=abc -grp=usuarios #ERR EL USUARIO YA EXISTE
-mkusr -user=user3 -pass=abc -grp=system #ERR GRUPO NO EXISTE
-cat -file=/user.txt
+mkusr -user=user2 -pass=abc -grp=usuarios #ERR EL USUARIO YA EXISTE ::::verificar repitencias otra vez
+mkusr -user=user3 -pass=abc -grp=system #ERR GRUPO NO EXISTE ::::verificar repitencias otra vez
+cat -file=/users.txt #::::va bien
 
-pause
+#pause
 mkdisk -param=x #ERR
 
 #ELIMINANDO USUARIOS------------------------------------------------
 rmusr -user=user2
-cat -file=/user.txt
+cat -file=/users.txt #va bien
 
 pause
 mkdisk -param=x #ERR

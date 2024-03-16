@@ -3249,7 +3249,7 @@ func crearDotBloqueTree(ptr int, tipo string, archivo *os.File, sblock superBloq
 			if cont.B_inodo != -1 {
 				if nam != "." && nam != ".." {
 					nodosDot += crearDotNodoTree(int(cont.B_inodo), archivo, sblock)
-					enlacesDot += "bloque" + strconv.Itoa(ptr) + ":" + strconv.Itoa(i) + " -> inodo" + strconv.Itoa(1) + ";\n"
+					enlacesDot += "bloque" + strconv.Itoa(ptr) + ":" + strconv.Itoa(i) + " -> inodo" + strconv.Itoa(int(cont.B_inodo)) + ";\n"
 				}
 			}
 

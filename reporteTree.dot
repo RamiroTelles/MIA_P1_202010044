@@ -9,17 +9,17 @@ inodo0[label = <
 <tr><td>i_uid</td><td>1</td></tr>
 <tr><td>i_gid</td><td>1</td></tr>
 <tr><td>i_size</td><td>27</td></tr>
-<tr><td>i_atime</td><td>2024-03-15 15:17:04</td></tr>
-<tr><td>i_ctime</td><td>2024-03-15 15:17:04</td></tr>
-<tr><td>i_mtime</td><td>2024-03-15 15:17:04</td></tr>
+<tr><td>i_atime</td><td>2024-03-15 23:44:47</td></tr>
+<tr><td>i_ctime</td><td>2024-03-15 23:44:47</td></tr>
+<tr><td>i_mtime</td><td>2024-03-15 23:44:47</td></tr>
 <tr><td>i_type</td><td>0</td></tr>
 <tr><td>i_perm</td><td>664</td></tr>
 <TR><TD bgcolor="lightgrey">I_block[0]</TD><TD port='0'>0</TD></TR>
-<TR><TD bgcolor="lightgrey">I_block[1]</TD><TD port='1'>-1</TD></TR>
-<TR><TD bgcolor="lightgrey">I_block[2]</TD><TD port='2'>-1</TD></TR>
-<TR><TD bgcolor="lightgrey">I_block[3]</TD><TD port='3'>-1</TD></TR>
-<TR><TD bgcolor="lightgrey">I_block[4]</TD><TD port='4'>-1</TD></TR>
-<TR><TD bgcolor="lightgrey">I_block[5]</TD><TD port='5'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[1]</TD><TD port='1'>6</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[2]</TD><TD port='2'>11</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[3]</TD><TD port='3'>16</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[4]</TD><TD port='4'>21</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[5]</TD><TD port='5'>26</TD></TR>
 <TR><TD bgcolor="lightgrey">I_block[6]</TD><TD port='6'>-1</TD></TR>
 <TR><TD bgcolor="lightgrey">I_block[7]</TD><TD port='7'>-1</TD></TR>
 <TR><TD bgcolor="lightgrey">I_block[8]</TD><TD port='8'>-1</TD></TR>
@@ -37,23 +37,23 @@ bloque0[shape=none, color=lightgrey, label=<
 <TR><TD bgcolor="lightgrey">.</TD><TD port= '0'>0</TD></TR>
 <TR><TD bgcolor="lightgrey">..</TD><TD port= '1'>0</TD></TR>
 <TR><TD bgcolor="lightgrey">users.txt</TD><TD port= '2'>1</TD></TR>
-<TR><TD bgcolor="lightgrey"></TD><TD port= '3'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">bin</TD><TD port= '3'>2</TD></TR>
 </TABLE>>];
 inodo1[label = <
 <TABLE border="0" cellborder="1" cellspacing="0">
 <tr><td bgcolor="lightgrey" colspan="2">Inodo1</td></tr>
 <tr><td>i_uid</td><td>1</td></tr>
 <tr><td>i_gid</td><td>1</td></tr>
-<tr><td>i_size</td><td>104</td></tr>
-<tr><td>i_atime</td><td>2024-03-15 15:17:04</td></tr>
-<tr><td>i_ctime</td><td>2024-03-15 15:17:04</td></tr>
-<tr><td>i_mtime</td><td>2024-03-15 15:17:04</td></tr>
+<tr><td>i_size</td><td>199</td></tr>
+<tr><td>i_atime</td><td>2024-03-15 23:44:47</td></tr>
+<tr><td>i_ctime</td><td>2024-03-15 23:44:47</td></tr>
+<tr><td>i_mtime</td><td>2024-03-15 23:44:47</td></tr>
 <tr><td>i_type</td><td>1</td></tr>
 <tr><td>i_perm</td><td>664</td></tr>
 <TR><TD bgcolor="lightgrey">I_block[0]</TD><TD port='0'>1</TD></TR>
 <TR><TD bgcolor="lightgrey">I_block[1]</TD><TD port='1'>2</TD></TR>
-<TR><TD bgcolor="lightgrey">I_block[2]</TD><TD port='2'>-1</TD></TR>
-<TR><TD bgcolor="lightgrey">I_block[3]</TD><TD port='3'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[2]</TD><TD port='2'>3</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[3]</TD><TD port='3'>4</TD></TR>
 <TR><TD bgcolor="lightgrey">I_block[4]</TD><TD port='4'>-1</TD></TR>
 <TR><TD bgcolor="lightgrey">I_block[5]</TD><TD port='5'>-1</TD></TR>
 <TR><TD bgcolor="lightgrey">I_block[6]</TD><TD port='6'>-1</TD></TR>
@@ -71,20 +71,810 @@ bloque1[shape=none, color=lightgrey, label=<
 <TR><TD bgcolor="lightgrey" colspan="2">bloque 1</TD></TR>
 <TR><TD bgcolor="lightgrey" colspan="2">1,G,root
 1,U,root,root,123
-2,G,salsa
-0,G,salsa1
-3,G,salsa3
-0,U,s</TD></TR>
+2,G,usuarios
+3,G,adm
+0,G,mail
+5,G,new</TD></TR>
 </TABLE>>];
 bloque2[shape=none, color=lightgrey, label=<
 <TABLE cellspacing="3" cellpadding="2" style="rounded" >
 <TR><TD bgcolor="lightgrey" colspan="2">bloque 2</TD></TR>
-<TR><TD bgcolor="lightgrey" colspan="2">alsa,rami,1234
-2,U,salsa3,elRami,contra
+<TR><TD bgcolor="lightgrey" colspan="2">s
+6,G,sys
+7,G,sys
+2,U,root,usuario1,password
+3,U,usuarios,user1,</TD></TR>
+</TABLE>>];
+bloque3[shape=none, color=lightgrey, label=<
+<TABLE cellspacing="3" cellpadding="2" style="rounded" >
+<TR><TD bgcolor="lightgrey" colspan="2">bloque 3</TD></TR>
+<TR><TD bgcolor="lightgrey" colspan="2">abc
+0,U,usuarios,user2,abc
+5,U,usuarios,user2,abc
+6,U,system,use</TD></TR>
+</TABLE>>];
+bloque4[shape=none, color=lightgrey, label=<
+<TABLE cellspacing="3" cellpadding="2" style="rounded" >
+<TR><TD bgcolor="lightgrey" colspan="2">bloque 4</TD></TR>
+<TR><TD bgcolor="lightgrey" colspan="2">r3,abc
 </TD></TR>
 </TABLE>>];
 inodo1:0 -> bloque1;
 inodo1:1 -> bloque2;
+inodo1:2 -> bloque3;
+inodo1:3 -> bloque4;
+inodo2[label = <
+<TABLE border="0" cellborder="1" cellspacing="0">
+<tr><td bgcolor="lightgrey" colspan="2">Inodo2</td></tr>
+<tr><td>i_uid</td><td>1</td></tr>
+<tr><td>i_gid</td><td>1</td></tr>
+<tr><td>i_size</td><td>0</td></tr>
+<tr><td>i_atime</td><td>2024-03-15 23:45:28</td></tr>
+<tr><td>i_ctime</td><td>2024-03-15 23:45:28</td></tr>
+<tr><td>i_mtime</td><td>2024-03-15 23:45:28</td></tr>
+<tr><td>i_type</td><td>0</td></tr>
+<tr><td>i_perm</td><td>664</td></tr>
+<TR><TD bgcolor="lightgrey">I_block[0]</TD><TD port='0'>5</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[1]</TD><TD port='1'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[2]</TD><TD port='2'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[3]</TD><TD port='3'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[4]</TD><TD port='4'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[5]</TD><TD port='5'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[6]</TD><TD port='6'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[7]</TD><TD port='7'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[8]</TD><TD port='8'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[9]</TD><TD port='9'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[10]</TD><TD port='10'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[11]</TD><TD port='11'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[12]</TD><TD port='12'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[13]</TD><TD port='13'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[14]</TD><TD port='14'>-1</TD></TR>
+</TABLE>>];
+bloque5[shape=none, color=lightgrey, label=<
+<TABLE cellspacing="3" cellpadding="2" style="rounded" >
+<TR><TD bgcolor="lightgrey" colspan="2">bloque 5</TD></TR>
+<TR><TD bgcolor="lightgrey">b_name</TD><TD>b_inodo</TD></TR>
+<TR><TD bgcolor="lightgrey">.</TD><TD port= '0'>2</TD></TR>
+<TR><TD bgcolor="lightgrey">..</TD><TD port= '1'>0</TD></TR>
+<TR><TD bgcolor="lightgrey"></TD><TD port= '2'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey"></TD><TD port= '3'>-1</TD></TR>
+</TABLE>>];
+inodo2:0 -> bloque5;
 bloque0:2 -> inodo1;
+bloque0:3 -> inodo2;
+bloque6[shape=none, color=lightgrey, label=<
+<TABLE cellspacing="3" cellpadding="2" style="rounded" >
+<TR><TD bgcolor="lightgrey" colspan="2">bloque 6</TD></TR>
+<TR><TD bgcolor="lightgrey">b_name</TD><TD>b_inodo</TD></TR>
+<TR><TD bgcolor="lightgrey">boot</TD><TD port= '0'>3</TD></TR>
+<TR><TD bgcolor="lightgrey">cdrom</TD><TD port= '1'>4</TD></TR>
+<TR><TD bgcolor="lightgrey">dev</TD><TD port= '2'>5</TD></TR>
+<TR><TD bgcolor="lightgrey">etc</TD><TD port= '3'>6</TD></TR>
+</TABLE>>];
+inodo3[label = <
+<TABLE border="0" cellborder="1" cellspacing="0">
+<tr><td bgcolor="lightgrey" colspan="2">Inodo3</td></tr>
+<tr><td>i_uid</td><td>1</td></tr>
+<tr><td>i_gid</td><td>1</td></tr>
+<tr><td>i_size</td><td>0</td></tr>
+<tr><td>i_atime</td><td>2024-03-15 23:45:28</td></tr>
+<tr><td>i_ctime</td><td>2024-03-15 23:45:28</td></tr>
+<tr><td>i_mtime</td><td>2024-03-15 23:45:28</td></tr>
+<tr><td>i_type</td><td>0</td></tr>
+<tr><td>i_perm</td><td>664</td></tr>
+<TR><TD bgcolor="lightgrey">I_block[0]</TD><TD port='0'>7</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[1]</TD><TD port='1'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[2]</TD><TD port='2'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[3]</TD><TD port='3'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[4]</TD><TD port='4'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[5]</TD><TD port='5'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[6]</TD><TD port='6'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[7]</TD><TD port='7'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[8]</TD><TD port='8'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[9]</TD><TD port='9'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[10]</TD><TD port='10'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[11]</TD><TD port='11'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[12]</TD><TD port='12'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[13]</TD><TD port='13'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[14]</TD><TD port='14'>-1</TD></TR>
+</TABLE>>];
+bloque7[shape=none, color=lightgrey, label=<
+<TABLE cellspacing="3" cellpadding="2" style="rounded" >
+<TR><TD bgcolor="lightgrey" colspan="2">bloque 7</TD></TR>
+<TR><TD bgcolor="lightgrey">b_name</TD><TD>b_inodo</TD></TR>
+<TR><TD bgcolor="lightgrey">.</TD><TD port= '0'>3</TD></TR>
+<TR><TD bgcolor="lightgrey">..</TD><TD port= '1'>0</TD></TR>
+<TR><TD bgcolor="lightgrey"></TD><TD port= '2'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey"></TD><TD port= '3'>-1</TD></TR>
+</TABLE>>];
+inodo3:0 -> bloque7;
+inodo4[label = <
+<TABLE border="0" cellborder="1" cellspacing="0">
+<tr><td bgcolor="lightgrey" colspan="2">Inodo4</td></tr>
+<tr><td>i_uid</td><td>1</td></tr>
+<tr><td>i_gid</td><td>1</td></tr>
+<tr><td>i_size</td><td>0</td></tr>
+<tr><td>i_atime</td><td>2024-03-15 23:45:28</td></tr>
+<tr><td>i_ctime</td><td>2024-03-15 23:45:28</td></tr>
+<tr><td>i_mtime</td><td>2024-03-15 23:45:28</td></tr>
+<tr><td>i_type</td><td>0</td></tr>
+<tr><td>i_perm</td><td>664</td></tr>
+<TR><TD bgcolor="lightgrey">I_block[0]</TD><TD port='0'>8</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[1]</TD><TD port='1'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[2]</TD><TD port='2'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[3]</TD><TD port='3'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[4]</TD><TD port='4'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[5]</TD><TD port='5'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[6]</TD><TD port='6'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[7]</TD><TD port='7'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[8]</TD><TD port='8'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[9]</TD><TD port='9'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[10]</TD><TD port='10'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[11]</TD><TD port='11'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[12]</TD><TD port='12'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[13]</TD><TD port='13'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[14]</TD><TD port='14'>-1</TD></TR>
+</TABLE>>];
+bloque8[shape=none, color=lightgrey, label=<
+<TABLE cellspacing="3" cellpadding="2" style="rounded" >
+<TR><TD bgcolor="lightgrey" colspan="2">bloque 8</TD></TR>
+<TR><TD bgcolor="lightgrey">b_name</TD><TD>b_inodo</TD></TR>
+<TR><TD bgcolor="lightgrey">.</TD><TD port= '0'>4</TD></TR>
+<TR><TD bgcolor="lightgrey">..</TD><TD port= '1'>0</TD></TR>
+<TR><TD bgcolor="lightgrey"></TD><TD port= '2'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey"></TD><TD port= '3'>-1</TD></TR>
+</TABLE>>];
+inodo4:0 -> bloque8;
+inodo5[label = <
+<TABLE border="0" cellborder="1" cellspacing="0">
+<tr><td bgcolor="lightgrey" colspan="2">Inodo5</td></tr>
+<tr><td>i_uid</td><td>1</td></tr>
+<tr><td>i_gid</td><td>1</td></tr>
+<tr><td>i_size</td><td>0</td></tr>
+<tr><td>i_atime</td><td>2024-03-15 23:45:28</td></tr>
+<tr><td>i_ctime</td><td>2024-03-15 23:45:28</td></tr>
+<tr><td>i_mtime</td><td>2024-03-15 23:45:28</td></tr>
+<tr><td>i_type</td><td>0</td></tr>
+<tr><td>i_perm</td><td>664</td></tr>
+<TR><TD bgcolor="lightgrey">I_block[0]</TD><TD port='0'>9</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[1]</TD><TD port='1'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[2]</TD><TD port='2'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[3]</TD><TD port='3'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[4]</TD><TD port='4'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[5]</TD><TD port='5'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[6]</TD><TD port='6'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[7]</TD><TD port='7'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[8]</TD><TD port='8'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[9]</TD><TD port='9'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[10]</TD><TD port='10'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[11]</TD><TD port='11'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[12]</TD><TD port='12'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[13]</TD><TD port='13'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[14]</TD><TD port='14'>-1</TD></TR>
+</TABLE>>];
+bloque9[shape=none, color=lightgrey, label=<
+<TABLE cellspacing="3" cellpadding="2" style="rounded" >
+<TR><TD bgcolor="lightgrey" colspan="2">bloque 9</TD></TR>
+<TR><TD bgcolor="lightgrey">b_name</TD><TD>b_inodo</TD></TR>
+<TR><TD bgcolor="lightgrey">.</TD><TD port= '0'>5</TD></TR>
+<TR><TD bgcolor="lightgrey">..</TD><TD port= '1'>0</TD></TR>
+<TR><TD bgcolor="lightgrey"></TD><TD port= '2'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey"></TD><TD port= '3'>-1</TD></TR>
+</TABLE>>];
+inodo5:0 -> bloque9;
+inodo6[label = <
+<TABLE border="0" cellborder="1" cellspacing="0">
+<tr><td bgcolor="lightgrey" colspan="2">Inodo6</td></tr>
+<tr><td>i_uid</td><td>1</td></tr>
+<tr><td>i_gid</td><td>1</td></tr>
+<tr><td>i_size</td><td>0</td></tr>
+<tr><td>i_atime</td><td>2024-03-15 23:45:29</td></tr>
+<tr><td>i_ctime</td><td>2024-03-15 23:45:29</td></tr>
+<tr><td>i_mtime</td><td>2024-03-15 23:45:29</td></tr>
+<tr><td>i_type</td><td>0</td></tr>
+<tr><td>i_perm</td><td>664</td></tr>
+<TR><TD bgcolor="lightgrey">I_block[0]</TD><TD port='0'>10</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[1]</TD><TD port='1'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[2]</TD><TD port='2'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[3]</TD><TD port='3'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[4]</TD><TD port='4'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[5]</TD><TD port='5'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[6]</TD><TD port='6'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[7]</TD><TD port='7'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[8]</TD><TD port='8'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[9]</TD><TD port='9'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[10]</TD><TD port='10'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[11]</TD><TD port='11'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[12]</TD><TD port='12'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[13]</TD><TD port='13'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[14]</TD><TD port='14'>-1</TD></TR>
+</TABLE>>];
+bloque10[shape=none, color=lightgrey, label=<
+<TABLE cellspacing="3" cellpadding="2" style="rounded" >
+<TR><TD bgcolor="lightgrey" colspan="2">bloque 10</TD></TR>
+<TR><TD bgcolor="lightgrey">b_name</TD><TD>b_inodo</TD></TR>
+<TR><TD bgcolor="lightgrey">.</TD><TD port= '0'>6</TD></TR>
+<TR><TD bgcolor="lightgrey">..</TD><TD port= '1'>0</TD></TR>
+<TR><TD bgcolor="lightgrey"></TD><TD port= '2'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey"></TD><TD port= '3'>-1</TD></TR>
+</TABLE>>];
+inodo6:0 -> bloque10;
+bloque6:0 -> inodo3;
+bloque6:1 -> inodo4;
+bloque6:2 -> inodo5;
+bloque6:3 -> inodo6;
+bloque11[shape=none, color=lightgrey, label=<
+<TABLE cellspacing="3" cellpadding="2" style="rounded" >
+<TR><TD bgcolor="lightgrey" colspan="2">bloque 11</TD></TR>
+<TR><TD bgcolor="lightgrey">b_name</TD><TD>b_inodo</TD></TR>
+<TR><TD bgcolor="lightgrey">home</TD><TD port= '0'>7</TD></TR>
+<TR><TD bgcolor="lightgrey">lib</TD><TD port= '1'>8</TD></TR>
+<TR><TD bgcolor="lightgrey">lib64</TD><TD port= '2'>9</TD></TR>
+<TR><TD bgcolor="lightgrey">media</TD><TD port= '3'>10</TD></TR>
+</TABLE>>];
+inodo7[label = <
+<TABLE border="0" cellborder="1" cellspacing="0">
+<tr><td bgcolor="lightgrey" colspan="2">Inodo7</td></tr>
+<tr><td>i_uid</td><td>1</td></tr>
+<tr><td>i_gid</td><td>1</td></tr>
+<tr><td>i_size</td><td>0</td></tr>
+<tr><td>i_atime</td><td>2024-03-15 23:45:29</td></tr>
+<tr><td>i_ctime</td><td>2024-03-15 23:45:29</td></tr>
+<tr><td>i_mtime</td><td>2024-03-15 23:45:29</td></tr>
+<tr><td>i_type</td><td>0</td></tr>
+<tr><td>i_perm</td><td>664</td></tr>
+<TR><TD bgcolor="lightgrey">I_block[0]</TD><TD port='0'>12</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[1]</TD><TD port='1'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[2]</TD><TD port='2'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[3]</TD><TD port='3'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[4]</TD><TD port='4'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[5]</TD><TD port='5'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[6]</TD><TD port='6'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[7]</TD><TD port='7'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[8]</TD><TD port='8'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[9]</TD><TD port='9'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[10]</TD><TD port='10'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[11]</TD><TD port='11'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[12]</TD><TD port='12'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[13]</TD><TD port='13'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[14]</TD><TD port='14'>-1</TD></TR>
+</TABLE>>];
+bloque12[shape=none, color=lightgrey, label=<
+<TABLE cellspacing="3" cellpadding="2" style="rounded" >
+<TR><TD bgcolor="lightgrey" colspan="2">bloque 12</TD></TR>
+<TR><TD bgcolor="lightgrey">b_name</TD><TD>b_inodo</TD></TR>
+<TR><TD bgcolor="lightgrey">.</TD><TD port= '0'>7</TD></TR>
+<TR><TD bgcolor="lightgrey">..</TD><TD port= '1'>0</TD></TR>
+<TR><TD bgcolor="lightgrey"></TD><TD port= '2'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey"></TD><TD port= '3'>-1</TD></TR>
+</TABLE>>];
+inodo7:0 -> bloque12;
+inodo8[label = <
+<TABLE border="0" cellborder="1" cellspacing="0">
+<tr><td bgcolor="lightgrey" colspan="2">Inodo8</td></tr>
+<tr><td>i_uid</td><td>1</td></tr>
+<tr><td>i_gid</td><td>1</td></tr>
+<tr><td>i_size</td><td>0</td></tr>
+<tr><td>i_atime</td><td>2024-03-15 23:45:29</td></tr>
+<tr><td>i_ctime</td><td>2024-03-15 23:45:29</td></tr>
+<tr><td>i_mtime</td><td>2024-03-15 23:45:29</td></tr>
+<tr><td>i_type</td><td>0</td></tr>
+<tr><td>i_perm</td><td>664</td></tr>
+<TR><TD bgcolor="lightgrey">I_block[0]</TD><TD port='0'>13</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[1]</TD><TD port='1'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[2]</TD><TD port='2'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[3]</TD><TD port='3'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[4]</TD><TD port='4'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[5]</TD><TD port='5'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[6]</TD><TD port='6'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[7]</TD><TD port='7'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[8]</TD><TD port='8'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[9]</TD><TD port='9'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[10]</TD><TD port='10'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[11]</TD><TD port='11'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[12]</TD><TD port='12'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[13]</TD><TD port='13'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[14]</TD><TD port='14'>-1</TD></TR>
+</TABLE>>];
+bloque13[shape=none, color=lightgrey, label=<
+<TABLE cellspacing="3" cellpadding="2" style="rounded" >
+<TR><TD bgcolor="lightgrey" colspan="2">bloque 13</TD></TR>
+<TR><TD bgcolor="lightgrey">b_name</TD><TD>b_inodo</TD></TR>
+<TR><TD bgcolor="lightgrey">.</TD><TD port= '0'>8</TD></TR>
+<TR><TD bgcolor="lightgrey">..</TD><TD port= '1'>0</TD></TR>
+<TR><TD bgcolor="lightgrey"></TD><TD port= '2'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey"></TD><TD port= '3'>-1</TD></TR>
+</TABLE>>];
+inodo8:0 -> bloque13;
+inodo9[label = <
+<TABLE border="0" cellborder="1" cellspacing="0">
+<tr><td bgcolor="lightgrey" colspan="2">Inodo9</td></tr>
+<tr><td>i_uid</td><td>1</td></tr>
+<tr><td>i_gid</td><td>1</td></tr>
+<tr><td>i_size</td><td>0</td></tr>
+<tr><td>i_atime</td><td>2024-03-15 23:45:29</td></tr>
+<tr><td>i_ctime</td><td>2024-03-15 23:45:29</td></tr>
+<tr><td>i_mtime</td><td>2024-03-15 23:45:29</td></tr>
+<tr><td>i_type</td><td>0</td></tr>
+<tr><td>i_perm</td><td>664</td></tr>
+<TR><TD bgcolor="lightgrey">I_block[0]</TD><TD port='0'>14</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[1]</TD><TD port='1'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[2]</TD><TD port='2'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[3]</TD><TD port='3'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[4]</TD><TD port='4'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[5]</TD><TD port='5'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[6]</TD><TD port='6'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[7]</TD><TD port='7'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[8]</TD><TD port='8'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[9]</TD><TD port='9'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[10]</TD><TD port='10'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[11]</TD><TD port='11'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[12]</TD><TD port='12'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[13]</TD><TD port='13'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[14]</TD><TD port='14'>-1</TD></TR>
+</TABLE>>];
+bloque14[shape=none, color=lightgrey, label=<
+<TABLE cellspacing="3" cellpadding="2" style="rounded" >
+<TR><TD bgcolor="lightgrey" colspan="2">bloque 14</TD></TR>
+<TR><TD bgcolor="lightgrey">b_name</TD><TD>b_inodo</TD></TR>
+<TR><TD bgcolor="lightgrey">.</TD><TD port= '0'>9</TD></TR>
+<TR><TD bgcolor="lightgrey">..</TD><TD port= '1'>0</TD></TR>
+<TR><TD bgcolor="lightgrey"></TD><TD port= '2'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey"></TD><TD port= '3'>-1</TD></TR>
+</TABLE>>];
+inodo9:0 -> bloque14;
+inodo10[label = <
+<TABLE border="0" cellborder="1" cellspacing="0">
+<tr><td bgcolor="lightgrey" colspan="2">Inodo10</td></tr>
+<tr><td>i_uid</td><td>1</td></tr>
+<tr><td>i_gid</td><td>1</td></tr>
+<tr><td>i_size</td><td>0</td></tr>
+<tr><td>i_atime</td><td>2024-03-15 23:45:30</td></tr>
+<tr><td>i_ctime</td><td>2024-03-15 23:45:30</td></tr>
+<tr><td>i_mtime</td><td>2024-03-15 23:45:30</td></tr>
+<tr><td>i_type</td><td>0</td></tr>
+<tr><td>i_perm</td><td>664</td></tr>
+<TR><TD bgcolor="lightgrey">I_block[0]</TD><TD port='0'>15</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[1]</TD><TD port='1'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[2]</TD><TD port='2'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[3]</TD><TD port='3'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[4]</TD><TD port='4'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[5]</TD><TD port='5'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[6]</TD><TD port='6'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[7]</TD><TD port='7'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[8]</TD><TD port='8'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[9]</TD><TD port='9'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[10]</TD><TD port='10'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[11]</TD><TD port='11'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[12]</TD><TD port='12'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[13]</TD><TD port='13'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[14]</TD><TD port='14'>-1</TD></TR>
+</TABLE>>];
+bloque15[shape=none, color=lightgrey, label=<
+<TABLE cellspacing="3" cellpadding="2" style="rounded" >
+<TR><TD bgcolor="lightgrey" colspan="2">bloque 15</TD></TR>
+<TR><TD bgcolor="lightgrey">b_name</TD><TD>b_inodo</TD></TR>
+<TR><TD bgcolor="lightgrey">.</TD><TD port= '0'>10</TD></TR>
+<TR><TD bgcolor="lightgrey">..</TD><TD port= '1'>0</TD></TR>
+<TR><TD bgcolor="lightgrey"></TD><TD port= '2'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey"></TD><TD port= '3'>-1</TD></TR>
+</TABLE>>];
+inodo10:0 -> bloque15;
+bloque11:0 -> inodo7;
+bloque11:1 -> inodo8;
+bloque11:2 -> inodo9;
+bloque11:3 -> inodo10;
+bloque16[shape=none, color=lightgrey, label=<
+<TABLE cellspacing="3" cellpadding="2" style="rounded" >
+<TR><TD bgcolor="lightgrey" colspan="2">bloque 16</TD></TR>
+<TR><TD bgcolor="lightgrey">b_name</TD><TD>b_inodo</TD></TR>
+<TR><TD bgcolor="lightgrey">mnt</TD><TD port= '0'>11</TD></TR>
+<TR><TD bgcolor="lightgrey">opt</TD><TD port= '1'>12</TD></TR>
+<TR><TD bgcolor="lightgrey">proc</TD><TD port= '2'>13</TD></TR>
+<TR><TD bgcolor="lightgrey">run</TD><TD port= '3'>14</TD></TR>
+</TABLE>>];
+inodo11[label = <
+<TABLE border="0" cellborder="1" cellspacing="0">
+<tr><td bgcolor="lightgrey" colspan="2">Inodo11</td></tr>
+<tr><td>i_uid</td><td>1</td></tr>
+<tr><td>i_gid</td><td>1</td></tr>
+<tr><td>i_size</td><td>0</td></tr>
+<tr><td>i_atime</td><td>2024-03-15 23:45:30</td></tr>
+<tr><td>i_ctime</td><td>2024-03-15 23:45:30</td></tr>
+<tr><td>i_mtime</td><td>2024-03-15 23:45:30</td></tr>
+<tr><td>i_type</td><td>0</td></tr>
+<tr><td>i_perm</td><td>664</td></tr>
+<TR><TD bgcolor="lightgrey">I_block[0]</TD><TD port='0'>17</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[1]</TD><TD port='1'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[2]</TD><TD port='2'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[3]</TD><TD port='3'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[4]</TD><TD port='4'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[5]</TD><TD port='5'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[6]</TD><TD port='6'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[7]</TD><TD port='7'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[8]</TD><TD port='8'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[9]</TD><TD port='9'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[10]</TD><TD port='10'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[11]</TD><TD port='11'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[12]</TD><TD port='12'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[13]</TD><TD port='13'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[14]</TD><TD port='14'>-1</TD></TR>
+</TABLE>>];
+bloque17[shape=none, color=lightgrey, label=<
+<TABLE cellspacing="3" cellpadding="2" style="rounded" >
+<TR><TD bgcolor="lightgrey" colspan="2">bloque 17</TD></TR>
+<TR><TD bgcolor="lightgrey">b_name</TD><TD>b_inodo</TD></TR>
+<TR><TD bgcolor="lightgrey">.</TD><TD port= '0'>11</TD></TR>
+<TR><TD bgcolor="lightgrey">..</TD><TD port= '1'>0</TD></TR>
+<TR><TD bgcolor="lightgrey"></TD><TD port= '2'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey"></TD><TD port= '3'>-1</TD></TR>
+</TABLE>>];
+inodo11:0 -> bloque17;
+inodo12[label = <
+<TABLE border="0" cellborder="1" cellspacing="0">
+<tr><td bgcolor="lightgrey" colspan="2">Inodo12</td></tr>
+<tr><td>i_uid</td><td>1</td></tr>
+<tr><td>i_gid</td><td>1</td></tr>
+<tr><td>i_size</td><td>0</td></tr>
+<tr><td>i_atime</td><td>2024-03-15 23:45:30</td></tr>
+<tr><td>i_ctime</td><td>2024-03-15 23:45:30</td></tr>
+<tr><td>i_mtime</td><td>2024-03-15 23:45:30</td></tr>
+<tr><td>i_type</td><td>0</td></tr>
+<tr><td>i_perm</td><td>664</td></tr>
+<TR><TD bgcolor="lightgrey">I_block[0]</TD><TD port='0'>18</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[1]</TD><TD port='1'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[2]</TD><TD port='2'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[3]</TD><TD port='3'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[4]</TD><TD port='4'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[5]</TD><TD port='5'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[6]</TD><TD port='6'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[7]</TD><TD port='7'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[8]</TD><TD port='8'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[9]</TD><TD port='9'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[10]</TD><TD port='10'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[11]</TD><TD port='11'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[12]</TD><TD port='12'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[13]</TD><TD port='13'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[14]</TD><TD port='14'>-1</TD></TR>
+</TABLE>>];
+bloque18[shape=none, color=lightgrey, label=<
+<TABLE cellspacing="3" cellpadding="2" style="rounded" >
+<TR><TD bgcolor="lightgrey" colspan="2">bloque 18</TD></TR>
+<TR><TD bgcolor="lightgrey">b_name</TD><TD>b_inodo</TD></TR>
+<TR><TD bgcolor="lightgrey">.</TD><TD port= '0'>12</TD></TR>
+<TR><TD bgcolor="lightgrey">..</TD><TD port= '1'>0</TD></TR>
+<TR><TD bgcolor="lightgrey"></TD><TD port= '2'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey"></TD><TD port= '3'>-1</TD></TR>
+</TABLE>>];
+inodo12:0 -> bloque18;
+inodo13[label = <
+<TABLE border="0" cellborder="1" cellspacing="0">
+<tr><td bgcolor="lightgrey" colspan="2">Inodo13</td></tr>
+<tr><td>i_uid</td><td>1</td></tr>
+<tr><td>i_gid</td><td>1</td></tr>
+<tr><td>i_size</td><td>0</td></tr>
+<tr><td>i_atime</td><td>2024-03-15 23:45:30</td></tr>
+<tr><td>i_ctime</td><td>2024-03-15 23:45:30</td></tr>
+<tr><td>i_mtime</td><td>2024-03-15 23:45:30</td></tr>
+<tr><td>i_type</td><td>0</td></tr>
+<tr><td>i_perm</td><td>664</td></tr>
+<TR><TD bgcolor="lightgrey">I_block[0]</TD><TD port='0'>19</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[1]</TD><TD port='1'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[2]</TD><TD port='2'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[3]</TD><TD port='3'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[4]</TD><TD port='4'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[5]</TD><TD port='5'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[6]</TD><TD port='6'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[7]</TD><TD port='7'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[8]</TD><TD port='8'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[9]</TD><TD port='9'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[10]</TD><TD port='10'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[11]</TD><TD port='11'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[12]</TD><TD port='12'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[13]</TD><TD port='13'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[14]</TD><TD port='14'>-1</TD></TR>
+</TABLE>>];
+bloque19[shape=none, color=lightgrey, label=<
+<TABLE cellspacing="3" cellpadding="2" style="rounded" >
+<TR><TD bgcolor="lightgrey" colspan="2">bloque 19</TD></TR>
+<TR><TD bgcolor="lightgrey">b_name</TD><TD>b_inodo</TD></TR>
+<TR><TD bgcolor="lightgrey">.</TD><TD port= '0'>13</TD></TR>
+<TR><TD bgcolor="lightgrey">..</TD><TD port= '1'>0</TD></TR>
+<TR><TD bgcolor="lightgrey"></TD><TD port= '2'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey"></TD><TD port= '3'>-1</TD></TR>
+</TABLE>>];
+inodo13:0 -> bloque19;
+inodo14[label = <
+<TABLE border="0" cellborder="1" cellspacing="0">
+<tr><td bgcolor="lightgrey" colspan="2">Inodo14</td></tr>
+<tr><td>i_uid</td><td>1</td></tr>
+<tr><td>i_gid</td><td>1</td></tr>
+<tr><td>i_size</td><td>0</td></tr>
+<tr><td>i_atime</td><td>2024-03-15 23:45:30</td></tr>
+<tr><td>i_ctime</td><td>2024-03-15 23:45:30</td></tr>
+<tr><td>i_mtime</td><td>2024-03-15 23:45:30</td></tr>
+<tr><td>i_type</td><td>0</td></tr>
+<tr><td>i_perm</td><td>664</td></tr>
+<TR><TD bgcolor="lightgrey">I_block[0]</TD><TD port='0'>20</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[1]</TD><TD port='1'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[2]</TD><TD port='2'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[3]</TD><TD port='3'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[4]</TD><TD port='4'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[5]</TD><TD port='5'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[6]</TD><TD port='6'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[7]</TD><TD port='7'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[8]</TD><TD port='8'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[9]</TD><TD port='9'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[10]</TD><TD port='10'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[11]</TD><TD port='11'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[12]</TD><TD port='12'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[13]</TD><TD port='13'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[14]</TD><TD port='14'>-1</TD></TR>
+</TABLE>>];
+bloque20[shape=none, color=lightgrey, label=<
+<TABLE cellspacing="3" cellpadding="2" style="rounded" >
+<TR><TD bgcolor="lightgrey" colspan="2">bloque 20</TD></TR>
+<TR><TD bgcolor="lightgrey">b_name</TD><TD>b_inodo</TD></TR>
+<TR><TD bgcolor="lightgrey">.</TD><TD port= '0'>14</TD></TR>
+<TR><TD bgcolor="lightgrey">..</TD><TD port= '1'>0</TD></TR>
+<TR><TD bgcolor="lightgrey"></TD><TD port= '2'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey"></TD><TD port= '3'>-1</TD></TR>
+</TABLE>>];
+inodo14:0 -> bloque20;
+bloque16:0 -> inodo11;
+bloque16:1 -> inodo12;
+bloque16:2 -> inodo13;
+bloque16:3 -> inodo14;
+bloque21[shape=none, color=lightgrey, label=<
+<TABLE cellspacing="3" cellpadding="2" style="rounded" >
+<TR><TD bgcolor="lightgrey" colspan="2">bloque 21</TD></TR>
+<TR><TD bgcolor="lightgrey">b_name</TD><TD>b_inodo</TD></TR>
+<TR><TD bgcolor="lightgrey">sbin</TD><TD port= '0'>15</TD></TR>
+<TR><TD bgcolor="lightgrey">snap</TD><TD port= '1'>16</TD></TR>
+<TR><TD bgcolor="lightgrey">srv</TD><TD port= '2'>17</TD></TR>
+<TR><TD bgcolor="lightgrey">sys</TD><TD port= '3'>18</TD></TR>
+</TABLE>>];
+inodo15[label = <
+<TABLE border="0" cellborder="1" cellspacing="0">
+<tr><td bgcolor="lightgrey" colspan="2">Inodo15</td></tr>
+<tr><td>i_uid</td><td>1</td></tr>
+<tr><td>i_gid</td><td>1</td></tr>
+<tr><td>i_size</td><td>0</td></tr>
+<tr><td>i_atime</td><td>2024-03-15 23:45:30</td></tr>
+<tr><td>i_ctime</td><td>2024-03-15 23:45:30</td></tr>
+<tr><td>i_mtime</td><td>2024-03-15 23:45:30</td></tr>
+<tr><td>i_type</td><td>0</td></tr>
+<tr><td>i_perm</td><td>664</td></tr>
+<TR><TD bgcolor="lightgrey">I_block[0]</TD><TD port='0'>22</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[1]</TD><TD port='1'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[2]</TD><TD port='2'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[3]</TD><TD port='3'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[4]</TD><TD port='4'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[5]</TD><TD port='5'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[6]</TD><TD port='6'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[7]</TD><TD port='7'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[8]</TD><TD port='8'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[9]</TD><TD port='9'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[10]</TD><TD port='10'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[11]</TD><TD port='11'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[12]</TD><TD port='12'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[13]</TD><TD port='13'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[14]</TD><TD port='14'>-1</TD></TR>
+</TABLE>>];
+bloque22[shape=none, color=lightgrey, label=<
+<TABLE cellspacing="3" cellpadding="2" style="rounded" >
+<TR><TD bgcolor="lightgrey" colspan="2">bloque 22</TD></TR>
+<TR><TD bgcolor="lightgrey">b_name</TD><TD>b_inodo</TD></TR>
+<TR><TD bgcolor="lightgrey">.</TD><TD port= '0'>15</TD></TR>
+<TR><TD bgcolor="lightgrey">..</TD><TD port= '1'>0</TD></TR>
+<TR><TD bgcolor="lightgrey"></TD><TD port= '2'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey"></TD><TD port= '3'>-1</TD></TR>
+</TABLE>>];
+inodo15:0 -> bloque22;
+inodo16[label = <
+<TABLE border="0" cellborder="1" cellspacing="0">
+<tr><td bgcolor="lightgrey" colspan="2">Inodo16</td></tr>
+<tr><td>i_uid</td><td>1</td></tr>
+<tr><td>i_gid</td><td>1</td></tr>
+<tr><td>i_size</td><td>0</td></tr>
+<tr><td>i_atime</td><td>2024-03-15 23:45:30</td></tr>
+<tr><td>i_ctime</td><td>2024-03-15 23:45:30</td></tr>
+<tr><td>i_mtime</td><td>2024-03-15 23:45:30</td></tr>
+<tr><td>i_type</td><td>0</td></tr>
+<tr><td>i_perm</td><td>664</td></tr>
+<TR><TD bgcolor="lightgrey">I_block[0]</TD><TD port='0'>23</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[1]</TD><TD port='1'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[2]</TD><TD port='2'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[3]</TD><TD port='3'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[4]</TD><TD port='4'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[5]</TD><TD port='5'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[6]</TD><TD port='6'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[7]</TD><TD port='7'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[8]</TD><TD port='8'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[9]</TD><TD port='9'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[10]</TD><TD port='10'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[11]</TD><TD port='11'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[12]</TD><TD port='12'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[13]</TD><TD port='13'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[14]</TD><TD port='14'>-1</TD></TR>
+</TABLE>>];
+bloque23[shape=none, color=lightgrey, label=<
+<TABLE cellspacing="3" cellpadding="2" style="rounded" >
+<TR><TD bgcolor="lightgrey" colspan="2">bloque 23</TD></TR>
+<TR><TD bgcolor="lightgrey">b_name</TD><TD>b_inodo</TD></TR>
+<TR><TD bgcolor="lightgrey">.</TD><TD port= '0'>16</TD></TR>
+<TR><TD bgcolor="lightgrey">..</TD><TD port= '1'>0</TD></TR>
+<TR><TD bgcolor="lightgrey"></TD><TD port= '2'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey"></TD><TD port= '3'>-1</TD></TR>
+</TABLE>>];
+inodo16:0 -> bloque23;
+inodo17[label = <
+<TABLE border="0" cellborder="1" cellspacing="0">
+<tr><td bgcolor="lightgrey" colspan="2">Inodo17</td></tr>
+<tr><td>i_uid</td><td>1</td></tr>
+<tr><td>i_gid</td><td>1</td></tr>
+<tr><td>i_size</td><td>0</td></tr>
+<tr><td>i_atime</td><td>2024-03-15 23:45:30</td></tr>
+<tr><td>i_ctime</td><td>2024-03-15 23:45:30</td></tr>
+<tr><td>i_mtime</td><td>2024-03-15 23:45:30</td></tr>
+<tr><td>i_type</td><td>0</td></tr>
+<tr><td>i_perm</td><td>664</td></tr>
+<TR><TD bgcolor="lightgrey">I_block[0]</TD><TD port='0'>24</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[1]</TD><TD port='1'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[2]</TD><TD port='2'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[3]</TD><TD port='3'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[4]</TD><TD port='4'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[5]</TD><TD port='5'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[6]</TD><TD port='6'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[7]</TD><TD port='7'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[8]</TD><TD port='8'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[9]</TD><TD port='9'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[10]</TD><TD port='10'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[11]</TD><TD port='11'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[12]</TD><TD port='12'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[13]</TD><TD port='13'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[14]</TD><TD port='14'>-1</TD></TR>
+</TABLE>>];
+bloque24[shape=none, color=lightgrey, label=<
+<TABLE cellspacing="3" cellpadding="2" style="rounded" >
+<TR><TD bgcolor="lightgrey" colspan="2">bloque 24</TD></TR>
+<TR><TD bgcolor="lightgrey">b_name</TD><TD>b_inodo</TD></TR>
+<TR><TD bgcolor="lightgrey">.</TD><TD port= '0'>17</TD></TR>
+<TR><TD bgcolor="lightgrey">..</TD><TD port= '1'>0</TD></TR>
+<TR><TD bgcolor="lightgrey"></TD><TD port= '2'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey"></TD><TD port= '3'>-1</TD></TR>
+</TABLE>>];
+inodo17:0 -> bloque24;
+inodo18[label = <
+<TABLE border="0" cellborder="1" cellspacing="0">
+<tr><td bgcolor="lightgrey" colspan="2">Inodo18</td></tr>
+<tr><td>i_uid</td><td>1</td></tr>
+<tr><td>i_gid</td><td>1</td></tr>
+<tr><td>i_size</td><td>0</td></tr>
+<tr><td>i_atime</td><td>2024-03-15 23:45:31</td></tr>
+<tr><td>i_ctime</td><td>2024-03-15 23:45:31</td></tr>
+<tr><td>i_mtime</td><td>2024-03-15 23:45:31</td></tr>
+<tr><td>i_type</td><td>0</td></tr>
+<tr><td>i_perm</td><td>664</td></tr>
+<TR><TD bgcolor="lightgrey">I_block[0]</TD><TD port='0'>25</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[1]</TD><TD port='1'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[2]</TD><TD port='2'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[3]</TD><TD port='3'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[4]</TD><TD port='4'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[5]</TD><TD port='5'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[6]</TD><TD port='6'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[7]</TD><TD port='7'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[8]</TD><TD port='8'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[9]</TD><TD port='9'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[10]</TD><TD port='10'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[11]</TD><TD port='11'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[12]</TD><TD port='12'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[13]</TD><TD port='13'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[14]</TD><TD port='14'>-1</TD></TR>
+</TABLE>>];
+bloque25[shape=none, color=lightgrey, label=<
+<TABLE cellspacing="3" cellpadding="2" style="rounded" >
+<TR><TD bgcolor="lightgrey" colspan="2">bloque 25</TD></TR>
+<TR><TD bgcolor="lightgrey">b_name</TD><TD>b_inodo</TD></TR>
+<TR><TD bgcolor="lightgrey">.</TD><TD port= '0'>18</TD></TR>
+<TR><TD bgcolor="lightgrey">..</TD><TD port= '1'>0</TD></TR>
+<TR><TD bgcolor="lightgrey"></TD><TD port= '2'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey"></TD><TD port= '3'>-1</TD></TR>
+</TABLE>>];
+inodo18:0 -> bloque25;
+bloque21:0 -> inodo15;
+bloque21:1 -> inodo16;
+bloque21:2 -> inodo17;
+bloque21:3 -> inodo18;
+bloque26[shape=none, color=lightgrey, label=<
+<TABLE cellspacing="3" cellpadding="2" style="rounded" >
+<TR><TD bgcolor="lightgrey" colspan="2">bloque 26</TD></TR>
+<TR><TD bgcolor="lightgrey">b_name</TD><TD>b_inodo</TD></TR>
+<TR><TD bgcolor="lightgrey">tmp</TD><TD port= '0'>19</TD></TR>
+<TR><TD bgcolor="lightgrey">var</TD><TD port= '1'>20</TD></TR>
+<TR><TD bgcolor="lightgrey"></TD><TD port= '2'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey"></TD><TD port= '3'>-1</TD></TR>
+</TABLE>>];
+inodo19[label = <
+<TABLE border="0" cellborder="1" cellspacing="0">
+<tr><td bgcolor="lightgrey" colspan="2">Inodo19</td></tr>
+<tr><td>i_uid</td><td>1</td></tr>
+<tr><td>i_gid</td><td>1</td></tr>
+<tr><td>i_size</td><td>0</td></tr>
+<tr><td>i_atime</td><td>2024-03-15 23:45:31</td></tr>
+<tr><td>i_ctime</td><td>2024-03-15 23:45:31</td></tr>
+<tr><td>i_mtime</td><td>2024-03-15 23:45:31</td></tr>
+<tr><td>i_type</td><td>0</td></tr>
+<tr><td>i_perm</td><td>664</td></tr>
+<TR><TD bgcolor="lightgrey">I_block[0]</TD><TD port='0'>27</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[1]</TD><TD port='1'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[2]</TD><TD port='2'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[3]</TD><TD port='3'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[4]</TD><TD port='4'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[5]</TD><TD port='5'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[6]</TD><TD port='6'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[7]</TD><TD port='7'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[8]</TD><TD port='8'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[9]</TD><TD port='9'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[10]</TD><TD port='10'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[11]</TD><TD port='11'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[12]</TD><TD port='12'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[13]</TD><TD port='13'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[14]</TD><TD port='14'>-1</TD></TR>
+</TABLE>>];
+bloque27[shape=none, color=lightgrey, label=<
+<TABLE cellspacing="3" cellpadding="2" style="rounded" >
+<TR><TD bgcolor="lightgrey" colspan="2">bloque 27</TD></TR>
+<TR><TD bgcolor="lightgrey">b_name</TD><TD>b_inodo</TD></TR>
+<TR><TD bgcolor="lightgrey">.</TD><TD port= '0'>19</TD></TR>
+<TR><TD bgcolor="lightgrey">..</TD><TD port= '1'>0</TD></TR>
+<TR><TD bgcolor="lightgrey"></TD><TD port= '2'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey"></TD><TD port= '3'>-1</TD></TR>
+</TABLE>>];
+inodo19:0 -> bloque27;
+inodo20[label = <
+<TABLE border="0" cellborder="1" cellspacing="0">
+<tr><td bgcolor="lightgrey" colspan="2">Inodo20</td></tr>
+<tr><td>i_uid</td><td>1</td></tr>
+<tr><td>i_gid</td><td>1</td></tr>
+<tr><td>i_size</td><td>0</td></tr>
+<tr><td>i_atime</td><td>2024-03-15 23:45:31</td></tr>
+<tr><td>i_ctime</td><td>2024-03-15 23:45:31</td></tr>
+<tr><td>i_mtime</td><td>2024-03-15 23:45:31</td></tr>
+<tr><td>i_type</td><td>0</td></tr>
+<tr><td>i_perm</td><td>664</td></tr>
+<TR><TD bgcolor="lightgrey">I_block[0]</TD><TD port='0'>28</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[1]</TD><TD port='1'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[2]</TD><TD port='2'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[3]</TD><TD port='3'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[4]</TD><TD port='4'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[5]</TD><TD port='5'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[6]</TD><TD port='6'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[7]</TD><TD port='7'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[8]</TD><TD port='8'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[9]</TD><TD port='9'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[10]</TD><TD port='10'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[11]</TD><TD port='11'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[12]</TD><TD port='12'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[13]</TD><TD port='13'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">I_block[14]</TD><TD port='14'>-1</TD></TR>
+</TABLE>>];
+bloque28[shape=none, color=lightgrey, label=<
+<TABLE cellspacing="3" cellpadding="2" style="rounded" >
+<TR><TD bgcolor="lightgrey" colspan="2">bloque 28</TD></TR>
+<TR><TD bgcolor="lightgrey">b_name</TD><TD>b_inodo</TD></TR>
+<TR><TD bgcolor="lightgrey">.</TD><TD port= '0'>20</TD></TR>
+<TR><TD bgcolor="lightgrey">..</TD><TD port= '1'>0</TD></TR>
+<TR><TD bgcolor="lightgrey"></TD><TD port= '2'>-1</TD></TR>
+<TR><TD bgcolor="lightgrey"></TD><TD port= '3'>-1</TD></TR>
+</TABLE>>];
+inodo20:0 -> bloque28;
+bloque26:0 -> inodo19;
+bloque26:1 -> inodo20;
 inodo0:0 -> bloque0;
+inodo0:1 -> bloque6;
+inodo0:2 -> bloque11;
+inodo0:3 -> bloque16;
+inodo0:4 -> bloque21;
+inodo0:5 -> bloque26;
 }
