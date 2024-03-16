@@ -1,0 +1,55 @@
+digraph grid {bgcolor="slategrey" label=" Reporte MBR "layout=dot labelloc = "t"edge [weigth=1000 style=dashed color=red4 dir = "both" arrowtail="open" arrowhead="open"]a0[shape=none, color=lightgrey, label=<
+<TABLE cellspacing="3" cellpadding="2" style="rounded" >
+<TR><TD bgcolor="lightgrey" colspan="2">MBR</TD></TR>
+<TR><TD bgcolor="lightgrey">mbr_tamano</TD><TD>20971520</TD></TR>
+<TR><TD bgcolor="lightgrey">mbr_fecha_creacion</TD><TD>2024-03-15 23:03:41</TD></TR>
+<TR><TD bgcolor="lightgrey">mbr_disk_signature</TD><TD>69</TD></TR>
+<TR><TD bgcolor="lightgrey">dsk_fit</TD><TD>w</TD></TR>
+<TR><TD bgcolor="lightgrey" colspan="2">Particion</TD></TR>
+<TR><TD bgcolor="lightgrey">part_status</TD><TD>0</TD></TR>
+<TR><TD bgcolor="lightgrey">part_type</TD><TD>p</TD></TR>
+<TR><TD bgcolor="lightgrey">part_fit</TD><TD>b</TD></TR>
+<TR><TD bgcolor="lightgrey">part_start</TD><TD>169</TD></TR>
+<TR><TD bgcolor="lightgrey">part_s</TD><TD>5242880</TD></TR>
+<TR><TD bgcolor="lightgrey">part_name</TD><TD>Part29</TD></TR>
+<TR><TD bgcolor="lightgrey" colspan="2">Particion Logica</TD></TR>
+<TR><TD bgcolor="lightgrey">part_mount</TD><TD>0</TD></TR>
+<TR><TD bgcolor="lightgrey">part_fit</TD><TD>b</TD></TR>
+<TR><TD bgcolor="lightgrey">part_start</TD><TD>200</TD></TR>
+<TR><TD bgcolor="lightgrey">part_s</TD><TD>1048576</TD></TR>
+<TR><TD bgcolor="lightgrey">part_s</TD><TD>1048576</TD></TR>
+<TR><TD bgcolor="lightgrey">part_next</TD><TD>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">part_name</TD><TD>Part30</TD></TR>
+<TR><TD bgcolor="lightgrey" colspan="2">Particion Logica</TD></TR>
+<TR><TD bgcolor="lightgrey">part_mount</TD><TD>0</TD></TR>
+<TR><TD bgcolor="lightgrey">part_fit</TD><TD>b</TD></TR>
+<TR><TD bgcolor="lightgrey">part_start</TD><TD>1048807</TD></TR>
+<TR><TD bgcolor="lightgrey">part_s</TD><TD>1048576</TD></TR>
+<TR><TD bgcolor="lightgrey">part_s</TD><TD>1048576</TD></TR>
+<TR><TD bgcolor="lightgrey">part_next</TD><TD>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">part_name</TD><TD>Part32</TD></TR>
+<TR><TD bgcolor="lightgrey" colspan="2">Particion Logica</TD></TR>
+<TR><TD bgcolor="lightgrey">part_mount</TD><TD>0</TD></TR>
+<TR><TD bgcolor="lightgrey">part_fit</TD><TD>b</TD></TR>
+<TR><TD bgcolor="lightgrey">part_start</TD><TD>2097414</TD></TR>
+<TR><TD bgcolor="lightgrey">part_s</TD><TD>1048576</TD></TR>
+<TR><TD bgcolor="lightgrey">part_s</TD><TD>1048576</TD></TR>
+<TR><TD bgcolor="lightgrey">part_next</TD><TD>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">part_name</TD><TD>Part33</TD></TR>
+<TR><TD bgcolor="lightgrey" colspan="2">Particion Logica</TD></TR>
+<TR><TD bgcolor="lightgrey">part_mount</TD><TD>0</TD></TR>
+<TR><TD bgcolor="lightgrey">part_fit</TD><TD>b</TD></TR>
+<TR><TD bgcolor="lightgrey">part_start</TD><TD>3146021</TD></TR>
+<TR><TD bgcolor="lightgrey">part_s</TD><TD>1048576</TD></TR>
+<TR><TD bgcolor="lightgrey">part_s</TD><TD>1048576</TD></TR>
+<TR><TD bgcolor="lightgrey">part_next</TD><TD>-1</TD></TR>
+<TR><TD bgcolor="lightgrey">part_name</TD><TD>Part34</TD></TR>
+<TR><TD bgcolor="lightgrey" colspan="2">Particion</TD></TR>
+<TR><TD bgcolor="lightgrey">part_status</TD><TD>1</TD></TR>
+<TR><TD bgcolor="lightgrey">part_type</TD><TD>p</TD></TR>
+<TR><TD bgcolor="lightgrey">part_fit</TD><TD>b</TD></TR>
+<TR><TD bgcolor="lightgrey">part_start</TD><TD>5243050</TD></TR>
+<TR><TD bgcolor="lightgrey">part_s</TD><TD>5242880</TD></TR>
+<TR><TD bgcolor="lightgrey">part_name</TD><TD>Part31</TD></TR>
+</TABLE>>];
+}

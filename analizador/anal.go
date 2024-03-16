@@ -26,7 +26,7 @@ func Analizar(comandoEntero string) {
 
 func ejecutarComando(comando []string, banderas []string) {
 
-	switch comando[0] {
+	switch strings.ToLower(comando[0]) {
 
 	case "execute":
 		//ejecutar execute
@@ -127,16 +127,24 @@ func EjecRep(banderas []string) {
 			fmt.Println("Parametro invalido")
 		}
 	}
-	fmt.Println(name)
-	fmt.Println(id)
 
 	switch name {
 	case "mbr":
 		//reporte mbr
+		index := comandos.VerificarParticionMontada(id)
+		if index == -1 {
+			fmt.Println("Id no encontrada")
+			return
+		}
 		comandos.EjecRepMBR(id)
 		break
 	case "disk":
 		//reporte disk
+		index := comandos.VerificarParticionMontada(id)
+		if index == -1 {
+			fmt.Println("Id no encontrada")
+			return
+		}
 		comandos.EjecRepMkdisk(id, path)
 		break
 

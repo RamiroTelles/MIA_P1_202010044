@@ -404,6 +404,7 @@ func EjecMkdisk(banderas []string) {
 			}
 		} else {
 			fmt.Println("Parametro invalido")
+			return
 		}
 	}
 
@@ -563,6 +564,7 @@ func EjecMount(banderas []string) {
 
 		} else {
 			fmt.Println("Parametro invalido")
+			return
 		}
 	}
 
@@ -651,6 +653,7 @@ func EjecUnMount(banderas []string) {
 
 		} else {
 			fmt.Println("Parametro invalido")
+			return
 		}
 	}
 
@@ -2556,7 +2559,7 @@ func EjecRepMBR(id string) {
 
 			}
 
-		} else {
+		} else if part.Part_type == [1]byte{'p'} {
 			name := strings.TrimRight(string(part.Part_name[:]), string(rune(0)))
 			Dot += "<TR><TD bgcolor=\"lightgrey\" colspan=\"2\">Particion</TD></TR>\n"
 			Dot += "<TR><TD bgcolor=\"lightgrey\">part_status</TD><TD>" + string(part.Part_status[:]) + "</TD></TR>\n"
@@ -2570,6 +2573,29 @@ func EjecRepMBR(id string) {
 	}
 
 	Dot += "</TABLE>>];\n}"
+
+	//Crear el archivo .dot
+	DotName := "ReporteMbr.dot"
+	archivoDot, err := os.Create(DotName)
+	if err != nil {
+		fmt.Println("Error al crear el archivo .dot: ", err)
+		return
+	}
+	defer archivoDot.Close()
+	_, err = archivoDot.WriteString(Dot)
+	if err != nil {
+		fmt.Println("Error al escribir el archivo .dot: ", err)
+		return
+	}
+	//Generar la imagen
+	cmd := exec.Command("dot", "-T", "png", DotName, "-o", "ReporteMbr.png")
+	err = cmd.Run()
+	if err != nil {
+		fmt.Println("Error al generar la imagen: ", err)
+		return
+	}
+
+	fmt.Println("Reporte generado con exito")
 }
 
 func EjecRepMkdisk(id string, path string) {
@@ -3239,6 +3265,10 @@ func crearDotBloqueTree(ptr int, tipo string, archivo *os.File, sblock superBloq
 func EjecRepFile(id string, ruta string) {
 
 	index := VerificarParticionMontada(id)
+	if index == -1 {
+		fmt.Println("id no encontrado")
+		return
+	}
 
 	archivo, err := os.OpenFile("MIA/P1/"+particionesMontadas[index].LetterValor+".dsk", os.O_RDWR, 0777)
 	if err != nil {
@@ -3298,6 +3328,11 @@ func EjecRepFile(id string, ruta string) {
 func EjecRepJournaling(id string) {
 
 	index := VerificarParticionMontada(id)
+
+	if index == -1 {
+		fmt.Println("id no encontrado")
+		return
+	}
 
 	archivo, err := os.OpenFile("MIA/P1/"+particionesMontadas[index].LetterValor+".dsk", os.O_RDWR, 0777)
 	if err != nil {

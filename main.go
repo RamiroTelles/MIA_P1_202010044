@@ -12,6 +12,7 @@ import (
 func main() {
 
 	comandos.LeerMounts()
+	analizador.Analizar("execute -path=script2.sdaa")
 
 	for {
 		leerComando()
